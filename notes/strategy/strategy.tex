@@ -2,11 +2,17 @@
 \begin{document}
 \begin{itemize}
     \item Train models
-    \item Predict all data points
-    \item Find all standard deviation maxima
+    \begin{itemize}
+        \item BayesianRidge
+        \item KNeighborsRegressor
+        \item RandomForestRegressor
+    \end{itemize}
+    \item Predict all data points (not including the testing subset)
+    \item Find all standard deviation maxima (method to be determined)
     \item Pick next points closest to these maxima from greatest maxima down
     \begin{itemize}
-        \item If more needed, go down by the list of maxima
+        \item If more needed, go down by the list of maxima.
+        \item Tie-break decided by distance from other points or local density -- to be decided
     \end{itemize} 
 \end{itemize}
 \end{document}
