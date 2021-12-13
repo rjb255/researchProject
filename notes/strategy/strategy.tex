@@ -7,8 +7,12 @@
         \item KNeighborsRegressor
         \item RandomForestRegressor
     \end{itemize}
-    \item Predict all data points (not including the testing subset)
-    \item Find all standard deviation maxima (method to be determined)
+    \item Predict unknown data points
+    \item Find standard deviation maxima (method to be determined)
+    \begin{itemize}
+        \item Leave a search radius of 10 in hamming distance
+        \item If maximum value within this range, include in maxima list
+    \end{itemize}
     \item Pick next points closest to these maxima from greatest maxima down
     \begin{itemize}
         \item If more needed, go down by the list of maxima.
