@@ -1,4 +1,6 @@
-# Standard Libraries
+# Note, ##% refers to cell debugging in vscode
+#%% Libraries
+# # Standard Libraries
 from os import path
 from pathlib import Path
 from pprint import pprint
@@ -14,8 +16,10 @@ import matplotlib.pylab as mlt
 
 # Custom Libraries
 from modules.shared.custom import split, getPI
+#%%
 
 def main():
+#%% Datasets
     # Just getting datasets
     _path = Path(__file__).parent.resolve()
     dataRoute = path.normpath(path.join(_path, '..', 'data', 'chembl', 'Additional_datasets'))
@@ -30,7 +34,7 @@ def main():
     # Each testing stage can test 160 cases and up to 2000 samples will be tested
     testSize = 160
     maxSamples = len(Y_unknown)
-
+#%%
     # models to be used and pre-defining variables
     models = [BR(), KNN(), RFR()]
     predicitions: list
@@ -50,8 +54,11 @@ def main():
         print(f"Samples: { len(Y_known) }, scores: {scores}")
         X_known, Y_known, X_unknown, Y_unknown = getPI((X_known, Y_known), (X_unknown, Y_unknown), index2[:testSize])   
         smartScores.append(scores)
-    
+
+
+#%%
 if __name__ == "__main__":
+#%% Run everything
     main()
     
         
