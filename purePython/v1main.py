@@ -9,7 +9,7 @@ from pprint import pprint
 from IPython.display import display
 import numpy as np
 import pandas as pd
-from scipy.spatial import KDTtree
+from scipy.spatial import KDTree
 from sklearn.linear_model import BayesianRidge as BR
 from sklearn.neighbors import KNeighborsRegressor as KNN
 from sklearn.ensemble import RandomForestRegressor as RFR
@@ -58,14 +58,18 @@ def main():
             neighbours = tree.query_ball_point(x, 10)
             if np.max(stdd[neighbours]) < s:
                 maxima.append(j)
-
+        if len(maxima) <= testSize:
+            pass
+        else:
+            index = np.argsort(-stdd[maxima])
+            index2 = X_unknown.iloc[index].index
+        X_known, Y_known, X_unknown, Y_unknown = getPI((X_known, Y_known), (X_unknown, Y_unknown), index2[:testSize])   
 
 
         
         # index = np.argsort(-1*stdd)
-        # index2 = X_unknown.iloc[index].index
+        # 
         # print(f"Samples: { len(Y_known) }, scores: {scores}")
-        # X_known, Y_known, X_unknown, Y_unknown = getPI((X_known, Y_known), (X_unknown, Y_unknown), index2[:testSize])   
         # smartScores.append(scores)
 
 
