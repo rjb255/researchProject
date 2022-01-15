@@ -43,28 +43,43 @@ def main():
     predicitions: list
     scores: list
     smartScores = []
-    tree = KDTree(X_unknown)
+    tree = []
+
+    # Each iteration represents another testing round
     for i in range(0, maxSamples, testSize):
+        tree = KDTree(np.array(X_unknown))
         predictions = []
         scores = []
         for model in models:
             m = model.fit(X_known, Y_known)
-            predictions.append(m.predict(X_known.append(X_unknown)))
+            predictions.append(m.predict(X_unknown))
             scores.append(m.score(X_test, Y_test))
+
         np_predictions = np.array(predictions)
         stdd = np.std(np_predictions, axis=0, ddof=1)
         maxima = []
-        for j, x, s in enumerate(zip(X_unknown, stdd)):
-            neighbours = tree.query_ball_point(x, 10)
-            if np.max(stdd[neighbours]) < s:
+
+
+        # Optimise Here To Remove Searches. Allows to pin down faster
+        # Look for points of maxima in an r=5
+        for j, x, s in zip(X_unknown.index, np.array(X_unknown), stdd):
+            neighbours = tree.query_ball_point(x, 5)
+            if np.max(stdd[neighbours]) <= s:
                 maxima.append(j)
+            
         if len(maxima) <= testSize:
-            pass
+            semiMaxima = np.argpartition(stdd, -testSize)
+            semiMaxima2 = X_unknown.index[semiMaxima[-testSize:]]
+            semiMaxima3 = np.argsort(stdd[semiMaxima[-testSize:]])
+            semiMaxima4 = semiMaxima2[semiMaxima3]
+            semiMaxima5 = [e1 for e1 in semiMaxima4 if e1 not in maxima]
+            
+            index2 = maxima + semiMaxima5[len(maxima)-testSize:]
         else:
             index = np.argsort(-stdd[maxima])
             index2 = X_unknown.iloc[index].index
         X_known, Y_known, X_unknown, Y_unknown = getPI((X_known, Y_known), (X_unknown, Y_unknown), index2[:testSize])   
-
+        print(f"\r{len(X_unknown)} left. {len(X_known)} known.", end="")
 
         
         # index = np.argsort(-1*stdd)
