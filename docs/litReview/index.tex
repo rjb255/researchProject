@@ -1,0 +1,46 @@
+\documentclass[a4paper, british]{article}
+
+\usepackage[style=alphabetic]{biblatex}
+\usepackage{blindtext}
+\usepackage[utf8]{inputenc}
+\usepackage{babel,csquotes,xpatch}
+\usepackage{amsmath}
+\usepackage{algorithm2e}
+\addbibresource{bib/litRev.bib}
+
+\begin{document}
+\title{\Large{\textbf{Literature Review}}\\Batch Active Learning for Drug Discovery}
+\author{rjb255}
+\date{January 29, 2022}
+
+\maketitle
+
+\begin{abstract}
+
+\end{abstract}
+
+\section{Introduction}
+
+\section{Active Learning}
+There are several schools of thought with regards to active learning. These can be separated into two distinct categories: current data and future predictions. The former of these is computationally cheaper, as will be apparent on discription.
+
+\subsection{Current Data}
+The simplest is applicable to cases in which a certainty is provided with each prediction. By simply selecting the largest uncertainty with the remaining data points allows for this form of active learning. For an unknown, noisy linear funciton (\ref{eq:linear}), a simple funciton for selecting a subsequent data point has been given.
+
+\begin{equation}
+    \label{eq:linear}
+    f(x)=a x+b + N(\mu, \sigma^2)
+\end{equation}
+
+A second form stems from information theory. Here, the aim is to produce an evenly dispursed $x$ allowing a well informed knowledge base. U~\cite{Eisenstein_2020}.
+
+Conversly, a density weighted model has been suggested, as it escapes the introduction of error from outligher (i.e. data points far away from alternative datapoints).
+
+As more complex methods are explored, we stumble across the method of competing hypothesis. This builds upon the [], and attempts to find []. The majority of work here relates to classification, although the same principles apply to regression.
+\subsection{Estimated Future}
+These methods attempt to minimise a future attribute to the model. The first of these attempts to
+\section{Batch Active Learning}
+
+\section{Drug Data}
+\printbibliography{}
+\end{document}
