@@ -22,6 +22,7 @@
 \section{Introduction}
 
 \section{Active Learning}
+\label{ch:Active Learning}
 There are several schools of thought with regards to active learning. These can be separated into two distinct categories: current data and future predictions. The former of these is computationally cheaper, as will be apparent on discription.
 
 \subsection{Current Data}
@@ -40,7 +41,7 @@ As more complex methods are explored, we stumble across the method of competing 
 \subsection{Estimated Future}
 These methods attempt to minimise a future attribute to the model. The first of these attempts to
 \section{Batch Active Learning}
-
+Several naive methods are available here. Firstly, getting the top $N$ data points from a model described in Section~\ref{ch:Active Learning}. However, this method does not take into account the equivalence of the data points. This is extremely clear using the highest uncertainty method. It stands to reason that the area which has the highest uncertainty will see this for the data points nearest neighbours. Thus, this singular data point suffers the potential of being surrounded by $N-1$ other data points. The benefit this provides in fitting the model is thus extremely limited, and only slightly greater than if one data point had been chosen. A simple fix would be to simulate the model after 1 iteration, and select the next point from here. By doing this $N-1$ times, a better solution may be found, although this may prove to be computationally very expensive.
 \section{Drug Data}
 \printbibliography{}
 \end{document}
