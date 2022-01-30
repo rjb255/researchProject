@@ -1,0 +1,39 @@
+\documentclass[a4paper, english]{article}
+
+\usepackage[style=alphabetic]{biblatex}
+\usepackage{blindtext}
+\usepackage[utf8]{inputenc}
+\usepackage{babel,csquotes,xpatch}
+\usepackage{amsmath}
+\usepackage{algorithm2e}
+\usepackage{booktabs}
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\argmin}{argmin}
+\DeclareMathOperator*{\simm}{sim}
+
+\addbibresource{bib/newIdeas.bib}
+\begin{document}
+\title{\Large{\textbf{Literature Review}}\\Batch Active Learning for Drug Discovery}
+\author{rjb255}
+\date{January 29, 2022}
+
+\maketitle
+
+\begin{abstract}
+    \blindtext[1]{}
+\end{abstract}
+
+
+
+I propose~(\ref{eq:density}) where $N$ represents the dimensionality of the model space, and $r_i$ is the distance between $x_j$ and $x_i$. The next test point is given by () where $X_\mathrm{known}$ is the set of labelled data points and $X_\mathrm{unknown}$ is the set of available data points for testing.
+
+\begin{equation}
+    \label{eq:density}
+    \rho_{x_j}=\sum_i{\frac{1}{r_{x_i,x_j}^N}}
+\end{equation}
+
+\begin{equation}
+    x_\mathrm{next}=\argmin_{X_\mathrm{Unknown}}{\sum_{x=X_\mathrm{Known}}{\frac{1}{r_{X_\mathrm{Unknown},x}^N}}}
+\end{equation}
+
+\end{document}

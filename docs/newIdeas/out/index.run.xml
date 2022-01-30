@@ -79,7 +79,7 @@
       <file>index.bcf</file>
     </requires>
     <requires type="editable">
-      <file>bib/litRev.bib</file>
+      <file>bib/newIdeas.bib</file>
     </requires>
   </external>
 </requests>

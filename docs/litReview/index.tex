@@ -1,4 +1,4 @@
-\documentclass[a4paper, british]{article}
+\documentclass[a4paper, english]{article}
 
 \usepackage[style=alphabetic]{biblatex}
 \usepackage{blindtext}
@@ -6,6 +6,12 @@
 \usepackage{babel,csquotes,xpatch}
 \usepackage{amsmath}
 \usepackage{algorithm2e}
+\usepackage{booktabs}
+
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\argmin}{argmin}
+\DeclareMathOperator*{\simm}{sim}
+
 \addbibresource{bib/litRev.bib}
 
 \begin{document}
@@ -16,32 +22,64 @@
 \maketitle
 
 \begin{abstract}
-
+    \blindtext[1]{}
 \end{abstract}
 
 \section{Introduction}
+\blindtext[2]{}
 
-\section{Active Learning}
-\label{ch:Active Learning}
-There are several schools of thought with regards to active learning. These can be separated into two distinct categories: current data and future predictions. The former of these is computationally cheaper, as will be apparent on discription.
+\section{Active Learning}\label{ch:Active Learning}
+There are several schools of thought regarding active learning. These can be separated into two distinct categories: current data and future predictions. The former of these is computationally cheaper, as will be apparent on description.
 
 \subsection{Current Data}
-The simplest is applicable to cases in which a certainty is provided with each prediction. By simply selecting the largest uncertainty with the remaining data points allows for this form of active learning. For an unknown, noisy linear funciton (\ref{eq:linear}), a simple funciton for selecting a subsequent data point has been given.
+\subsubsection{Uncertainty Sampling}
+The simplest is applicable to cases in which a certainty is provided with each prediction. \textcite{LitRev_2009} suggests selecting the data point with the largest uncertainty according to the current model. For an unknown, noisy linear function~(\ref{eq:linearTrue}), a simple linear model is given in~(\ref{eq:linearPredict}) where $\alpha\sim{}N(\hat{\alpha}, s^2_\alpha)$ and $\beta\sim{}N(\hat{\beta},s^2_\beta)$, and $\alpha$ and $\beta$ are independent of $(x,y)$. By noting the non-independence of $\alpha$ and $\beta$, a new distribution can be found for $g(x)$. Note that since $\alpha{}x$ and $\beta$ are both normal distributions, $g(x)$ is normal and a function of $x$.
+
+\begin{eqnarray}
+    \label{eq:linearTrue}
+    f(x)=a x+b + N(\mu, \sigma^2)\\
+    \label{eq:linearPredict}
+    g(x)=\alpha{}x+\beta{}
+\end{eqnarray}
+
+Where $X$ is the set of $x$ that can be measured, the next data point, $x_\mathrm{next}$, is given in~(\ref{eq:x_next1}). As addressed by \textcite{LitRev_2009}, this can be extended to any probabilistic model.
+\begin{equation}
+    \label{eq:x_next1}
+    x_\mathrm{next}=\argmax_X{\left[s_{g(X)}\right]}
+\end{equation}
+\textcite{LitRev_2009} also notes the use of information theory for probabilistic models (\ref{eq:info_uncertainty}), where $y_i$ refers to all possible categorisations for $x$. This derives from the principle that the greatest entropy requires the most information to encode, and thus the least certain. However, \textcite{LitRev_2009} fails to address non-probabilistic models in this instance, instead converting such models into probabilistic ones.
 
 \begin{equation}
-    \label{eq:linear}
-    f(x)=a x+b + N(\mu, \sigma^2)
+    \label{eq:info_uncertainty}
+    x_\mathrm{next}=\argmax_x{\left[-\sum_i{P(y_i|x)\ln{P(y_i|x)}}\right]}
 \end{equation}
 
-A second form stems from information theory. Here, the aim is to produce an evenly dispursed $x$ allowing a well informed knowledge base. U~\cite{Eisenstein_2020}.
+\subsubsection{Broad Knowledge Base}
+A second form stems from information theory. Here, the aim is to produce an evenly dispersed $x$ allowing a well-informed knowledge base. There are two paths to proceed: density and nearest neighbours.
 
-Conversly, a density weighted model has been suggested, as it escapes the introduction of error from outligher (i.e. data points far away from alternative datapoints).
+The former of these requires a definition of density in a sparsely populated space. As an analogy, the density of a gas appears well-defined, it becomes non-smooth once the volume defined over is comparable to the distance between particles. Thus, a new definition is required.
 
+Alternatively, nearest neighbour requires little explanation. $x_\mathrm{next}$ is the unlabelled data point furthest from any labelled data point.
+
+\subsubsection{Density Hotspots}
+Conversely, a density weighted model has been suggested, as it escapes the introduction of error from outlier (i.e.\ data points far away from alternative data points). \textcite{Settles_2008} suggest (\ref{eq:Settles_denisty}). This can be broken down into two parts: a function for selection, $\phi_A$, and a function for similarity, $\simm$. The former arises from  another method described in this section. The latter requires a function to describe the similarity between data points.
+
+\begin{equation}
+    \label{eq:Settles_denisty}
+    x_\mathrm{next}=\argmax_x{\left[\phi_A(x)\times{\left(\frac{1}{U}\sum{\simm{(x, x_i)}}\right)}^\beta\right]}
+\end{equation}
+
+\subsubsection{Regions of Disagreement}
 As more complex methods are explored, we stumble across the method of competing hypothesis. This builds upon the [], and attempts to find []. The majority of work here relates to classification, although the same principles apply to regression.
+
 \subsection{Estimated Future}
 These methods attempt to minimise a future attribute to the model. The first of these attempts to
 \section{Batch Active Learning}
 Several naive methods are available here. Firstly, getting the top $N$ data points from a model described in Section~\ref{ch:Active Learning}. However, this method does not take into account the equivalence of the data points. This is extremely clear using the highest uncertainty method. It stands to reason that the area which has the highest uncertainty will see this for the data points nearest neighbours. Thus, this singular data point suffers the potential of being surrounded by $N-1$ other data points. The benefit this provides in fitting the model is thus extremely limited, and only slightly greater than if one data point had been chosen. A simple fix would be to simulate the model after 1 iteration, and select the next point from here. By doing this $N-1$ times, a better solution may be found, although this may prove to be computationally very expensive.
 \section{Drug Data}
+\blindtext[2]{}
+
 \printbibliography{}
+\appendix
+
 \end{document}
