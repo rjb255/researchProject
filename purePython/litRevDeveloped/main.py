@@ -82,14 +82,19 @@ def uncertainty_sampling(model, X_train, Y_train, X_unknown, Y_unknown, X_test, 
     return next_index, score
 
 
-def broadBase(model, X_train, Y_train, X_unknown, Y_unknown, X_test, test, set_num):
-    density(X_train, X_unknown)
+@loopDecorator(500, 1)
+def broad_base(model, X_train, Y_train, X_unknown, Y_unknown, X_test, test):
+    rho = density(X_train, X_unknown)
+    model.fit(X_train, Y_train)
+    next_index = X_unknown.index[np.argsort(rho)]
+    score = test(model.predict(X_test))
+    return next_index, score
 
 
 def density(x1, x2):
     tree = np.array(dist_mat(x1, x2))
     tree[tree == 0] = np.min(tree[np.nonzero(tree)])
-    print(1)
+    return np.sum(1 / tree, axis=0)
 
 
 def main(*, set_num=0, model, sampling_method):
@@ -101,7 +106,7 @@ def main(*, set_num=0, model, sampling_method):
         for path in paths
     ]
     data: List[pd.DataFrame] = data_sets[set_num].sample(frac=1, random_state=1)
-    X_known, Y_known, X_unknown, Y_unknown, X_test, Y_test = split(data, 160)
+    X_known, Y_known, X_unknown, Y_unknown, X_test, Y_test = split(data, 1)
     test = partial(validate, Y_test)
     models = {"BayesianRidge": BR()}
 
@@ -117,7 +122,7 @@ def main(*, set_num=0, model, sampling_method):
     )
     sampling_methods = {
         "uncertainty_sampling": lambda: uncertainty_sampling(*defaults),
-        "broadBase": lambda: broadBase(*defaults),
+        "broad_base": lambda: broad_base(*defaults),
     }
     sampling_methods[sampling_method]()
 
@@ -125,4 +130,4 @@ def main(*, set_num=0, model, sampling_method):
 if __name__ == "__main__":
     data_set_num = 0
 
-    main(model="BayesianRidge", sampling_method="broadBase")
+    main(model="BayesianRidge", sampling_method="broad_base")
