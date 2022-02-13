@@ -4,10 +4,10 @@ from pandas.core.frame import DataFrame
 from sklearn.metrics import mean_squared_error as mse
 
 
-def split(data: DataFrame, n: int = 20):
+def split(data: DataFrame, n: int = 20, frac: int = 0.9):
     ## Splits data (dataframe) insto a known section, an unknown section, and a testing section
 
-    splitBoundary = [n, int(0.9 * len(data))]
+    splitBoundary = [n, int(frac * len(data))]
     X1 = data.iloc[: splitBoundary[0], 2:]
     Y1 = data.iloc[: splitBoundary[0], 1]
     X2 = data.iloc[splitBoundary[0] : splitBoundary[1], 2:]

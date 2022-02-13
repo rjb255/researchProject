@@ -7,14 +7,19 @@
 \usepackage{amsmath}
 \usepackage{algorithm2e}
 \usepackage{booktabs}
+\usepackage{graphicx}
+
 
 \DeclareMathOperator*{\argmax}{argmax}
 \DeclareMathOperator*{\argmin}{argmin}
 \DeclareMathOperator*{\simm}{sim}
 
+\graphicspath{ {./images/} }
+
 \addbibresource{bib/litRev.bib}
 
 \begin{document}
+
 \title{\Large{\textbf{Literature Review}}\\Batch Active Learning for Drug Discovery}
 \author{rjb255}
 \date{January 29, 2022}
@@ -33,14 +38,23 @@ There are several schools of thought regarding active learning. These can be sep
 
 \subsection{Current Data}
 \subsubsection{Uncertainty Sampling}
-The simplest is applicable to cases in which a certainty is provided with each prediction. \textcite{LitRev_2009} suggests selecting the data point with the largest uncertainty according to the current model. For an unknown, noisy linear function~(\ref{eq:linearTrue}), a simple linear model is given in~(\ref{eq:linearPredict}) where $\alpha\sim{}N(\hat{\alpha}, s^2_\alpha)$ and $\beta\sim{}N(\hat{\beta},s^2_\beta)$, and $\alpha$ and $\beta$ are independent of $(x,y)$. By noting the non-independence of $\alpha$ and $\beta$, a new distribution can be found for $g(x)$. Note that since $\alpha{}x$ and $\beta$ are both normal distributions, $g(x)$ is normal and a function of $x$.
+\RestyleAlgo{boxed}
+The simplest is applicable to cases in which a certainty is provided with each prediction. \textcite{LitRev_2009} suggests selecting the data point with the largest uncertainty according to the current model. Using the dataset '', this is demonstrated in [] with the algorithm for deciding the next sample point given in Alogrithm \ref{alg:US}.
+\RestyleAlgo{algoruled}
+\begin{algorithm}[H]
+    \label{alg:US}
+    \SetAlgoLined
+    \KwData{$X_\mathrm{known}$, $Y_\mathrm{known}$, $X_\mathrm{unknown}$}
+    \KwResult{Next $X$ to label}
 
-\begin{eqnarray}
-    \label{eq:linearTrue}
-    f(x)=a x+b + N(\mu, \sigma^2)\\
-    \label{eq:linearPredict}
-    g(x)=\alpha{}x+\beta{}
-\end{eqnarray}
+    model = BayesianRidge()\;
+    model.fit($X_\mathrm{known}$, $Y_\mathrm{known}$)\;
+    standard\_deviation = model.standard\_deviation($X_\mathrm{unknown}$)\;
+    \Return{max(standard\_deviation)}
+    \caption{Uncertainty Sampling Selection}
+\end{algorithm}
+
+\includegraphics[width=100mm]{BR_300_1}
 
 Where $X$ is the set of $x$ that can be measured, the next data point, $x_\mathrm{next}$, is given in~(\ref{eq:x_next1}). As addressed by \textcite{LitRev_2009}, this can be extended to any probabilistic model.
 \begin{equation}

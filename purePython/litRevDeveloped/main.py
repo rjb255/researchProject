@@ -60,7 +60,7 @@ def loopDecorator(iterations, size):
 
             with Pool() as p:
                 results = list(p.map(doubleInner, (func, base)))
-
+            pprint(results)
             _file = os.path.join(
                 proj_path,
                 "purePython",
@@ -70,14 +70,14 @@ def loopDecorator(iterations, size):
                 str(iterations),
                 str(size),
                 str(len(X_train)),
-                f"{set_num}.csv",
+                f"{kwargs['data_set']}.csv",
             )
 
             os.makedirs(os.path.dirname(_file), exist_ok=True)
 
             with open(_file, "w") as f:
-                print("\nwriting")
-                f.write(results)
+                print(f"\nwriting {_file}")
+                f.write(str(results))
 
         return inner
 
@@ -95,14 +95,15 @@ def validate(Y_test, kwargs, q):
     q.put(mse(y_predict, Y_test))
 
 
-@loopDecorator(15, 160)
+@loopDecorator(300, 1)
 def uncertainty_sampling(model, X_train, Y_train, X_unknown, Y_unknown):
     model.fit(X_train, Y_train)
+    _, Y_error = model.predict(X_unknown, return_std=True)
     next_index = X_unknown.index[np.argsort(-Y_error)]
     return next_index
 
 
-@loopDecorator(500, 1)
+@loopDecorator(50, 1)
 def broad_base(model, X_train, Y_train, X_unknown, Y_unknown):
     rho = density(X_train, X_unknown)
     model.fit(X_train, Y_train)
@@ -125,8 +126,8 @@ def main(*, set_num=0, model, sampling_method):
         for path in paths
     ]
     data: List[pd.DataFrame] = data_sets[set_num].sample(frac=1, random_state=1)
-    X_known, Y_known, X_unknown, Y_unknown, X_test, Y_test = split(data, 1)
-    t = partial(validate, Y_test)
+    X_known, Y_known, X_unknown, Y_unknown, X_test, Y_test = split(data, 1, frac=1)
+    t = partial(validate, data.iloc[:, 1])
     models = {"BayesianRidge": BR()}
 
     defaults = (
@@ -137,8 +138,8 @@ def main(*, set_num=0, model, sampling_method):
         models[model],
         t,
         {
-            "X_test": X_test,
-            "Y_test": Y_test,
+            "X_test": data.iloc[:, 2:],
+            "Y_test": data.iloc[:, 1],
             "data_set": set_num,
         },
     )
@@ -150,6 +151,10 @@ def main(*, set_num=0, model, sampling_method):
 
 
 if __name__ == "__main__":
-    data_set_num = 0
+    data_set_num = 2
 
-    main(model="BayesianRidge", sampling_method="broad_base")
+    main(
+        set_num=data_set_num,
+        model="BayesianRidge",
+        sampling_method="broad_base",
+    )
