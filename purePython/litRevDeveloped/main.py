@@ -1,13 +1,19 @@
 import sys
 import os
+
 from pprint import pprint
 from typing import List
-from functools import partial
-from multiprocessing import Process, Queue
 
+from functools import partial
+import copy
+
+from pathos.multiprocessing import ProcessPool as Pool
+from multiprocessing import Queue, Process
 
 import pandas as pd
 import numpy as np
+
+from sklearn.metrics import mean_squared_error as mse
 from scipy.spatial import distance_matrix as dist_mat
 from sklearn.linear_model import BayesianRidge as BR
 
@@ -16,31 +22,44 @@ proj_path = os.path.join(
 )
 sys.path.insert(1, proj_path)
 
-from purePython.modules.shared.custom import split, getPI, validate, Models
+from purePython.modules.shared.custom import split, getPI, Models
 
 
 def loopDecorator(iterations, size):
     def decorator(func):
-        def inner(model, X_train, Y_train, X_unknown, Y_unknown, X_test, test, set_num):
-            def doubleInner(f, q):
+        def inner(X_train, Y_train, X_unknown, Y_unknown, model, test, kwargs):
+            def doubleInner(f):
+                ## Deep copy to maintain thread safety
                 X, Y = pd.DataFrame(X_train), pd.Series(Y_train)
                 x, y = pd.DataFrame(X_unknown), pd.Series(Y_unknown)
+                m = copy.deepcopy(model)
 
                 score_record = []
+                processes = []
                 for i in range(iterations):
-                    next_index, score = f(model, X, Y, x, y, X_test, test)
-
+                    next_index = f(m, X, Y, x, y)
                     X, Y, x, y = getPI((X, Y), (x, y), next_index[:size])
-                    score_record.append(score)
-                q.put(score_record)
+                    score_record.append(Queue())
+                    processes.append(
+                        Process(
+                            target=test,
+                            args=(
+                                {
+                                    "model": copy.deepcopy(m),
+                                    "X_test": (
+                                        kwargs["X_test"]
+                                    ),  ## No need for deepcopy (no change to X_test)
+                                },
+                                score_record[-1],
+                            ),
+                        )
+                    )
+                    processes[-1].start()
+                    print(f"{i} with {f.__name__}")
+                return [score.get() for score in score_record]
 
-            q = [Queue(), Queue()]
-            active_learning = Process(target=doubleInner, args=(func, q[0]))
-            base_run = Process(target=doubleInner, args=(base, q[1]))
-            active_learning.start(), base_run.start()
-            final_score_AL = q[0].get()
-            final_score_base = q[1].get()
-            active_learning.join(), base_run.join()
+            with Pool() as p:
+                results = list(p.map(doubleInner, (func, base)))
 
             _file = os.path.join(
                 proj_path,
@@ -58,37 +77,37 @@ def loopDecorator(iterations, size):
 
             with open(_file, "w") as f:
                 print("\nwriting")
-                f.write(f"{final_score_AL}\n{final_score_base}")
+                f.write(results)
 
         return inner
 
     return decorator
 
 
-def base(model, X_train, Y_train, X_unknown, Y_unknown, X_test, test):
+def base(model, X_train, Y_train, X_unknown, Y_unknown):
     model.fit(X_train, Y_train)
-    Y_predict = model.predict(X_unknown)
     next_index = X_unknown.index
-    score = test(model.predict(X_test))
-    return next_index, score
+    return next_index
+
+
+def validate(Y_test, kwargs, q):
+    y_predict = kwargs["model"].predict(kwargs["X_test"])
+    q.put(mse(y_predict, Y_test))
 
 
 @loopDecorator(15, 160)
-def uncertainty_sampling(model, X_train, Y_train, X_unknown, Y_unknown, X_test, test):
+def uncertainty_sampling(model, X_train, Y_train, X_unknown, Y_unknown):
     model.fit(X_train, Y_train)
-    Y_predict, Y_error = model.predict(X_unknown, return_std=True)
     next_index = X_unknown.index[np.argsort(-Y_error)]
-    score = test(model.predict(X_test))
-    return next_index, score
+    return next_index
 
 
 @loopDecorator(500, 1)
-def broad_base(model, X_train, Y_train, X_unknown, Y_unknown, X_test, test):
+def broad_base(model, X_train, Y_train, X_unknown, Y_unknown):
     rho = density(X_train, X_unknown)
     model.fit(X_train, Y_train)
     next_index = X_unknown.index[np.argsort(rho)]
-    score = test(model.predict(X_test))
-    return next_index, score
+    return next_index
 
 
 def density(x1, x2):
@@ -107,18 +126,21 @@ def main(*, set_num=0, model, sampling_method):
     ]
     data: List[pd.DataFrame] = data_sets[set_num].sample(frac=1, random_state=1)
     X_known, Y_known, X_unknown, Y_unknown, X_test, Y_test = split(data, 1)
-    test = partial(validate, Y_test)
+    t = partial(validate, Y_test)
     models = {"BayesianRidge": BR()}
 
     defaults = (
-        models[model],
         X_known,
         Y_known,
         X_unknown,
         Y_unknown,
-        X_test,
-        test,
-        set_num,
+        models[model],
+        t,
+        {
+            "X_test": X_test,
+            "Y_test": Y_test,
+            "data_set": set_num,
+        },
     )
     sampling_methods = {
         "uncertainty_sampling": lambda: uncertainty_sampling(*defaults),

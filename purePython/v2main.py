@@ -1,16 +1,9 @@
 # To add a new cell, type '# %%'
 # To add a new markdown cell, type '# %% [markdown]'
-# %% [markdown]
-# # Still Can't Decide Between Modules and Jupyter
-# %% [markdown]
-# ## Libraries
-
 # %%
 #%% Libraries
-# # Standard Libraries
 from pprint import pprint
 
-# External Libraries
 from IPython.display import display
 import numpy as np
 import pandas as pd
@@ -20,7 +13,6 @@ from sklearn.neighbors import KNeighborsRegressor as KNN
 from sklearn.ensemble import RandomForestRegressor as RFR
 import matplotlib.pylab as mlt
 
-# Custom Libraries
 from modules.shared.custom import split, getPI, validate, Models
 
 # %% [markdown]

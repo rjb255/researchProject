@@ -70,10 +70,13 @@ Conversely, a density weighted model has been suggested, as it escapes the intro
 \end{equation}
 
 \subsubsection{Regions of Disagreement}
-As more complex methods are explored, we stumble across the method of competing hypothesis. This builds upon the [], and attempts to find []. The majority of work here relates to classification, although the same principles apply to regression.
+As more complex methods are explored, we stumble across the method of competing hypothesis. This builds upon the [], and attempts to find []. The majority of work here relates to classification, although the same principles apply to regression. By minimising the region of disagreement between various models, a finer fit may be achieved.
 
 \subsection{Estimated Future}
-These methods attempt to minimise a future attribute to the model. The first of these attempts to
+These methods attempt to minimise a future attribute of the model. This works by predicting changes given with the inclusion of more data.
+
+\subsubsection{Expected Model Change}
+
 \section{Batch Active Learning}
 Several naive methods are available here. Firstly, getting the top $N$ data points from a model described in Section~\ref{ch:Active Learning}. However, this method does not take into account the equivalence of the data points. This is extremely clear using the highest uncertainty method. It stands to reason that the area which has the highest uncertainty will see this for the data points nearest neighbours. Thus, this singular data point suffers the potential of being surrounded by $N-1$ other data points. The benefit this provides in fitting the model is thus extremely limited, and only slightly greater than if one data point had been chosen. A simple fix would be to simulate the model after 1 iteration, and select the next point from here. By doing this $N-1$ times, a better solution may be found, although this may prove to be computationally very expensive.
 \subsection{Cluster-Margin}
