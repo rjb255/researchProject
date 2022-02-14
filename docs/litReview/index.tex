@@ -35,6 +35,8 @@
 \section{Introduction}
 \blindtext[2]{}
 
+Scores displayed in examples have been based on the entire data set. Although this usually leads to data leakage within machine learning, this is not a concern here as the true comparison comes from testing  \textit{intelligent} vs \textit{dumb} learning methods. In both of these cases, the model is kept identical, but the selection process in not. The baseline simply takes the first $n$ entries from the data set, with the \textit{intelligent} method described where required. Three data sets have been used to demonstrate on multiple data sets [][][].
+
 \section{Active Learning}\label{ch:Active Learning}
 There are several schools of thought regarding active learning. These can be separated into two distinct categories: current data and future predictions. The former of these is computationally cheaper, as will be apparent on description.
 
@@ -76,24 +78,26 @@ The former of these requires a definition of density in a sparsely populated spa
 Alternatively, nearest neighbour requires little explanation. $x_\mathrm{next}$ is the unlabelled data point furthest from any labelled data point.
 
 \begin{equation}
-    \label{eq:Settles_denisty}
+    \label{eq:inverseSim}
     x_\mathrm{next}=\argmax_x{\left(\sum{\frac{1}{\simm{(x, x_i)}}}\right)}
 \end{equation}
 
 \includegraphics[width=100mm]{BKB_300_all3.pdf}
 
 \subsubsection{Density Hotspots}
-Conversely, a density weighted model has been suggested, as it escapes the introduction of error from outlier (i.e.\ data points far away from alternative data points). \textcite{Settles_2008} suggest (\ref{eq:Settles_density}). This can be broken down into two parts: a function for selection, $\phi_A$, and a function for similarity, $\simm$. The former arises from  another method described in this section. The latter requires a function to describe the similarity between data points.
+Conversely, a density weighted model has been suggested, as it escapes the introduction of error from outlier (i.e.\ data points far away from alternative data points). \textcite{Settles_2008} suggest (\ref{eq:Settles_density}) which can be broken down into two parts: a function for selection, $\phi_A$, and a function for similarity, $\simm$. The former arises from  another method described in this section. The latter requires a function to describe the similarity between data points.
 
 \begin{equation}
     \label{eq:Settles_density}
     x_\mathrm{next}=\argmax_x{\left[\phi_A(x)\times{\left(\frac{1}{U}\sum{\simm{(x, x_i)}}\right)}^\beta\right]}
 \end{equation}
 
+\textcite{Settles_2008} admits that $\simm$ is open for interpretation. For simplicity, the average distance
+
 \subsubsection{Regions of Disagreement}
 As more complex methods are explored, we stumble across the method of competing hypothesis. This builds upon the [], and attempts to find []. The majority of work here relates to classification, although the same principles apply to regression. By minimising the region of disagreement between various models, a finer fit may be achieved.
 
-One way of achieving this, especially in a regression model where boundaries are not quite so distinct, is to declare $n$ models ${M = \{m_1,\ldots{}, m_n\}}$. Combining these allows for a model $\hat{m}$ to be defined with prediction $\hat{y}$, being the mean prediciton of $M$, ${\frac{1}{n}\sum{y_i}}$ and a sample standard deviation $\hat{s}$ defined as the sample standard deviation of $y_i$. This standard deviation can be used as a measure of the disagreement between the models. Thus, using a method as in Section~\ref{sec:Uncertainty Sampling}.
+One way of achieving this, especially in a regression model where boundaries are not quite so distinct, is to declare $n$ models ${M = \{m_1,\ldots{}, m_n\}}$. Combining these allow for a model $\hat{m}$ to be defined with prediction $\hat{y}$, being the mean prediction of $M$, ${\frac{1}{n}\sum{y_i}}$ and a sample standard deviation $\hat{s}$ defined as the sample standard deviation of $y_i$. This standard deviation can be used as a measure of the disagreement between the models. Thus, using a method as in Section~\ref{sec:Uncertainty Sampling}.
 
 \subsection{Estimated Future}
 These methods attempt to minimise a future attribute of the model. This works by predicting changes given with the inclusion of more data.
