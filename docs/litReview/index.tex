@@ -14,6 +14,8 @@
 \DeclareMathOperator*{\argmin}{argmin}
 \DeclareMathOperator*{\simm}{sim}
 
+\RestyleAlgo{algoruled}
+
 \graphicspath{ {./images/} }
 
 \addbibresource{bib/litRev.bib}
@@ -37,10 +39,8 @@
 There are several schools of thought regarding active learning. These can be separated into two distinct categories: current data and future predictions. The former of these is computationally cheaper, as will be apparent on description.
 
 \subsection{Current Data}
-\subsubsection{Uncertainty Sampling}
-\RestyleAlgo{boxed}
+\subsubsection{Uncertainty Sampling}\label{sec:Uncertainty Sampling}
 The simplest is applicable to cases in which a certainty is provided with each prediction. \textcite{LitRev_2009} suggests selecting the data point with the largest uncertainty according to the current model. Using the dataset '', this is demonstrated in [] with the algorithm for deciding the next sample point given in Alogrithm \ref{alg:US}.
-\RestyleAlgo{algoruled}
 \begin{algorithm}[H]
     \label{alg:US}
     \SetAlgoLined
@@ -54,9 +54,9 @@ The simplest is applicable to cases in which a certainty is provided with each p
     \caption{Uncertainty Sampling Selection}
 \end{algorithm}
 
-\includegraphics[width=100mm]{BR_300_1}
+\includegraphics[width=100mm]{US_300_all3.pdf}
 
-Where $X$ is the set of $x$ that can be measured, the next data point, $x_\mathrm{next}$, is given in~(\ref{eq:x_next1}). As addressed by \textcite{LitRev_2009}, this can be extended to any probabilistic model.
+As addressed by \textcite{LitRev_2009}, this can be extended to any probabilistic model.
 \begin{equation}
     \label{eq:x_next1}
     x_\mathrm{next}=\argmax_X{\left[s_{g(X)}\right]}
@@ -75,16 +75,25 @@ The former of these requires a definition of density in a sparsely populated spa
 
 Alternatively, nearest neighbour requires little explanation. $x_\mathrm{next}$ is the unlabelled data point furthest from any labelled data point.
 
-\subsubsection{Density Hotspots}
-Conversely, a density weighted model has been suggested, as it escapes the introduction of error from outlier (i.e.\ data points far away from alternative data points). \textcite{Settles_2008} suggest (\ref{eq:Settles_denisty}). This can be broken down into two parts: a function for selection, $\phi_A$, and a function for similarity, $\simm$. The former arises from  another method described in this section. The latter requires a function to describe the similarity between data points.
-
 \begin{equation}
     \label{eq:Settles_denisty}
+    x_\mathrm{next}=\argmax_x{\left(\sum{\frac{1}{\simm{(x, x_i)}}}\right)}
+\end{equation}
+
+\includegraphics[width=100mm]{BKB_300_all3.pdf}
+
+\subsubsection{Density Hotspots}
+Conversely, a density weighted model has been suggested, as it escapes the introduction of error from outlier (i.e.\ data points far away from alternative data points). \textcite{Settles_2008} suggest (\ref{eq:Settles_density}). This can be broken down into two parts: a function for selection, $\phi_A$, and a function for similarity, $\simm$. The former arises from  another method described in this section. The latter requires a function to describe the similarity between data points.
+
+\begin{equation}
+    \label{eq:Settles_density}
     x_\mathrm{next}=\argmax_x{\left[\phi_A(x)\times{\left(\frac{1}{U}\sum{\simm{(x, x_i)}}\right)}^\beta\right]}
 \end{equation}
 
 \subsubsection{Regions of Disagreement}
 As more complex methods are explored, we stumble across the method of competing hypothesis. This builds upon the [], and attempts to find []. The majority of work here relates to classification, although the same principles apply to regression. By minimising the region of disagreement between various models, a finer fit may be achieved.
+
+One way of achieving this, especially in a regression model where boundaries are not quite so distinct, is to declare $n$ models ${M = \{m_1,\ldots{}, m_n\}}$. Combining these allows for a model $\hat{m}$ to be defined with prediction $\hat{y}$, being the mean prediciton of $M$, ${\frac{1}{n}\sum{y_i}}$ and a sample standard deviation $\hat{s}$ defined as the sample standard deviation of $y_i$. This standard deviation can be used as a measure of the disagreement between the models. Thus, using a method as in Section~\ref{sec:Uncertainty Sampling}.
 
 \subsection{Estimated Future}
 These methods attempt to minimise a future attribute of the model. This works by predicting changes given with the inclusion of more data.

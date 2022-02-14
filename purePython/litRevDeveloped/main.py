@@ -103,13 +103,18 @@ def uncertainty_sampling(model, X_train, Y_train, X_unknown, Y_unknown):
     return next_index
 
 
-@loopDecorator(50, 1)
+@loopDecorator(300, 1)
 def broad_base(model, X_train, Y_train, X_unknown, Y_unknown):
     rho = density(X_train, X_unknown)
     model.fit(X_train, Y_train)
     next_index = X_unknown.index[np.argsort(rho)]
     return next_index
 
+@loopDecorator(300, 1)
+def broad_hotspots(model, X_train, Y_train, X_unknown, Y_unknown):
+
+def similarity(x1, x2):
+    pass
 
 def density(x1, x2):
     tree = np.array(dist_mat(x1, x2))
