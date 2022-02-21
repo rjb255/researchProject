@@ -6,7 +6,6 @@ from sklearn.metrics import mean_squared_error as mse
 
 def split(data: DataFrame, n: int = 20, frac: int = 0.9):
     ## Splits data (dataframe) insto a known section, an unknown section, and a testing section
-
     splitBoundary = [n, int(frac * len(data))]
     X1 = data.iloc[: splitBoundary[0], 2:]
     Y1 = data.iloc[: splitBoundary[0], 1]
@@ -24,7 +23,6 @@ def getPI(known: tuple, unknown: tuple, index: int):
     Y_known = Y_known.append(Y_unknown.loc[index])
     X_unknown = X_unknown.drop(index)
     Y_unknown = Y_unknown.drop(index)
-
     return X_known, Y_known, X_unknown, Y_unknown
 
 
@@ -39,16 +37,16 @@ class Models:
         """
         self.models = m
 
-    def fit(self, X, Y, *args):
+    def fit(self, X, Y, *args, **kwargs):
         """Fitting the models collectively as seen in most models.
 
         Args:
             X (DataFrame): data points to be fitted
             Y (DataFrame): labels of fitted data
         """
-        self.trainedModels = [m.fit(X, Y, *args) for m in self.models]
+        self.trainedModels = [m.fit(X, Y, *args, **kwargs) for m in self.models]
 
-    def predict(self, X, *args):
+    def predict(self, X, *args, **kwargs):
         """Equivelent to predict seen in other models.
 
         Args:
@@ -57,7 +55,9 @@ class Models:
         Returns:
             ndArray: the mean of the prediction from the other models.
         """
-        return np.mean([m.predict(X, *args) for m in self.trainedModels], axis=0)
+        return np.mean(
+            [m.predict(X, *args, **kwargs) for m in self.trainedModels], axis=0
+        )
 
     def predict_error(self, X, *args):
         """Similar to predict but also returns the standard deviation of the models predictions

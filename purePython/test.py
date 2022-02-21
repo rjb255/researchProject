@@ -1,45 +1,32 @@
-from pathos.multiprocessing import ProcessPool as Pool
-from multiprocessing import Queue, Process
-import time
+# from pprint import pprint
+# from chembl_webresource_client.new_client import new_client
+# from rdkit import Chem
+# from rdkit.Chem import AllChem
 
 
-def a(x, q):
-    time.sleep(4)
-    q.put(x + 1)
+# molecule = new_client.molecule
+# m1 = molecule.filter(chembl_id="CHEMBL192").only(["molecule_structures"])[0][
+#     "molecule_structures"
+# ]["canonical_smiles"]
+# mol1 = Chem.MolFromSmiles(m1)
+# f = AllChem.GetMorganFingerprintAsBitVect(mol1, 2, nBits=1024)
+
+# pprint(list(f))
 
 
-def f(x):
+def n(x: int):
     return x**2
 
 
-def g(x):
+def n(x: float):
     return x**3
 
 
-def main():
-    t0 = time.time()
+print(n(int(3)))
+print(n(float(3)))
 
-    def getResults(algorithm):
-        score = []
-        processes = []
-        for i in range(3):
-            s = algorithm(i)
-            score.append(Queue())
-            processes.append(Process(target=a, args=(s, score[-1])))
-            processes[-1].start()
-
-        print(algorithm.__name__)
-        return [s.get() for s in score]
-
-    with Pool() as p:
-        results = p.map(getResults, (f, g))
-    t1 = time.time()
-    print(f"time: {t1-t0}")  # ~4.5s
-    print(list(results))
-
-    # [[1, 2, 5, 10, 17, 26, 37, 50, 65, 82],
-    # [1, 2, 9, 28, 65, 126, 217, 344, 513, 730]]
-
-
-if __name__ == "__main__":
-    main()
+inte = int(3)
+is_int = isinstance(inte, int)
+match is_int:
+    case True: print(n(inte))
+    case False: print(n(inte))

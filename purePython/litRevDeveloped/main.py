@@ -33,7 +33,7 @@ def loopDecorator(iterations, size):
                 X, Y = pd.DataFrame(X_train), pd.Series(Y_train)
                 x, y = pd.DataFrame(X_unknown), pd.Series(Y_unknown)
                 m = copy.deepcopy(model)
-
+                mem = {}  # If sth is stored between executions
                 score_record = []
                 processes = []
                 for i in range(iterations):
@@ -95,7 +95,7 @@ def validate(Y_test, kwargs, q):
     q.put(mse(y_predict, Y_test))
 
 
-@loopDecorator(300, 1)
+@loopDecorator(10, 120)
 def uncertainty_sampling(model, X_train, Y_train, X_unknown, Y_unknown):
     model.fit(X_train, Y_train)
     _, Y_error = model.predict(X_unknown, return_std=True)
@@ -103,23 +103,28 @@ def uncertainty_sampling(model, X_train, Y_train, X_unknown, Y_unknown):
     return next_index
 
 
-@loopDecorator(300, 1)
+@loopDecorator(10, 120)
 def broad_base(model, X_train, Y_train, X_unknown, Y_unknown):
     rho = density(X_train, X_unknown)
     model.fit(X_train, Y_train)
     next_index = X_unknown.index[np.argsort(rho)]
     return next_index
 
+
 @loopDecorator(300, 1)
 def broad_hotspots(model, X_train, Y_train, X_unknown, Y_unknown):
+    pass
+
 
 def similarity(x1, x2):
     pass
+
 
 def density(x1, x2):
     tree = np.array(dist_mat(x1, x2))
     tree[tree == 0] = np.min(tree[np.nonzero(tree)])
     return np.sum(1 / tree, axis=0)
+    sdevMax = [max(s) for s in sdev]
 
 
 def main(*, set_num=0, model, sampling_method):
@@ -161,5 +166,5 @@ if __name__ == "__main__":
     main(
         set_num=data_set_num,
         model="BayesianRidge",
-        sampling_method="broad_base",
+        sampling_method="uncertainty_sampling",
     )
