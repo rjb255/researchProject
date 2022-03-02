@@ -10,6 +10,7 @@
 \DeclareMathOperator*{\argmax}{argmax}
 \DeclareMathOperator*{\argmin}{argmin}
 \DeclareMathOperator*{\simm}{sim}
+\DeclareMathOperator*{\peak}{peakness}
 
 \addbibresource{bib/newIdeas.bib}
 \begin{document}
@@ -35,5 +36,9 @@ I propose~(\ref{eq:density}) where $N$ represents the dimensionality of the mode
 \begin{equation}
     x_\mathrm{next}=\argmin_{X_\mathrm{Unknown}}{\sum_{x=X_\mathrm{Known}}{\frac{1}{r_{X_\mathrm{Unknown},x}^N}}}
 \end{equation}
+
+\begin{equation*}
+    {x_\mathrm{next} = \argmax_x{\left[s_{x}\times{}{\left(\peak{s_x}\right)}^\alpha\right]}}
+\end{equation*}
 
 \end{document}
