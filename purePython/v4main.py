@@ -31,6 +31,11 @@ from purePython.modules.shared.custom import split, getPI, Models
 # endregion
 
 
+def score(Y_test, kwargs, q):
+    y_predict = kwargs["model"].predict(kwargs["X_test"])
+    q.put(mse(y_predict, Y_test, sample_weight=Y_test))
+
+
 def spec_max(x):
     if len(x) > 0:
         return max(x)
@@ -56,40 +61,20 @@ def framework(
     sample_size: int,
     score: object,
 ):
-    def first_split(f):
-        # Deep copies
-        X, Y = pd.DataFrame(X_train), pd.Series(Y_train)
-        x, y = pd.DataFrame(X_unknown), pd.Series(Y_unknown)
-        m = copy.deepcopy(model)
-        mem = {}  # If sth is stored between executions
-        score_record = []
-        processes = []
-        for i in range(iterations):
-            if len(x) > 0:
-                m.fit(X, Y)
-                ranking = f(m, X, Y, x, mem)
-                next_index = x.index[np.argsort(ranking)]
-                X, Y, x, y = getPI((X, Y), (x, y), next_index[:sample_size])
-            score_record.append(Queue())
-            processes.append(
-                Process(
-                    target=score,
-                    args=(
-                        Y_test,
-                        {
-                            "model": copy.deepcopy(m),
-                            "X_test": X_test,  # No need for deepcopy (no change to X_test)
-                        },
-                        score_record[-1],
-                    ),
-                )
-            )
-            processes[-1].start()
-            print(f"{i} with {f.__name__}")
-        return [score.get() for score in score_record]
-
+    inner_func = partial(
+        first_split,
+        X_train,
+        Y_train,
+        X_unknown,
+        Y_unknown,
+        model,
+        iterations,
+        sample_size,
+        Y_test,
+        X_test,
+    )
     with Pool() as p:
-        results = p.map(first_split, algorithm)
+        results = p.map(inner_func, algorithm)
 
     pprint(results)
     _file = os.path.join(proj_path, "purePython", "data", input("fileName ") + ".csv")
@@ -105,6 +90,50 @@ def framework(
         index=[a.__name__ for a in algorithm],
     )
     pd_results.to_csv(_file)
+
+
+def first_split(
+    X_train,
+    Y_train,
+    X_unknown,
+    Y_unknown,
+    model,
+    iterations,
+    sample_size,
+    Y_test,
+    X_test,
+    f,
+):
+    # Deep copies
+    X, Y = pd.DataFrame(X_train), pd.Series(Y_train)
+    x, y = pd.DataFrame(X_unknown), pd.Series(Y_unknown)
+    m = copy.deepcopy(model)
+    mem = {}  # If sth is stored between executions
+    score_record = []
+    processes = []
+    for i in range(iterations):
+        if len(x) > 0:
+            m.fit(X, Y)
+            ranking = f(m, X, Y, x, mem)
+            next_index = x.index[np.argsort(ranking)]
+            X, Y, x, y = getPI((X, Y), (x, y), next_index[:sample_size])
+        score_record.append(Queue())
+        processes.append(
+            Process(
+                target=score,
+                args=(
+                    Y_test,
+                    {
+                        "model": copy.deepcopy(m),
+                        "X_test": X_test,  # No need for deepcopy (no change to X_test)
+                    },
+                    score_record[-1],
+                ),
+            )
+        )
+        processes[-1].start()
+        print(f"{i} with {f.__name__}")
+    return [score.get() for score in score_record]
 
 
 def base(m, X, Y, x, *args, **kwargs):
@@ -153,18 +182,24 @@ def density(x1, x2, mem):
     return np.sum(1 / tree, axis=0)
 
 
+def start(
+    data_path: str,
+):
+    pass
+
+
 def main():
     paths = ["data_CHEMBL313.csv", "data_CHEMBL2637.csv", "data_CHEMBL4124.csv"]
+
+    set_num = 0
+    start(paths[set_num])
     data_sets: List[pd.DataFrame] = [
         pd.read_csv(
             os.path.join(proj_path, "data", "chembl", "Additional_datasets", path)
         )
         for path in paths
     ]
-
-    set_num = 0
     data: List[pd.DataFrame] = data_sets[set_num].sample(frac=1, random_state=1)
-
     X_known, Y_known, X_unknown, Y_unknown, _, _ = split(data, 5, frac=1)
     X_test, Y_test = pd.concat([X_known, X_unknown]), pd.concat([Y_known, Y_unknown])
     models = {

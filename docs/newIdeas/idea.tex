@@ -1,0 +1,35 @@
+\documentclass{article}
+\begin{document}
+\author{Ross Brown}
+\title{Proposed Implementations/Changes}
+\maketitle
+\section{Evaluating}
+\subsection{Current Issue}
+The algorithms are running on 3 datasets at the moment for an arbitrary number of runs. They are then adjusted/modified manually to visually improve these results which is of little value.
+\subsection{Solution}
+Using a set of datasets (currently about 2000 datasets), $X$, portioned into training, validating, and testing subsets ($X_\mathrm{train}$, $X_\mathrm{test}$), more robust results can be produced. The idea for these subsets arises from the equivalent idea seen in machine learning.
+
+$X_\mathrm{train}$ will be used to fit parameters in the algorithm and the $X_\mathrm{test}$ will have the fitted algorithm applied and the scoring reported. An $X_\mathrm{valid}$ is not deemed necessary at the moment.
+\section{Scoring}
+\subsection{Current Issues}
+Simply taking the mse of the results does not fit in with the biological aspect: finding highly active compounds. The scoring thus needs to fulfil the following criteria:
+\begin{itemize}
+    \item Weighting to higher pXa
+\end{itemize}
+And would preferably meet the following:
+\begin{itemize}
+    \item Lightweight - would rather have computational power used on the active learning than the scoring.
+    \item Independent of dataset size and distribution.
+\end{itemize}
+\subsection{Solutions}
+\begin{itemize}
+    \item Weighted mse:
+          $$\sigma{}=\sum_i{w(y_i-\bar{y})^2}$$
+          Where $w$ may be:
+          $$w_i=y_i^\alpha$$
+          It is unknown what $\alpha{}$ would be (so probably 1 according to Occam's razor).
+    \item Number of `top' results to contain $a$ of the top $b$ true top values.
+    \item Number of iterations needed to get either of the above below a predefined value.
+\end{itemize}
+Likely to choose the first solution as simple to implement with a target of 5 iterations. A validation could be used to determine the number of iterations (i.e. look at the rate of improvement and stop at a certain rate).
+\end{document}
