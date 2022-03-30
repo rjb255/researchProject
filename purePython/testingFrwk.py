@@ -59,4 +59,4 @@ def main(*, output=0):
 
 
 if __name__ == "__main__":
-    main(output=True)
+    main(output=1)
