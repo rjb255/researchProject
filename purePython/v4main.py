@@ -31,11 +31,6 @@ from purePython.modules.shared.custom import split, getPI, Models
 # endregion
 
 
-def score(Y_test, kwargs, q):
-    y_predict = kwargs["model"].predict(kwargs["X_test"])
-    q.put(mse(y_predict, Y_test, sample_weight=Y_test))
-
-
 def spec_max(x):
     if len(x) > 0:
         return max(x)
@@ -43,9 +38,9 @@ def spec_max(x):
         return x
 
 
-def score(Y_test, kwargs, q):
+def score(Y_test, kwargs):
     y_predict = kwargs["model"].predict(kwargs["X_test"])
-    q.put(mse(y_predict, Y_test, sample_weight=Y_test))
+    return mse(y_predict, Y_test, sample_weight=Y_test)
 
 
 def framework(
@@ -73,22 +68,23 @@ def framework(
         Y_test,
         X_test,
     )
+
     results = inner_func(algorithm[0])
+    print(results)
+    # pprint("X_done")
+    # _file = os.path.join(proj_path, "purePython", "data", input("fileName ") + ".csv")
 
-    pprint(results)
-    _file = os.path.join(proj_path, "purePython", "data", input("fileName ") + ".csv")
+    # os.makedirs(os.path.dirname(_file), exist_ok=True)
 
-    os.makedirs(os.path.dirname(_file), exist_ok=True)
-
-    print(f"\nwriting {_file}")
-    pd_results = pd.DataFrame(
-        results,
-        columns=list(
-            range(len(X_train), len(X_train) + iterations * sample_size, sample_size)
-        ),
-        index=[a.__name__ for a in algorithm],
-    )
-    pd_results.to_csv(_file)
+    # print(f"\nwriting {_file}")
+    # pd_results = pd.DataFrame(
+    #     results,
+    #     columns=list(
+    #         range(len(X_train), len(X_train) + iterations * sample_size, sample_size)
+    #     ),
+    #     index=[a.__name__ for a in algorithm],
+    # )
+    # pd_results.to_csv(_file)
 
 
 def first_split(
@@ -116,23 +112,18 @@ def first_split(
             ranking = f(m, X, Y, x, mem)
             next_index = x.index[np.argsort(ranking)]
             X, Y, x, y = getPI((X, Y), (x, y), next_index[:sample_size])
-        score_record.append(Queue())
-        processes.append(
-            Process(
-                target=score,
-                args=(
-                    Y_test,
-                    {
-                        "model": copy.deepcopy(m),
-                        "X_test": X_test,  # No need for deepcopy (no change to X_test)
-                    },
-                    score_record[-1],
-                ),
+        score_record.append(
+            score(
+                Y_test,
+                {
+                    "model": copy.deepcopy(m),
+                    "X_test": X_test,  # No need for deepcopy (no change to X_test)
+                },
             )
         )
-        processes[-1].start()
+
         print(f"{i} with {f.__name__}")
-    return [score.get() for score in score_record]
+    return score_record
 
 
 def base(m, X, Y, x, *args, **kwargs):
@@ -198,17 +189,18 @@ def main():
         for path in paths
     ]
     data = data_sets[set_num]
-    data: List[pd.DataFrame] = data_sets[set_num].sample(frac=1, random_state=1)
-    post_main(dataset)
+    post_main(data)
 
 
 def post_main(dataset):
     data = pd.read_csv(dataset)
+    data: List[pd.DataFrame] = data.sample(frac=1, random_state=1)
+
     X_known, Y_known, X_unknown, Y_unknown, _, _ = split(data, 5, frac=1)
     X_test, Y_test = pd.concat([X_known, X_unknown]), pd.concat([Y_known, Y_unknown])
     models = {
         "BayesianRidge": BR(),
-        "KNN": KNN(n_jobs=-1),
+        "KNN": KNN(),
         "RandomForrest": RFR(random_state=1),
     }
     algorithms = {
@@ -237,7 +229,7 @@ def post_main(dataset):
         Y_test,
         model,
         algorithm,
-        iterations=20,
+        iterations=5,
         sample_size=100,
         score=score,
     )

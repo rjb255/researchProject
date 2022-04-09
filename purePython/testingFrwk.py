@@ -60,7 +60,7 @@ def main(*, output=0):
         ppprint(alpha)
         with Pool() as p:
             scores = p.map(algs.post_main, [data for data in data_train])
-        # ppprint(np.mean(scores))
+        ppprint(np.mean(scores))
 
 
 if __name__ == "__main__":
