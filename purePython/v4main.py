@@ -71,7 +71,7 @@ def framework(
 
     results = inner_func(algorithm[0])
     print(results)
-    # pprint("X_done")
+    pprint("X_done")
     # _file = os.path.join(proj_path, "purePython", "data", input("fileName ") + ".csv")
 
     # os.makedirs(os.path.dirname(_file), exist_ok=True)
@@ -122,7 +122,7 @@ def first_split(
             )
         )
 
-        print(f"{i} with {f.__name__}")
+        # print(f"{i} with {f.__name__}")
     return score_record
 
 
