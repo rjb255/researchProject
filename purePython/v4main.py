@@ -73,8 +73,7 @@ def framework(
         Y_test,
         X_test,
     )
-    with Pool() as p:
-        results = p.map(inner_func, algorithm)
+    results = inner_func(algorithm[0])
 
     pprint(results)
     _file = os.path.join(proj_path, "purePython", "data", input("fileName ") + ".csv")
@@ -193,13 +192,18 @@ def main():
 
     set_num = 0
     start(paths[set_num])
-    data_sets: List[pd.DataFrame] = [
-        pd.read_csv(
-            os.path.join(proj_path, "data", "chembl", "Additional_datasets", path)
-        )
+    #
+    data_sets: List[str] = [
+        os.path.join(proj_path, "data", "chembl", "Additional_datasets", path)
         for path in paths
     ]
+    data = data_sets[set_num]
     data: List[pd.DataFrame] = data_sets[set_num].sample(frac=1, random_state=1)
+    post_main(dataset)
+
+
+def post_main(dataset):
+    data = pd.read_csv(dataset)
     X_known, Y_known, X_unknown, Y_unknown, _, _ = split(data, 5, frac=1)
     X_test, Y_test = pd.concat([X_known, X_unknown]), pd.concat([Y_known, Y_unknown])
     models = {
@@ -219,8 +223,8 @@ def main():
     model = Models([models["BayesianRidge"], models["KNN"], models["RandomForrest"]])
 
     algorithm = (
-        algorithms["mine"],
-        algorithms["rod"],
+        # algorithms["mine"],
+        # algorithms["rod"],
         algorithms["dumb"],
     )
 

@@ -18,6 +18,11 @@ proj_path = os.path.join(
 # from purePython.modules.shared.custom import split, getPI, Models
 
 # endregion
+# *
+# ?
+# !
+# //
+# todo
 
 # region Subtle functions - functions similar to those in Python but improved in some way
 def custom_print(output: int, *args, **kwargs):
@@ -40,7 +45,7 @@ def main(*, output=0):
 
     datasets = os.listdir(data_location)
     random.shuffle(datasets)
-
+    datasets = [os.path.join(data_location, data) for data in datasets]
     split = [int(len(datasets) * 0.8), int(len(datasets) * 0.8)]
     data_train = datasets[: split[0]]
     data_valid = datasets[split[0] : split[1]]
@@ -49,12 +54,12 @@ def main(*, output=0):
     ppprint(f"{len(data_train)}, {len(data_valid)}, {len(data_test)}")
     ppprint(data_train)
     alpha: list = [0]
+
     for i in np.linspace(0, 2, 21):
         alpha[0] = i
         ppprint(alpha)
         with Pool() as p:
-            pass
-        #     scores = p.map(, [{data, alpha} for data in data_train])
+            scores = p.map(algs.post_main, [data for data in data_train])
         # ppprint(np.mean(scores))
 
 
