@@ -1,17 +1,20 @@
+# %% Entire
 # region Libraries
 import os
 import sys
 from pprint import pprint
 from functools import partial
-from multiprocessing import Pool
+import matplotlib.pyplot as plt
 
+from pathos.multiprocessing import ProcessPool as Pool
 import numpy as np
 import random
+import pandas as pd
 
 import v4main as algs
 
 proj_path = os.path.join(
-    "/", "home", "rjb255", "University", "ChemEng", "ResearchProject"
+    "/", "home", "rjb255", "University", "ResearchProject"
 )
 
 # sys.path.insert(1, proj_path)
@@ -43,24 +46,27 @@ def main(*, output=0):
     ppprint(output)
     data_location = os.path.join(proj_path, "data", "big", "qsar_data")
 
-    datasets = os.listdir(data_location)
-    random.shuffle(datasets)
-    datasets = [os.path.join(data_location, data) for data in datasets]
+    data_names = os.listdir(data_location)
+    random.shuffle(data_names)
+    datasets = [os.path.join(data_location, data) for data in data_names]
     split = [int(len(datasets) * 0.8), int(len(datasets) * 0.8)]
     data_train = datasets[: split[0]]
     data_valid = datasets[split[0] : split[1]]
     data_test = datasets[split[1] :]
 
     ppprint(f"{len(data_train)}, {len(data_valid)}, {len(data_test)}")
-    ppprint(data_train)
     alpha: list = [0]
 
-    for i in np.linspace(0, 2, 21):
-        alpha[0] = i
-        ppprint(alpha)
-        with Pool() as p:
-            scores = p.map(algs.post_main, [data for data in data_test])
-        ppprint(scores)
+    # todo - Minimise alpha
+
+    with Pool() as p:
+        scores = p.map(algs.post_main, [data for data in data_test[:20]])
+    results = pd.DataFrame(data=scores, index=data_test[:20])
+    # ppprint(results)
+    plt.ion()
+    plt.plot([1, 101, 201, 301, 401], np.transpose(scores))
+    plt.show(block=True)
+    results.to_csv('output.csv')
 
 
 if __name__ == "__main__":
