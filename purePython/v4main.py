@@ -22,7 +22,7 @@ from sklearn.neighbors import KNeighborsRegressor as KNN
 from sklearn.ensemble import RandomForestRegressor as RFR
 
 proj_path = os.path.join(
-    "/", "home", "rjb255", "University", "ResearchProject"
+    "/", "home", "rjb255", "researchProject", "researchProject"
 )
 sys.path.insert(1, proj_path)
 
@@ -210,8 +210,8 @@ def post_main(dataset):
 
     algorithm = (
         # algorithms["mine"],
-        # algorithms["rod"],
-        algorithms["dumb"],
+        algorithms["rod"],
+        # algorithms["dumb"],
     )
 
     return framework(

@@ -14,7 +14,7 @@ import pandas as pd
 import v4main as algs
 
 proj_path = os.path.join(
-    "/", "home", "rjb255", "University", "ResearchProject"
+    "/", "home", "rjb255", "researchProject", "researchProject"
 )
 
 # sys.path.insert(1, proj_path)
@@ -60,8 +60,8 @@ def main(*, output=0):
     # todo - Minimise alpha
 
     with Pool() as p:
-        scores = p.map(algs.post_main, [data for data in data_test[:20]])
-    results = pd.DataFrame(data=scores, index=data_test[:20])
+        scores = p.map(algs.post_main, [data for data in data_test])
+    results = pd.DataFrame(data=scores, index=data_test)
     # ppprint(results)
     plt.ion()
     plt.plot([1, 101, 201, 301, 401], np.transpose(scores))
