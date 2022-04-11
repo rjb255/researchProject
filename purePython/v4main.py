@@ -209,8 +209,8 @@ def post_main(dataset):
     model = Models([models["BayesianRidge"], models["KNN"], models["RandomForrest"]])
 
     algorithm = (
-        # algorithms["mine"],
-        algorithms["rod"],
+        algorithms["mine"],
+        # algorithms["rod"],
         # algorithms["dumb"],
     )
 
