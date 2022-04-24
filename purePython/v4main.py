@@ -23,7 +23,7 @@ from sklearn.ensemble import RandomForestRegressor as RFR
 from sklearn.mixture import GaussianMixture as GMM
 
 proj_path = os.path.join(
-    "/", "home", "rjb255", "researchProject", "researchProject"
+    "/", "home", "rjb255", "University", "ChemEng", "ResearchProject"
 )
 sys.path.insert(1, proj_path)
 

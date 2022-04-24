@@ -14,7 +14,7 @@ import pandas as pd
 import v4main as algs
 
 proj_path = os.path.join(
-    "/", "home", "rjb255", "researchProject", "researchProject"
+    "/", "home", "rjb255", "University", "ChemEng", "ResearchProject"
 )
 
 # sys.path.insert(1, proj_path)
