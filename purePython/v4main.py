@@ -8,7 +8,7 @@ from typing import List
 from functools import partial
 import copy
 
-from pathos.multiprocessing import ProcessPool as Pool
+from pathos.multiprocessing import ThreadPool as Pool
 from multiprocessing import Queue, Process
 
 import pandas as pd
@@ -23,7 +23,7 @@ from sklearn.ensemble import RandomForestRegressor as RFR
 from sklearn.mixture import GaussianMixture as GMM
 
 proj_path = os.path.join(
-    "/", "home", "rjb255", "University", "ChemEng", "ResearchProject"
+    "/", "home", "rjb255", "researchProject", "researchProject"
 )
 sys.path.insert(1, proj_path)
 
@@ -32,16 +32,16 @@ from purePython.modules.shared.custom import split, getPI, Models
 # endregion
 
 
+def score(Y_test, kwargs, q):
+    y_predict = kwargs["model"].predict(kwargs["X_test"])
+    q.put(mse(y_predict, Y_test, sample_weight=Y_test))
+
+
 def spec_max(x):
     if len(x) > 0:
         return max(x)
     else:
         return x
-
-
-def score(Y_test, kwargs):
-    y_predict = kwargs["model"].predict(kwargs["X_test"])
-    return mse(y_predict, Y_test, sample_weight=Y_test)
 
 
 def framework(
@@ -69,23 +69,11 @@ def framework(
         Y_test,
         X_test,
     )
+    with Pool() as p:
+        results = p.map(inner_func, algorithm)[0]
 
-    results = inner_func(algorithm[0])
-    print(results)
-    pprint("X_done")
-    # _file = os.path.join(proj_path, "purePython", "data", input("fileName ") + ".csv")
-
-    # os.makedirs(os.path.dirname(_file), exist_ok=True)
-
-    # print(f"\nwriting {_file}")
-    # pd_results = pd.DataFrame(
-    #     results,
-    #     columns=list(
-    #         range(len(X_train), len(X_train) + iterations * sample_size, sample_size)
-    #     ),
-    #     index=[a.__name__ for a in algorithm],
-    # )
-    # pd_results.to_csv(_file)
+    pprint(results)
+    return results
 
 
 def first_split(
@@ -113,18 +101,23 @@ def first_split(
             ranking = f(m, X, Y, x, mem)
             next_index = x.index[np.argsort(ranking)]
             X, Y, x, y = getPI((X, Y), (x, y), next_index[:sample_size])
-        score_record.append(
-            score(
-                Y_test,
-                {
-                    "model": copy.deepcopy(m),
-                    "X_test": X_test,  # No need for deepcopy (no change to X_test)
-                },
+        score_record.append(Queue())
+        processes.append(
+            Process(
+                target=score,
+                args=(
+                    Y_test,
+                    {
+                        "model": copy.deepcopy(m),
+                        "X_test": X_test,  # No need for deepcopy (no change to X_test)
+                    },
+                    score_record[-1],
+                ),
             )
         )
-
-        # print(f"{i} with {f.__name__}")
-    return score_record
+        processes[-1].start()
+        print(f"{i} with {f.__name__}")
+    return [score.get() for score in score_record]
 
 
 def base(m, X, Y, x, *args, **kwargs):
@@ -192,7 +185,7 @@ def start(
 
 def main():
     paths = ["data_CHEMBL313.csv", "data_CHEMBL2637.csv", "data_CHEMBL4124.csv"]
-
+    
     set_num = 0
     start(paths[set_num])
     #
@@ -207,6 +200,7 @@ def main():
 def post_main(dataset):
     data = pd.read_csv(dataset)
     data: List[pd.DataFrame] = data.sample(frac=1, random_state=1)
+    print(len(data))
 
     X_known, Y_known, X_unknown, Y_unknown, _, _ = split(data, 5, frac=1)
     X_test, Y_test = pd.concat([X_known, X_unknown]), pd.concat([Y_known, Y_unknown])
@@ -227,12 +221,12 @@ def post_main(dataset):
     model = Models([models["BayesianRidge"], models["KNN"], models["RandomForrest"]])
 
     algorithm = (
-        # algorithms["mine"],
+        algorithms["mine"],
         # algorithms["rod"],
-        algorithms["dumb"],
+        # algorithms["dumb"],
     )
 
-    framework(
+    return framework(
         X_known,
         Y_known,
         X_unknown,
@@ -242,10 +236,9 @@ def post_main(dataset):
         model,
         algorithm,
         iterations=5,
-        sample_size=100,
+        sample_size=20,
         score=score,
     )
-
 
 if __name__ == "__main__":
     main()

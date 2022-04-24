@@ -19,8 +19,8 @@ def split(data: DataFrame, n: int = 20, frac: int = 0.9):
 def getPI(known: tuple, unknown: tuple, index: int):
     X_known, Y_known = known
     X_unknown, Y_unknown = unknown
-    X_known = X_known.append(X_unknown.loc[index])
-    Y_known = Y_known.append(Y_unknown.loc[index])
+    X_known = pd.concat([X_known, X_unknown.loc[index]])
+    Y_known = pd.concat([Y_known, Y_unknown.loc[index]])
     X_unknown = X_unknown.drop(index)
     Y_unknown = Y_unknown.drop(index)
     return X_known, Y_known, X_unknown, Y_unknown
