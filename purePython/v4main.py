@@ -20,6 +20,7 @@ from scipy.spatial import KDTree
 from sklearn.linear_model import BayesianRidge as BR
 from sklearn.neighbors import KNeighborsRegressor as KNN
 from sklearn.ensemble import RandomForestRegressor as RFR
+from sklearn.mixture import GaussianMixture as GMM
 
 proj_path = os.path.join(
     "/", "home", "rjb255", "University", "ChemEng", "ResearchProject"
@@ -146,17 +147,28 @@ def broad_base(m, X, Y, x, mem, *args, **kwargs):
     return rho
 
 
-def rod_hotspots(m, X, Y, x, *args, **kwargs):
+def rod_hotspots(m, X, Y, x, mem, *args, **kwargs):
+    # todo REWRITE THIS PLS
     Y, Y_error = m.predict_error(x)
     err = -Y_error
-    series = np.ones_like(err)
-    tree = KDTree(x.values)
-    for r in range(2, 9):
-        indicies = tree.query_ball_point(np.array(x), r, workers=-1)
-        sdev = [err[i] for i in indicies]
-        sdevMax = [spec_max(s) for s in sdev]
-        series += sdevMax == err
-        print(f"{r}", end="\r")
+
+    # todo CLUSTER ALGORITHM FIRST,
+    # todo INCLUDE Y_predict and Y_std, consider a restriction on std error
+    if "cluster" in mem:
+        pass
+    else:
+        mem["cluster"] = GMM(n_components=200, random_state=1, warm_start=True).fit(X)
+
+    if "tree" in mem:
+        pass
+    else:
+        mem["tree"] = KDTree(x)
+
+    # todo WORK WITH CLUSTERS
+    alias_points = mem["tree"].query(mem["cluster"])
+
+    # todo return std^alpha*y_predict^beta for alias_points
+
     return series * err * Y
 
 
