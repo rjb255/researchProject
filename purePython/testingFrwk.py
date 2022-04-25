@@ -56,7 +56,15 @@ def main(*, output=0, alpha=[]):
 
     data_names = os.listdir(data_location)
     random.shuffle(data_names)
-    datasets = [os.path.join(data_location, data) for data in data_names]
+    datasets = np.array([os.path.join(data_location, data) for data in data_names])
+
+    dataset_lens = np.zeros([len(datasets)])
+    for i, data in enumerate(datasets):
+        with open(data, 'r') as f:
+            dataset_lens[i] = len(f.readlines())
+            
+    datasets = datasets[dataset_lens > 600]
+
     split = [int(len(datasets) * 0.8), int(len(datasets) * 0.8)]
     data_train = datasets[: split[0]]
     data_valid = datasets[split[0] : split[1]]
@@ -65,8 +73,8 @@ def main(*, output=0, alpha=[]):
     ppprint(f"{len(data_train)}, {len(data_valid)}, {len(data_test)}")
     alpha = []
     # todo - Minimise alpha
-    a0: list = [0.85, 50, 1, 1]
-    a_boundary = [(0.5, 1), (10, 250), (0, 4), (0, 4)]
+    a0: list = [0.85, int(50), 1, 1]
+    a_boundary = [(0.5, 1), (int(10), int(250)), (0, 4), (0, 4)]
 
     alpha = opt.minimize(lambda a: to_minimise(data_train, a), a0, bounds=a_boundary)
     

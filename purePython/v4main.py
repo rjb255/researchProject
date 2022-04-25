@@ -165,7 +165,7 @@ def rod_hotspots(m, X, Y, x, mem, *args, **kwargs):
     if "cluster" in mem:
         mem["cluster"].fit(cluster_x)
     else:
-        mem["cluster"] = GMM(n_components=mem['alpha'][1], random_state=1, warm_start=True).fit(cluster_x)
+        mem["cluster"] = GMM(n_components=int(mem['alpha'][1]), random_state=1, warm_start=True).fit(cluster_x)
 
     # if "tree" in mem:
     #     pass
@@ -257,6 +257,7 @@ def post_main(dataset, alpha=[]):
         iterations=5,
         sample_size=20,
         score=score,
+        alpha=alpha
     )
 
 if __name__ == "__main__":
