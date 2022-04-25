@@ -1,6 +1,7 @@
 # region libraries
 import sys
 import os
+import math
 
 from pprint import pprint
 from typing import List
@@ -141,16 +142,22 @@ def broad_base(m, X, Y, x, mem, *args, **kwargs):
 
 
 def rod_hotspots(m, X, Y, x, mem, *args, **kwargs):
-    # todo REWRITE THIS PLS
-    Y, Y_error = m.predict_error(x)
+    
+    Y_predict, Y_error = m.predict_error(x)
     err = -Y_error
 
-    # todo CLUSTER ALGORITHM FIRST,
+    # todo CLUSTER ALGORITHM FIRST
     # todo INCLUDE Y_predict and Y_std, consider a restriction on std error
+    temp1 = pd.Series(Y_predict)
+    temp2 = pd.Series(err)
+    cluster_x = pd.DataFrame(x)
+    cluster_x['err'] = err
+    cluster_x['y'] = Y_predict
+    
     if "cluster" in mem:
-        pass
+        mem["cluster"].fit(cluster_x)
     else:
-        mem["cluster"] = GMM(n_components=200, random_state=1, warm_start=True).fit(X)
+        mem["cluster"] = GMM(n_components=200, random_state=1, warm_start=True).fit(cluster_x)
 
     if "tree" in mem:
         pass
