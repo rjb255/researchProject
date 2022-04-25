@@ -42,7 +42,7 @@ def custom_print(output: int, *args, **kwargs):
 # endregion
 
 def to_minimise(data_set, alpha):
-    exit
+    print(alpha)
     temp = partial(algs.post_main, alpha=alpha)
     with Pool() as p:
         scores = p.map(temp, [data for data in data_set])
@@ -76,7 +76,7 @@ def main(*, output=0, alpha=[]):
     a0: list = [0.85, int(50), 1, 1]
     a_boundary = [(0.5, 1), (int(10), int(250)), (0, 4), (0, 4)]
 
-    alpha = opt.minimize(lambda a: to_minimise(data_train, a), a0, bounds=a_boundary)
+    alpha = opt.minimize(lambda a: to_minimise(data_train, a), a0, bounds=a_boundary, options={'maxiter': 10})
     
     with_alpha = partial(algs.post_main, alpha=alpha)
     with Pool() as p:

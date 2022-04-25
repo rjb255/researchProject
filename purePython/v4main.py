@@ -119,7 +119,7 @@ def first_split(
             )
         )
         processes[-1].start()
-        print(f"{i} with {f.__name__}")
+        # print(f"{i} with {f.__name__}")
     return [score.get() for score in score_record]
 
 
