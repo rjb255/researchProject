@@ -158,7 +158,7 @@ def rod_hotspots(m, X, Y, x, mem, *args, **kwargs):
         mem["cluster"].fit(cluster_x)
     else:
         mem["cluster"] = GMM(n_components=200, random_state=1, warm_start=True).fit(cluster_x)
-
+    pprint(mem["cluster"])
     if "tree" in mem:
         pass
     else:
