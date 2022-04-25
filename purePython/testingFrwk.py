@@ -45,6 +45,7 @@ def to_minimise(data_set, alpha):
     temp = partial(algs.post_main, alpha=alpha)
     with Pool() as p:
         scores = p.map(temp, [data for data in data_set])
+    return scores
 
 def main(*, output=0, alpha=N):
     ppprint = partial(custom_print, output)
