@@ -45,7 +45,8 @@ def to_minimise(data_set, alpha):
     temp = partial(algs.post_main, alpha=alpha)
     with Pool() as p:
         scores = p.map(temp, [data for data in data_set])
-    return scores
+    print(f"alpha score: {np.mean(scores)}")
+    return np.mean(scores)
 
 def main(*, output=0, alpha=N):
     ppprint = partial(custom_print, output)
@@ -66,10 +67,9 @@ def main(*, output=0, alpha=N):
     a0: list = [0.85, 50, 1, 1]
     a_boundary = [(0.5, 1), (10, 250), (0, 4), (0, 4)]
 
-    alpha = opt.minimize(lambda a: to_minimise(data_train, ), a0, bounds=a_boundary)
+    alpha = opt.minimize(lambda a: to_minimise(data_train, a), a0, bounds=a_boundary)
     
     with_alpha = partial(algs.post_main, alpha=alpha)
-
     with Pool() as p:
         scores = p.map(with_alpha, [data for data in data_test])
 
