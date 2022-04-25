@@ -10,6 +10,7 @@ from pathos.multiprocessing import ProcessPool as Pool
 import numpy as np
 import random
 import pandas as pd
+import scipy.optimize as opt
 
 import v4main as algs
 
@@ -40,8 +41,12 @@ def custom_print(output: int, *args, **kwargs):
 
 # endregion
 
+def to_minimise(data_set, alpha):
+    temp = partial(algs.post_main, alpha=alpha)
+    with Pool() as p:
+        scores = p.map(temp, [data for data in data_set])
 
-def main(*, output=0):
+def main(*, output=0, alpha=N):
     ppprint = partial(custom_print, output)
     ppprint(output)
     data_location = os.path.join(proj_path, "data", "big", "qsar_data")
@@ -55,12 +60,18 @@ def main(*, output=0):
     data_test = datasets[split[1] :]
 
     ppprint(f"{len(data_train)}, {len(data_valid)}, {len(data_test)}")
-    alpha: list = [0]
-
+    alpha = []
     # todo - Minimise alpha
+    a0: list = [0.85, 50, 1, 1]
+    a_boundary = [(0.5, 1), (10, 250), (0, 4), (0, 4)]
+
+    alpha = opt.minimize(lambda a: to_minimise(data_train, ), a0, bounds=a_boundary)
+    
+    with_alpha = partial(algs.post_main, alpha=alpha)
 
     with Pool() as p:
-        scores = p.map(algs.post_main, [data for data in data_test])
+        scores = p.map(with_alpha, [data for data in data_test])
+
     results = pd.DataFrame(data=scores, index=data_test)
     # ppprint(results)
     plt.ion()

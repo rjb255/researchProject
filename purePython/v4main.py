@@ -9,7 +9,6 @@ from typing import List
 from functools import partial
 import copy
 
-from pathos.multiprocessing import ThreadPool as Pool
 from multiprocessing import Queue, Process
 
 import pandas as pd
@@ -57,6 +56,7 @@ def framework(
     iterations: int,
     sample_size: int,
     score: object,
+    alpha: list =[],
 ):
     inner_func = partial(
         first_split,
@@ -69,9 +69,9 @@ def framework(
         sample_size,
         Y_test,
         X_test,
+        alpha=alpha
     )
-    with Pool() as p:
-        results = p.map(inner_func, algorithm)[0]
+    results = [inner_func(alg) for alg in algorithm]
 
     pprint(results)
     return results
@@ -88,6 +88,7 @@ def first_split(
     Y_test,
     X_test,
     f,
+    alpha=[],
 ):
     # Deep copies
     X, Y = pd.DataFrame(X_train), pd.Series(Y_train)
@@ -96,6 +97,7 @@ def first_split(
     mem = {}  # If sth is stored between executions
     score_record = []
     processes = []
+    mem['alpha'] = alpha
     for i in range(iterations):
         if len(x) > 0:
             m.fit(X, Y)
@@ -150,26 +152,36 @@ def rod_hotspots(m, X, Y, x, mem, *args, **kwargs):
     # todo INCLUDE Y_predict and Y_std, consider a restriction on std error
     temp1 = pd.Series(Y_predict)
     temp2 = pd.Series(err)
-    cluster_x = pd.DataFrame(x)
+    cluster_x = copy.deepcopy(pd.DataFrame(x))
+    
     cluster_x['err'] = err
     cluster_x['y'] = Y_predict
-    
+
+    lower_lvl = np.quantile(cluster_x["err"], mem['alpha'][0])
+    index = np.ones_like(err)
+    index[cluster_x['err'] < lower_lvl] = 0
+
+    cluster_x = cluster_x[index == 1]
     if "cluster" in mem:
         mem["cluster"].fit(cluster_x)
     else:
-        mem["cluster"] = GMM(n_components=200, random_state=1, warm_start=True).fit(cluster_x)
-    pprint(mem["cluster"])
-    if "tree" in mem:
-        pass
-    else:
-        mem["tree"] = KDTree(x)
+        mem["cluster"] = GMM(n_components=mem['alpha'][1], random_state=1, warm_start=True).fit(cluster_x)
 
-    # todo WORK WITH CLUSTERS
-    alias_points = mem["tree"].query(mem["cluster"])
+    # if "tree" in mem:
+    #     pass
+    # else:
+    #     mem["tree"] = KDTree(cluster_x)
+
+    # # todo WORK WITH CLUSTERS
+
+    # alias_points = mem["tree"].query(mem["cluster"])
 
     # todo return std^alpha*y_predict^beta for alias_points
-
-    return series * err * Y
+    score = index
+    score[index == 1] = np.power(err[index == 1], mem['alpha'][2]) *
+                        np.power(Y_predict[index == 1], mem['alpha'][3]) *
+                        np.array(mem["cluster"].score_samples(cluster_x))
+    return score
 
 
 def clusterise():
@@ -204,7 +216,7 @@ def main():
     post_main(data)
 
 
-def post_main(dataset):
+def post_main(dataset, alpha=[]):
     data = pd.read_csv(dataset)
     data: List[pd.DataFrame] = data.sample(frac=1, random_state=1)
     print(len(data))
