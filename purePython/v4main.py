@@ -178,9 +178,9 @@ def rod_hotspots(m, X, Y, x, mem, *args, **kwargs):
 
     # todo return std^alpha*y_predict^beta for alias_points
     score = index
-    score[index == 1] = np.power(err[index == 1], mem['alpha'][2]) *
-                        np.power(Y_predict[index == 1], mem['alpha'][3]) *
-                        np.array(mem["cluster"].score_samples(cluster_x))
+    score[index == 1] = (np.power(err[index == 1], mem['alpha'][2]) *
+                         np.power(Y_predict[index == 1], mem['alpha'][3]) *
+                         np.array(mem["cluster"].score_samples(cluster_x)))
     return score
 
 
