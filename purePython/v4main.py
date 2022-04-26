@@ -73,7 +73,7 @@ def framework(
     )
     results = [inner_func(alg) for alg in algorithm]
 
-    pprint(results)
+    pprint(f'{alpha}: {results}')
     return results
 
 
