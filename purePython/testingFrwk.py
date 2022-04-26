@@ -42,7 +42,7 @@ def custom_print(output: int, *args, **kwargs):
 # endregion
 
 def to_minimise(data_set, alpha):
-    print(alpha)
+    print(f'alpha: {alpha}')
     temp = partial(algs.post_main, alpha=alpha)
     with Pool() as p:
         scores = p.map(temp, [data for data in data_set])
