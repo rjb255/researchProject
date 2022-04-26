@@ -76,8 +76,8 @@ def main(*, output=0, alpha=[]):
     alpha = []
     a0 = []
     # todo - Minimise alpha
-    a0: list = [0.85, int(50), 1, 1]
-    a_boundary = [(0.5, 1), (int(10), int(250)), (0, 4), (0, 4)]
+    a0: list = [0.85, 1, 1]
+    a_boundary = [(0.5, 1), (0, 4), (0, 4)]
     if a0:
         alpha = opt.minimize(lambda a: to_minimise(data_train, a), a0, bounds=a_boundary, options={'maxiter': 10}, method='Nelder-Mead')
     
