@@ -187,6 +187,7 @@ def rod_hotspots(m, X, Y, x, mem, *args, **kwargs):
         print(f"{mem['alpha'][1]}, {mem['alpha'][2]}")
         print(np.power(err[index == 1], mem['alpha'][1]))
         score[index == 1] = err[index == 1] * 10
+        print(e)
     return score
 
 
