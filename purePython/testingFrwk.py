@@ -46,8 +46,10 @@ def to_minimise(data_set, alpha):
     temp = partial(algs.post_main, alpha=alpha)
     with Pool() as p:
         scores = p.map(temp, [data for data in data_set])
-    print(f"alpha score: {np.mean(scores)}")
-    return np.mean(scores)
+    scores = np.array(scores)
+    print(len(scores[:,-1]))
+    print(f"alpha score: {np.mean(scores[:,-1])}")
+    return np.mean(scores[:,-1])
 
 def main(*, output=0, alpha=[]):
     ppprint = partial(custom_print, output)
