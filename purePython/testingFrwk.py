@@ -74,11 +74,12 @@ def main(*, output=0, alpha=[]):
 
     ppprint(f"{len(data_train)}, {len(data_valid)}, {len(data_test)}")
     alpha = []
+    a0 = []
     # todo - Minimise alpha
     a0: list = [0.85, int(50), 1, 1]
     a_boundary = [(0.5, 1), (int(10), int(250)), (0, 4), (0, 4)]
-
-    alpha = opt.minimize(lambda a: to_minimise(data_train, a), a0, bounds=a_boundary, options={'maxiter': 10}, method='Nelder-Mead')
+    if a0:
+        alpha = opt.minimize(lambda a: to_minimise(data_train, a), a0, bounds=a_boundary, options={'maxiter': 10}, method='Nelder-Mead')
     
     with_alpha = partial(algs.post_main, alpha=alpha)
     with Pool() as p:
