@@ -178,10 +178,15 @@ def rod_hotspots(m, X, Y, x, mem, *args, **kwargs):
 
     # todo return std^alpha*y_predict^beta for alias_points
     score = index
-    print(f"debug: {len(err[index == 1])}, {mem['alpha'][1]}, {mem['alpha'][2]}, {len(cluster_x)}")
-    score[index == 1] = (np.power(err[index == 1], mem['alpha'][1]) *
-                         np.power(Y_predict[index == 1], mem['alpha'][2]) *
-                         np.array(mem["cluster"].score_samples(cluster_x)))
+    try:
+        score[index == 1] = (np.power(err[index == 1], mem['alpha'][1]) *
+                             np.power(Y_predict[index == 1], mem['alpha'][2]) *
+                             np.array(mem["cluster"].score_samples(cluster_x)))
+    except e:
+        print(err[index == 1])
+        print(f"{mem['alpha'][1]}, {mem['alpha'][2]}")
+        print(np.power(err[index == 1], mem['alpha'][1]))
+        score[index == 1] = err[index == 1] * 10
     return score
 
 
