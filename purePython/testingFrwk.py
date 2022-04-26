@@ -63,7 +63,7 @@ def main(*, output=0, alpha=[]):
         with open(data, 'r') as f:
             dataset_lens[i] = len(f.readlines())
             
-    datasets = datasets[dataset_lens > 600]
+    datasets = datasets[dataset_lens > 1000]
 
     split = [int(len(datasets) * 0.8), int(len(datasets) * 0.8)]
     data_train = datasets[: split[0]]

@@ -254,8 +254,8 @@ def post_main(dataset, alpha=[]):
         Y_test,
         model,
         algorithm,
-        iterations=5,
-        sample_size=20,
+        iterations=4,
+        sample_size=120,
         score=score,
         alpha=alpha
     )
