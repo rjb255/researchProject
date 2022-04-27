@@ -91,8 +91,8 @@ def main(*, output=0, alpha=[]):
             options={'maxiter': 4}, 
             method='Nelder-Mead', 
             callback=callback_minimise)
-    print(alpha)
-    with_alpha = partial(algs.post_main, alpha=alpha['x'])
+        print(alpha)
+        with_alpha = partial(algs.post_main, alpha=alpha['x'])
     with Pool() as p:
         scores = p.map(with_alpha, [data for data in data_test])
 
