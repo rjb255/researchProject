@@ -51,6 +51,11 @@ def to_minimise(data_set, alpha):
     print(f"alpha score: {np.mean(scores[:,-1])}")
     return np.mean(scores[:,-1])
 
+def callback_minimise(xk, state):
+    print(f"CALLBACK: {xk}, {state}")
+    return False
+
+
 def main(*, output=0, alpha=[]):
     ppprint = partial(custom_print, output)
     ppprint(output)
@@ -65,7 +70,7 @@ def main(*, output=0, alpha=[]):
         with open(data, 'r') as f:
             dataset_lens[i] = len(f.readlines())
             
-    datasets = datasets[dataset_lens > 900]
+    datasets = datasets[dataset_lens > 1200]
 
     split = [int(len(datasets) * 0.8), int(len(datasets) * 0.8)]
     data_train = datasets[: split[0]]
@@ -79,9 +84,15 @@ def main(*, output=0, alpha=[]):
     a0: list = [0.85, 1, 1]
     a_boundary = [(0.5, 1), (0, 4), (0, 4)]
     if a0:
-        alpha = opt.minimize(lambda a: to_minimise(data_train, a), a0, bounds=a_boundary, options={'maxiter': 5}, method='Nelder-Mead')
-    
-    with_alpha = partial(algs.post_main, alpha=alpha)
+        alpha = opt.minimize(
+            lambda a: to_minimise(data_train, a), 
+            a0, 
+            bounds=a_boundary, 
+            options={'maxiter': 5}, 
+            method='Nelder-Mead', 
+            callback=callback_minimise)
+    print(alpha)
+    with_alpha = partial(algs.post_main, alpha=alpha['x'])
     with Pool() as p:
         scores = p.map(with_alpha, [data for data in data_test])
 
