@@ -81,18 +81,19 @@ def main(*, output=0, alpha=[]):
     alpha = []
     a0 = []
     # todo - Minimise alpha
-    # a0: list = [0.85, 1, 1]
-    a_boundary = [(0.5, 1), (0, 4), (0, 4)]
+    a0: list = [0.85, 0, 0]
+    a_boundary = [(0.5, 1), (-4, 4), (-4, 4)]
     if a0:
-        alpha = opt.minimize(
+        alef = opt.minimize(
             lambda a: to_minimise(data_train, a), 
             a0, 
             bounds=a_boundary, 
-            options={'maxiter': 4}, 
+            options={'maxiter': 8}, 
             method='Nelder-Mead', 
             callback=callback_minimise)
+        alpha = alef['x']
         print(alpha)
-        with_alpha = partial(algs.post_main, alpha=alpha['x'])
+    with_alpha = partial(algs.post_main, alpha=alpha)
     with Pool() as p:
         scores = p.map(with_alpha, [data for data in data_test])
 

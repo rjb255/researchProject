@@ -249,9 +249,9 @@ def post_main(dataset, alpha=[]):
     model = Models([models["BayesianRidge"], models["KNN"], models["RandomForrest"]])
 
     algorithm = (
-        # algorithms["mine"],
+        algorithms["mine"],
         # algorithms["rod"],
-        algorithms["dumb"],
+        # algorithms["dumb"],
     )
 
     return framework(
