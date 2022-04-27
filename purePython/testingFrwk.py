@@ -88,7 +88,7 @@ def main(*, output=0, alpha=[]):
             lambda a: to_minimise(data_train, a), 
             a0, 
             bounds=a_boundary, 
-            options={'maxiter': 5}, 
+            options={'maxiter': 4}, 
             method='Nelder-Mead', 
             callback=callback_minimise)
     print(alpha)
