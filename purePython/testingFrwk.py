@@ -51,8 +51,8 @@ def to_minimise(data_set, alpha):
     print(f"alpha score: {np.mean(scores[:,-1])}")
     return np.mean(scores[:,-1])
 
-def callback_minimise(xk, state):
-    print(f"CALLBACK: {xk}, {state}")
+def callback_minimise(*args):
+    print(f"CALLBACK: {args}")
     return False
 
 
