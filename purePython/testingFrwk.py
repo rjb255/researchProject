@@ -79,7 +79,7 @@ def main(*, output=0, alpha=[]):
     a0: list = [0.85, 1, 1]
     a_boundary = [(0.5, 1), (0, 4), (0, 4)]
     if a0:
-        alpha = opt.minimize(lambda a: to_minimise(data_train, a), a0, bounds=a_boundary, options={'maxiter': 10}, method='Nelder-Mead')
+        alpha = opt.minimize(lambda a: to_minimise(data_train, a), a0, bounds=a_boundary, options={'maxiter': 5}, method='Nelder-Mead')
     
     with_alpha = partial(algs.post_main, alpha=alpha)
     with Pool() as p:
