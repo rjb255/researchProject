@@ -81,7 +81,7 @@ def main(*, output=0, alpha=[]):
     alpha = []
     a0 = []
     # todo - Minimise alpha
-    a0: list = [0.85, 1, 1]
+    # a0: list = [0.85, 1, 1]
     a_boundary = [(0.5, 1), (0, 4), (0, 4)]
     if a0:
         alpha = opt.minimize(
@@ -98,9 +98,9 @@ def main(*, output=0, alpha=[]):
 
     results = pd.DataFrame(data=scores, index=data_test)
     # ppprint(results)
-    plt.ion()
-    plt.plot([1, 101, 201, 301, 401], np.transpose(scores))
-    plt.show(block=True)
+    # plt.ion()
+    # plt.plot([1, 101, 201, 301, 401], np.transpose(scores))
+    # plt.show(block=True)
     results.to_csv('output.csv')
 
 
