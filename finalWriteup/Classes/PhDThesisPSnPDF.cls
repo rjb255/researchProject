@@ -72,9 +72,9 @@
 
 % ******************************* Bibliography *********************************
 \newif\ifsetBib\setBibfalse                   % Custom Bibliography = true/false
-\newif\ifsetBiBLaTeX\setBiBLaTeXtrue         % BiBLaTeX = True / False
+\newif\ifsetBiBLaTeX\setBiBLaTeXfalse         % BiBLaTeX = True / False
 
-\newif\ifPHD@biblatex\PHD@biblatexfalse       % BiBLaTeX
+\newif\ifPHD@biblatex\PHD@biblatextrue       % BiBLaTeX
 \DeclareOption{biblatex}{
   \ifsetBib
     \ClassWarning{PhDThesisPSnPDF}{Bibliography selection conflict: A
@@ -85,7 +85,7 @@
   \fi
 }
 
-\newif\ifPHD@authoryear\PHD@authoryearfalse   % Author-Year citation
+\newif\ifPHD@authoryear\PHD@authoryeartrue   % Author-Year citation
 \DeclareOption{authoryear}{
   \ifsetBib
     \ClassWarning{PhDThesisPSnPDF}{Bibliography selection conflict: A
@@ -109,7 +109,7 @@
   \fi
 }
 
-\newif\ifuseCustomBib\useCustomBibtrue     % Custom Bibliography
+\newif\ifuseCustomBib\useCustomBibfalse     % Custom Bibliography
 \DeclareOption{custombib}{
   \ifsetBib
     \ClassWarning{PhDThesisPSnPDF}{Bibliography selection conflict: A
