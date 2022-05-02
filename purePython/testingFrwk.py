@@ -81,7 +81,7 @@ def main(*, output=0, alpha=[]):
     alpha = []
     a0 = []
     # todo - Minimise alpha
-    a0: list = [0.85, 0, 0]
+    # a0: list = [0.85, 0, 0]
     a_boundary = [(0.5, 1), (-4, 4), (-4, 4)]
     if a0:
         alef = opt.minimize(

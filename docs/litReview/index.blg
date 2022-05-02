@@ -1,0 +1,5 @@
+[0] Config.pm:307> INFO - This is Biber 2.17
+[0] Config.pm:310> INFO - Logfile is 'index.blg'
+[47] biber:340> INFO - === Mon May  2, 2022, 15:48:56
+[57] Utils.pm:409> ERROR - index.bcf is malformed, last biblatex run probably failed. Deleted index.bbl
+[57] Biber.pm:135> INFO - ERRORS: 1
