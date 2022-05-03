@@ -26,11 +26,14 @@ The simplest is applicable to cases in which a certainty is provided with each p
   model = BayesianRidge()\;
   model.fit($X_\mathrm{known}$, $Y_\mathrm{known}$)\;
   standard\_deviation = model.standard\_deviation($X_\mathrm{unknown}$)\;
-  \Return{max($\marthrm{standard\_deviation}$)}
+  \Return{max(standard\_deviation)}
   \caption{Uncertainty Sampling Selection}
 \end{algorithm}
 
-\includegraphics[width=100mm]{US_300_all3.pdf}
+\begin{center}
+  \includegraphics[width=100mm]{US_300_all3.pdf}
+
+\end{center}
 
 As addressed by \textcite{Set09}, this can be extended to any probabilistic model.
 \begin{equation}
@@ -58,7 +61,10 @@ Alternatively, nearest neighbour requires little explanation. $x_\mathrm{next}$ 
   x_\mathrm{next}=\argmax_x{\left(\sum{\frac{1}{\simm{(x, x_i)}}}\right)}
 \end{equation}
 
-\includegraphics[width=100mm]{BKB_300_all3.pdf}
+\begin{center}
+  \includegraphics[width=100mm]{BKB_300_all3.pdf}
+
+\end{center}
 
 \subsubsection{Density Hotspots}
 Conversely, a density weighted model has been suggested, as it escapes the introduction of error from outlier (i.e.\ data points far away from alternative data points). \textcite{Set08} suggest (\ref{eq:Settles_density}) which can be broken down into two parts: a function for selection, $\phi_A$, and a function for similarity, $\simm$. The former arises from  another method described in this section. The latter requires a function to describe the similarity between data points.
@@ -83,10 +89,16 @@ These methods attempt to minimise a future attribute of the model. This works by
 \section{Batch Active Learning}
 Several naive methods are available here. Firstly, getting the top $N$ data points from a model described in Section. However, this method does not take into account the equivalence of the data points. This is extremely clear using the highest uncertainty method. Each method in Section[] has been modified to demonstrate this weakness.
 
-\includegraphics[width=100mm]{BKB_10_120_all3.pdf}
-
-\includegraphics[width=100mm]{US_10_120_all3.pdf}
-
-
+\begin{center}
+  \includegraphics[width=150mm]{BKB_10_120_all3.pdf}
+\end{center}
+\begin{center}
+  \includegraphics[width=150mm]{US_10_120_all3.pdf}
+\end{center}
 
 It stands to reason that the area which has the highest uncertainty will see this for the data points nearest neighbours. Thus, this singular data point suffers the potential of being surrounded by $N-1$ other data points. The benefit this provides in fitting the model is thus extremely limited, and only slightly greater than if one data point had been chosen. A simple fix would be to simulate the model after 1 iteration, and select the next point from here. By doing this $N-1$ times, a better solution may be found, although this may prove to be computationally very expensive.
+
+\section{Drug Data}
+\blindtext[1]
+\section{Combining Drug Data with Active Learning}
+\blindtext[1]
