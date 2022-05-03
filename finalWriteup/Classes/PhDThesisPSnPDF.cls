@@ -109,7 +109,7 @@
   \fi
 }
 
-\newif\ifuseCustomBib\useCustomBibfalse     % Custom Bibliography
+\newif\ifuseCustomBib\useCustomBibtrue     % Custom Bibliography
 \DeclareOption{custombib}{
   \ifsetBib
     \ClassWarning{PhDThesisPSnPDF}{Bibliography selection conflict: A
