@@ -26,8 +26,8 @@ In Section [], it was discussed that there are various methodologies of represen
 In order to demonstrate the effectiveness, a few data sets are used instead, and the program is executed function by function. To start with, the underlying custom functions will be demonstrated, followed by the algorithms and then finally the training framework.
 
 \subsection{Custom Base Functions}
-\subsubsection{Split}
-The \lstinline{split} function allows for each dataset to be split into $x_\mathrm{known}$, $y_\mathrm{known}$, $x_\mathrm{unknown}$, and $y_\mathrm{unknown}$, as demonstrated in Figure \ref{fig:Split}. This is required as a fundamental step for the algorithmic testing. To demonstrate the validity of this function, ...
+\subsubsection{\lstinline{Split}}
+The\lstinline{split} function allows for each dataset to be split into $x_\mathrm{known}$, $y_\mathrm{known}$, $x_\mathrm{unknown}$, and $y_\mathrm{unknown}$, as demonstrated in Figure \ref{fig:Split}. This is required as a fundamental step for the algorithmic testing. To demonstrate the validity of this function, ...
 
 \begin{figure}
     \begin{center}
@@ -38,14 +38,19 @@ The \lstinline{split} function allows for each dataset to be split into $x_\math
 \end{figure}
 
 
-\subsubsection{Repartition}
-Upon each iteration, the sets provided to the algorithms need to be repartitioned to allow for the continual operation of the algorithm.
+\subsubsection{\lstinline{Repartition}}
+Upon each iteration, the sets provided to the algorithms need to be repartitioned to allow for the continual operation of the algorithm. This consists of two parts: expanding the known sets and removing entries from the unknown sets.
 \\
-\subsubsection{Model}
-\blindtext[1]
-\subsubsection{Validate}
-\blindtext[1]
+\subsubsection{\lstinline{Model}}
+The machine learning model is the only custom class used. Here, a similar structure is used when compared with sci-kit's [] machine learning. To manage this, it has four methods:\lstinline{__init__},\lstinline{fit},\lstinline{predict}, and\lstinline{predict_error}. The last of these is not seen in all sci-kit's machine learning models and is reserved for those which can report a certainty of prediction. Here, this was achieved by taking a standard deviation of the models.
+\subsubsection{\lstinline{Validate}}
+This is a simple method with greater potential than has been explored. By providing this as a separate method, a more computationally intensive validation model could be used without interference as parallelisation could be exploited. However, as it currently stands, it returns the weighted mean squared error using the standard method provided by [].
 \subsection{Active Learning Algorithms}
+\subsubsection{Dumb}
+\blindtext[1]
+\subsubsection{The Greatest Uncertainty}
+\blindtext[1]
+\subsubsection{Region of Disagreement}
 \blindtext[1]
 \subsection{Training Framework}
 \blindtext[1]
