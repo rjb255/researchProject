@@ -24,12 +24,23 @@ Examining the smaller details, each algorithm is provided with the sets $x_\math
 In Section [], it was discussed that there are various methodologies of representing chemicals and drugs. ... (if time)
 \section{Proof}
 In order to demonstrate the effectiveness, a few data sets are used instead, and the program is executed function by function. To start with, the underlying custom functions will be demonstrated, followed by the algorithms and then finally the training framework.
+
 \subsection{Custom Base Functions}
 \subsubsection{Split}
-The \lstinline{split} function allows for each dataset to be split into $x_\mathrm{known}$, $y_\mathrm{known}$, $x_\mathrm{unknown}$, and $y_\mathrm{unknown}$. This is required as a fundamental step for the algorithmic testing.
-\\
+The \lstinline{split} function allows for each dataset to be split into $x_\mathrm{known}$, $y_\mathrm{known}$, $x_\mathrm{unknown}$, and $y_\mathrm{unknown}$, as demonstrated in Figure \ref{fig:Split}. This is required as a fundamental step for the algorithmic testing. To demonstrate the validity of this function, ...
+
+\begin{figure}
+    \begin{center}
+        \includegraphics[width=130mm]{split.png}
+    \end{center}
+    \caption{Graphical representation of the\lstinline{split}function. The red dashed boundary represents the input (additional colour coding has been performed to assist the reader in understanding the transposition of the base components).}
+    \label{fig:Split}
+\end{figure}
+
+
 \subsubsection{Repartition}
-\blindtext[1]
+Upon each iteration, the sets provided to the algorithms need to be repartitioned to allow for the continual operation of the algorithm.
+\\
 \subsubsection{Model}
 \blindtext[1]
 \subsubsection{Validate}
