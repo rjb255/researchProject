@@ -1029,7 +1029,8 @@ wish to left align your text}
 \ifthenelse{\equal{#1}{Z}}{\item[\textbf{Acronyms / Abbreviations}]}{%
 \ifthenelse{\equal{#1}{R}}{\item[\textbf{Superscripts}]}{%
 \ifthenelse{\equal{#1}{S}}{\item[\textbf{Subscripts}]}{%
-\ifthenelse{\equal{#1}{X}}{\item[\textbf{Other Symbols}]}
+\ifthenelse{\equal{#1}{X}}{\item[\textbf{Other Symbols}]}{%
+\ifthenelse{\equal{#1}{U}}{\item[\textbf{Chapter 3}]}
 {}
 }% matches mathematical symbols > X
 }% matches Subscripts           > S
@@ -1037,6 +1038,7 @@ wish to left align your text}
 }% matches Abbreviations        > Z
 }% matches Greek Symbols        > G
 }% matches Roman Symbols        > A
+}% matches Chapter 3            > 3
 
 % To add nomenclature in the header
 \renewcommand{\nompreamble}{\markboth{\nomname}{\nomname}}
