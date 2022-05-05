@@ -6,7 +6,7 @@
 \chapter{Previous Work}
 
 
-\graphicspath{{Chapter2/Figs/Vector/}{Chapter2/Figs/}}
+\graphicspath{{Chapter2/Figs/Vector/}{Chapter2/Figs/Raster/}}
 
 
 Scores displayed in examples have been based on the entire data set. Although this usually leads to data leakage within machine learning, this is not a concern here as the true comparison comes from testing  \textit{intelligent} vs \textit{dumb} learning methods. In both of these cases, the model is kept identical, but the selection process in not. The baseline simply takes the first $n$ entries from the data set, with the \textit{intelligent} method described where required. A simple function has been used to present data as a means of demonstrating these models, with $x$ having two dimensions. The function for $y$ is shown in \ref{eq:phantom} and displayed graphically in Figure \ref{fig:phantom}.
@@ -85,27 +85,40 @@ Alternatively, nearest neighbour requires little explanation. $x_\mathrm{next}$ 
   \label{eq:inverseSim}
   x_\mathrm{next}=\argmax_x{\left(\sum{\frac{1}{\simm{(x, x_i)}}}\right)}
 \end{equation}
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics{broadPhantom.pdf}
+    \caption[]{The outcome of the investigating the areas of using a broad base. A) Demonstrates the final set of points tested by the algorithm and B) shows the change in the mean squared error for the algorithm after each iteration.}
+    \label{fig:b}
+  \end{center}
+\end{figure}
 
-\begin{center}
-  \includegraphics[width=100mm]{BKB_300_all3.pdf}
-\end{center}
 
 \subsubsection{Density Hotspots}
-Conversely, a density weighted model has been suggested, as it escapes the introduction of error from outlier (i.e.\ data points far away from alternative data points). \textcite{Set08} suggest (\ref{eq:Settles_density}) which can be broken down into two parts: a function for selection, $\phi_A$, and a function for similarity, $\simm$. The former arises from  another method described in this section. The latter requires a function to describe the similarity between data points.
+Conversely, a density weighted model has been suggested, as it escapes the introduction of error from outliers (i.e.\ data points far away from alternative data points). \textcite{Set08} suggest (\ref{eq:Settles_density}) which can be broken down into two parts: a function for selection, $\phi_A$, and a function for similarity, $\simm$. The former arises from  another method described in this section. The latter requires a function to describe the similarity between data points.
 
 \begin{equation}
   \label{eq:Settles_density}
   x_\mathrm{next}=\argmax_x{\left[\phi_A(x)\times{\left(\frac{1}{U}\sum{\simm{(x, x_i)}}\right)}^\beta\right]}
 \end{equation}
 
-\textcite{Set08} admits that $\simm$ is open for interpretation. For simplicity, the average distance can be taken as ...
+\textcite{Set08} admits that $\simm$ is open for interpretation. It is also recognised that this lays the foundation of a clusterisation algorithm. There exist many forms of these algorithms, with the results of several of these algoithms on toy data sets presented in Figure~\ref{fig:ClusterResults} \cite{SciClus}.
 
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics[width=\textwidth]{clusters.png}
+    \caption[]{Clusterisation algorithms used on sample two-dimensional data sets to demonstrate resultant clusters.}
+    \label{fig:ClusterResults}
+  \end{center}
+\end{figure}
+
+As demonstrated by \ref{fig:ClusterResults} demonstrates, there are multiple
 
 \subsection{Estimated Future}
 These methods attempt to minimise a future attribute of the model. This works by predicting changes given with the inclusion of more data.
 
 \subsubsection{Expected Model Change}
-
+\blindtext[1]
 \section{Batch Active Learning}
 Several naive methods are available here. Firstly, getting the top $N$ data points from a model described in Section. However, this method does not take into account the equivalence of the data points. This is extremely clear using the highest uncertainty method. Each method in Section[] has been modified to demonstrate this weakness.
 
@@ -118,16 +131,14 @@ Several naive methods are available here. Firstly, getting the top $N$ data poin
 
 It stands to reason that the area which has the highest uncertainty will see this for the data points nearest neighbours. Thus, this singular data point suffers the potential of being surrounded by $N-1$ other data points. The benefit this provides in fitting the model is thus extremely limited, and only slightly greater than if one data point had been chosen. A simple fix would be to simulate the model after 1 iteration, and select the next point from here. By doing this $N-1$ times, a better solution may be found, although this may prove to be computationally very expensive.
 
-\section{Drug Data}
-There are numerous data categories that can be used to represent a chemical in a suitable form for machine learning. Each of these methods have various strengths and weaknesses. Some are directly based upon the chemical structure.
+\section{Drug Data for Machine Learning}
+There are numerous data categories that can be used to represent a chemical in a suitable form for machine learning. Indeed, the field of chemoinformatics is dedicated to the pursuit of describing chemicals for computational models. Each of these methods have various strengths and weaknesses. Some are directly based upon the chemical structure whereas others are based upon physical properties. These can be combined to produce models with high predictive capabilities.
+
 \section{Physical Properties}
 A selection of physical properties from chemicals are known, from melting points to solubility. Many of these provide important aspects for consideration and allow human scientists to predict interactions, especially when determining new drugs. These data are often reported in tables within textbooks such as Perry's [] or provided through software [chembl ...].
 \\
 Several of these data can be predicted through theoretical models, although the difficulty increases for larger molecules. For example,
 \blindtext[1]
 \section{Fingerprints}
-Another methodology is to develop a fingerprint: a unique code based on the chemical structure, either of the atomic arrangement, or by the electron cloud distribution. The latter of these is more fundamental to the activity of molecules but far harder to calculate. Indeed,
+Another methodology is to develop a fingerprint: a unique code based on the chemical structure, either of the atomic arrangement, or by the electron cloud distribution. The latter of these is more fundamental to the activity of molecules but far harder to calculate. Indeed, for accurate representation of the latter, both atomic structure is needed \textit{and} solutions for the Schrödinger equations corresponding to these structure.
 ...Morgan Fingerprints
-\blindtext[1]
-\section{Combining Drug Data with Active Learning}
-\blindtext[1]

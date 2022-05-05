@@ -195,8 +195,9 @@ def main():
     algorithm = (
         # algorithms["mine"],
         # algorithms["uncertainty_sampling"],
-        algorithms["rod"],
+        # algorithms["rod"],
         # algorithms["dumb"],
+        algorithms["broad"],
     )
 
     framework(
