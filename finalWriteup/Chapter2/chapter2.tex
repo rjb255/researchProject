@@ -9,15 +9,34 @@
 \graphicspath{{Chapter2/Figs/Vector/}{Chapter2/Figs/}}
 
 
-Scores displayed in examples have been based on the entire data set. Although this usually leads to data leakage within machine learning, this is not a concern here as the true comparison comes from testing  \textit{intelligent} vs \textit{dumb} learning methods. In both of these cases, the model is kept identical, but the selection process in not. The baseline simply takes the first $n$ entries from the data set, with the \textit{intelligent} method described where required. Three data sets have been used to demonstrate on multiple data sets [][][].
+Scores displayed in examples have been based on the entire data set. Although this usually leads to data leakage within machine learning, this is not a concern here as the true comparison comes from testing  \textit{intelligent} vs \textit{dumb} learning methods. In both of these cases, the model is kept identical, but the selection process in not. The baseline simply takes the first $n$ entries from the data set, with the \textit{intelligent} method described where required. A simple function has been used to present data as a means of demonstrating these models, with $x$ having two dimensions. The function for $y$ is shown in \ref{eq:phantom} and displayed graphically in Figure \ref{fig:phantom}.
 
-\section{Active Learning}\label{ch:Active Learning}
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics{phantomOverview.pdf}
+    \caption{Contour plot of the function used to demonstrate the algorithms presented in previous work. The crosses have been used to show the location of the 200 test data points used within this example.}
+    \label{fig:phantom}
+  \end{center}
+\end{figure}
+
+\begin{equation}
+  y = \sin{(x_1)}^{10} + \cos{(10 + x_1 x_2)}\cos{(x_1)}
+  \label{eq:phantom}
+\end{equation}
+
+\section{Active Learning}
+\label{ch:Active Learning}
+
 There are several schools of thought regarding active learning. These can be separated into two distinct categories: current data and future predictions. The former of these is computationally cheaper, as will be apparent on description.
 
 \subsection{Current Data}
-\subsubsection{Uncertainty Sampling}\label{sec:Uncertainty Sampling}
-The simplest is applicable to cases in which a certainty is provided with each prediction. \textcite{Set09} suggests selecting the data point with the largest uncertainty according to the current model. Using the dataset '', this is demonstrated in Figure~\ref{fig:BNB1} with the algorithm for deciding the next sample point given in Algorithm~\ref{alg:US}.
-\\
+
+\subsubsection{Uncertainty Sampling and Regions of Disagreements}
+\label{sec:Uncertainty Sampling}
+
+The simplest is applicable to cases in which a certainty is provided with each prediction. \textcite{Set09} suggests selecting the data point with the largest uncertainty according to the current model. Using the dataset '', this is demonstrated in Figure~\ref{fig:rodPhantom} with the algorithm for deciding the next sample point given in Algorithm~\ref{alg:US}.
+
 \begin{algorithm}[H]
   \KwData{$X_\mathrm{known}$, $Y_\mathrm{known}$, $X_\mathrm{unknown}$}
   \KwResult{Next $X$ to label}
@@ -30,22 +49,25 @@ The simplest is applicable to cases in which a certainty is provided with each p
 \end{algorithm}
 
 
-\begin{figure}
+\begin{figure}[H]
   \begin{center}
-    \includegraphics[width=100mm]{US_300_all3.pdf}
-    \caption{boohoo}
-    \label{fig:BNB1}
+    \includegraphics[]{rodPhantom.pdf}
+    \caption[]{The outcome of the investigating the areas of the highest uncertainty. A) Demonstrates the final set of points tested by the algorithm and B) shows the change in the mean squared error for the algorithm after each iteration.}
+    \label{fig:rodPhantom}
   \end{center}
-
 \end{figure}
-As addressed by \textcite{Set09}, this can be extended to any probabilistic model.
+Interestingly, Figure \ref{fig:rodPhantom}B shows how the mean squared error for the random sampling method performed to worse within the iterations tested. This is likely due to a bias in the use of linear models in fitting leading to large uncertainties surrounding areas with high curvature. Evidence to this is provided in \ref{fig:rodPhantom}A with a large proportion of the sampled points at areas of high curvature.
+
+As addressed by \textcite{Set09}, this can be extended to any probabilistic model through \ref{eq:x_next1}. \textcite{Set09} also notes the use of information theory for probabilistic models(\ref{eq:info_uncertainty}), where $y_i$ refers to all possible categorisations for $x$. This derives from the principle that the greatest entropy requires the most information to encode, and thus the least certain. However, \textcite{Set09} fails to address non-probabilistic models in this instance, instead converting such models into probabilistic ones.
+
 \begin{equation}
   \label{eq:x_next1}
   x_\mathrm{next}=\argmax_X{\left[s_{g(X)}\right]}
 \end{equation}
-\textcite{Set09} also notes the use of information theory for probabilistic models
-% (\ref{eq:info_uncertainty}), 
-where $y_i$ refers to all possible categorisations for $x$. This derives from the principle that the greatest entropy requires the most information to encode, and thus the least certain. However, \textcite{Set09} fails to address non-probabilistic models in this instance, instead converting such models into probabilistic ones.
+
+In order to adapt non-probabilistic models into probabilistic ones, composite models may be used. These are an amalgamation of other models where the standard deviation of the individual models can be taken as the degree of certainty for a given point. Many authors have called this as minimising the region of disagreement as it attempts to produce a coherent hypothesis space. By minimising the region of disagreement between various models, a finer fit may be achieved. Indeed, this was the method used in Figure \ref{fig:rodPhantom}.
+
+One way of achieving this, especially in a regression model where boundaries are not quite so distinct, is to declare $n$ models ${M = \{m_1,\ldots{}, m_n\}}$. Combining these allow for a model $\hat{m}$ to be defined with prediction $\hat{y}$, being the mean prediction of $M$, ${\frac{1}{n}\sum{y_i}}$ and a sample standard deviation $\hat{s}$ defined as the sample standard deviation of $y_i$. This standard deviation can be used as a measure of the disagreement between the models. Thus, using a method as in Section~\ref{sec:Uncertainty Sampling}.
 
 \begin{equation}
   \label{eq:info_uncertainty}
@@ -53,9 +75,9 @@ where $y_i$ refers to all possible categorisations for $x$. This derives from th
 \end{equation}
 
 \subsubsection{Broad Knowledge Base}
-A second form stems from information theory. Here, the aim is to produce an evenly dispersed $x$ allowing a well-informed knowledge base. There are two paths to proceed: density and nearest neighbours.
+A second form stems from information theory. Here, the aim is to produce an evenly dispersed $x$ allowing a well-informed knowledge base. This prevents poor model choice from influencing the algorithm as was seen in \ref{fig:rodPhantom}. There are two paths to proceed: density and nearest neighbours.
 
-The former of these requires a definition of density in a sparsely populated space. As an analogy, the density of a gas appears well-defined, it becomes non-smooth once the volume defined over is comparable to the distance between particles. Thus, a new definition is required.
+The former of these requires a definition of density in a sparsely populated space. As an analogy, although the density of a gas appears well-defined, it becomes non-smooth once the volume defined over is comparable to the distance between particles. Thus, a new definition is required.
 
 Alternatively, nearest neighbour requires little explanation. $x_\mathrm{next}$ is the unlabelled data point furthest from any labelled data point.
 
@@ -66,7 +88,6 @@ Alternatively, nearest neighbour requires little explanation. $x_\mathrm{next}$ 
 
 \begin{center}
   \includegraphics[width=100mm]{BKB_300_all3.pdf}
-
 \end{center}
 
 \subsubsection{Density Hotspots}
@@ -79,10 +100,8 @@ Conversely, a density weighted model has been suggested, as it escapes the intro
 
 \textcite{Set08} admits that $\simm$ is open for interpretation. For simplicity, the average distance
 
-\subsubsection{Regions of Disagreement}
-As more complex methods are explored, we stumble across the method of competing hypothesis. This builds upon the [], and attempts to find []. The majority of work here relates to classification, although the same principles apply to regression. By minimising the region of disagreement between various models, a finer fit may be achieved.
 
-One way of achieving this, especially in a regression model where boundaries are not quite so distinct, is to declare $n$ models ${M = \{m_1,\ldots{}, m_n\}}$. Combining these allow for a model $\hat{m}$ to be defined with prediction $\hat{y}$, being the mean prediction of $M$, ${\frac{1}{n}\sum{y_i}}$ and a sample standard deviation $\hat{s}$ defined as the sample standard deviation of $y_i$. This standard deviation can be used as a measure of the disagreement between the models. Thus, using a method as in Section~\ref{sec:Uncertainty Sampling}.
+
 
 \subsection{Estimated Future}
 These methods attempt to minimise a future attribute of the model. This works by predicting changes given with the inclusion of more data.

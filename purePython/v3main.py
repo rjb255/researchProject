@@ -20,6 +20,7 @@ from scipy.spatial import KDTree
 from sklearn.linear_model import BayesianRidge as BR
 from sklearn.neighbors import KNeighborsRegressor as KNN
 from sklearn.ensemble import RandomForestRegressor as RFR
+from sklearn.svm import SVR
 
 proj_path = os.path.join(
     "/", "home", "rjb255", "University", "ChemEng", "ResearchProject"
@@ -171,7 +172,9 @@ def main():
         "BayesianRidge": BR(),
         "KNN": KNN(n_jobs=-1),
         "RandomForrest": RFR(random_state=1),
+        "SupportVector": SVR(),
     }
+
     algorithms = {
         "dumb": base,
         "uncertainty_sampling": uncertainty_sampling,
@@ -184,8 +187,9 @@ def main():
     model = Models([models["BayesianRidge"], models["KNN"], models["RandomForrest"]])
 
     algorithm = (
-        algorithms["mine"],
-        algorithms["rod"],
+        # algorithms["mine"],
+        # algorithms["uncertainty_sampling"],
+        # algorithms["rod"],
         algorithms["dumb"],
     )
 
@@ -198,8 +202,8 @@ def main():
         Y_test,
         model,
         algorithm,
-        iterations=20,
-        sample_size=100,
+        iterations=300,
+        sample_size=1,
         score=score,
     )
 
