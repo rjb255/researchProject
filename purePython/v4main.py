@@ -21,6 +21,8 @@ from sklearn.linear_model import BayesianRidge as BR
 from sklearn.neighbors import KNeighborsRegressor as KNN
 from sklearn.ensemble import RandomForestRegressor as RFR
 from sklearn.mixture import GaussianMixture as GMM
+from sklearn.cluster import Birch as BIRCH
+
 
 proj_path = os.path.join(
     "/", "home", "rjb255", "University", "ChemEng", "ResearchProject"
@@ -56,7 +58,7 @@ def framework(
     iterations: int,
     sample_size: int,
     score: object,
-    alpha: list =[],
+    alpha: list = [],
 ):
     inner_func = partial(
         first_split,
@@ -69,11 +71,11 @@ def framework(
         sample_size,
         Y_test,
         X_test,
-        alpha=alpha
+        alpha=alpha,
     )
     results = [inner_func(alg) for alg in algorithm]
 
-    pprint(f'{alpha}: {results}')
+    pprint(f"{alpha}: {results}")
     return results
 
 
@@ -97,7 +99,7 @@ def first_split(
     mem = {}  # If sth is stored between executions
     score_record = []
     processes = []
-    mem['alpha'] = alpha
+    mem["alpha"] = alpha
     for i in range(iterations):
         if len(x) > 0:
             m.fit(X, Y)
@@ -144,7 +146,7 @@ def broad_base(m, X, Y, x, mem, *args, **kwargs):
 
 
 def rod_hotspots(m, X, Y, x, mem, *args, **kwargs):
-    
+
     Y_predict, Y_error = m.predict_error(x)
     err = -Y_error
 
@@ -153,19 +155,21 @@ def rod_hotspots(m, X, Y, x, mem, *args, **kwargs):
     temp1 = pd.Series(Y_predict)
     temp2 = pd.Series(err)
     cluster_x = copy.deepcopy(pd.DataFrame(x))
-    
-    cluster_x['err'] = err
-    cluster_x['y'] = Y_predict
 
-    lower_lvl = np.quantile(cluster_x["err"], mem['alpha'][0])
+    cluster_x["err"] = err
+    cluster_x["y"] = Y_predict
+
+    lower_lvl = np.quantile(cluster_x["err"], mem["alpha"][0])
     index = np.ones_like(err)
-    index[cluster_x['err'] < lower_lvl] = 0
+    index[cluster_x["err"] < lower_lvl] = 0
 
     cluster_x = cluster_x[index == 1]
     if "cluster" in mem:
         mem["cluster"].fit(cluster_x)
     else:
-        mem["cluster"] = GMM(min(50, max(5, len(cluster_x)-10)), random_state=1, warm_start=True).fit(cluster_x)
+        mem["cluster"] = GMM(
+            min(50, max(5, len(cluster_x) - 10)), random_state=1, warm_start=True
+        ).fit(cluster_x)
 
     # if "tree" in mem:
     #     pass
@@ -181,13 +185,15 @@ def rod_hotspots(m, X, Y, x, mem, *args, **kwargs):
     try:
         err[err < 0] = 0
         Y_predict[Y_predict < 0] = 0
-        score[index == 1] = (np.power(err[index == 1], mem['alpha'][1]) *
-                             np.power(Y_predict[index == 1], mem['alpha'][2]) *
-                             np.array(mem["cluster"].score_samples(cluster_x)))
+        score[index == 1] = (
+            np.power(err[index == 1], mem["alpha"][1])
+            * np.power(Y_predict[index == 1], mem["alpha"][2])
+            * np.array(mem["cluster"].score_samples(cluster_x))
+        )
     except e:
         print(err[index == 1])
         print(f"{mem['alpha'][1]}, {mem['alpha'][2]}")
-        print(np.power(err[index == 1], mem['alpha'][1]))
+        print(np.power(err[index == 1], mem["alpha"][1]))
         score[index == 1] = err[index == 1] * 10
         print(e)
     return score
@@ -213,7 +219,7 @@ def start(
 
 def main():
     paths = ["data_CHEMBL313.csv", "data_CHEMBL2637.csv", "data_CHEMBL4124.csv"]
-    
+
     set_num = 0
     start(paths[set_num])
     #
@@ -266,8 +272,9 @@ def post_main(dataset, alpha=[]):
         iterations=4,
         sample_size=120,
         score=score,
-        alpha=alpha
+        alpha=alpha,
     )
+
 
 if __name__ == "__main__":
     main()

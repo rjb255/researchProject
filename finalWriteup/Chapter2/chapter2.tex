@@ -7,6 +7,11 @@
 
 
 \graphicspath{{Chapter2/Figs/Vector/}{Chapter2/Figs/Raster/}}
+% **************************** Nomenclature **********************************
+\nomenclature[c-1-x]{$x$}{Datapoints where $x=\{x_0, x_1, ..., x_{N-1}\}$}
+\nomenclature[c-1-y]{$y$}{Labels for the dataset where $y=\{y_0, y_1, ..., y_{N-1}\}$}
+\nomenclature[c-1-N]{$N$}{Number of features/dimensions of $x$}
+%*****************************************************************************
 
 
 Scores displayed in examples have been based on the entire data set. Although this usually leads to data leakage within machine learning, this is not a concern here as the true comparison comes from testing  \textit{intelligent} vs \textit{dumb} learning methods. In both of these cases, the model is kept identical, but the selection process in not. The baseline simply takes the first $n$ entries from the data set, with the \textit{intelligent} method described where required. A simple function has been used to present data as a means of demonstrating these models, with $x$ having two dimensions. The function for $y$ is shown in \ref{eq:phantom} and displayed graphically in Figure \ref{fig:phantom}.
@@ -15,7 +20,7 @@ Scores displayed in examples have been based on the entire data set. Although th
 \begin{figure}[H]
   \begin{center}
     \includegraphics{phantomOverview.pdf}
-    \caption{Contour plot of the function used to demonstrate the algorithms presented in previous work. The crosses have been used to show the location of the 200 test data points used within this example.}
+    \caption[Example Dataset for Representation of Ideas]{Contour plot of the function used to demonstrate the algorithms presented in previous work. The crosses have been used to show the location of the 200 test data points used within this example.}
     \label{fig:phantom}
   \end{center}
 \end{figure}
@@ -51,8 +56,8 @@ The simplest is applicable to cases in which a certainty is provided with each p
 
 \begin{figure}[H]
   \begin{center}
-    \includegraphics[]{rodPhantom.pdf}
-    \caption[]{The outcome of the investigating the areas of the highest uncertainty. A) Demonstrates the final set of points tested by the algorithm and B) shows the change in the mean squared error for the algorithm after each iteration.}
+    \includegraphics{rodPhantom.pdf}
+    \caption[Uncertainty Sampling Demonstration]{The outcome of the investigating the areas of the highest uncertainty. A) Demonstrates the final set of points tested by the algorithm and B) shows the change in the mean squared error for the algorithm after each iteration.}
     \label{fig:rodPhantom}
   \end{center}
 \end{figure}
@@ -85,10 +90,11 @@ Alternatively, nearest neighbour requires little explanation. $x_\mathrm{next}$ 
   \label{eq:inverseSim}
   x_\mathrm{next}=\argmax_x{\left(\sum{\frac{1}{\simm{(x, x_i)}}}\right)}
 \end{equation}
+
 \begin{figure}[H]
   \begin{center}
     \includegraphics{broadPhantom.pdf}
-    \caption[]{The outcome of the investigating the areas of using a broad base. A) Demonstrates the final set of points tested by the algorithm and B) shows the change in the mean squared error for the algorithm after each iteration.}
+    \caption[Broad-Base Sampling Illustration]{The outcome of the investigating the areas of using a broad base. A) Demonstrates the final set of points tested by the algorithm and B) shows the change in the mean squared error for the algorithm after each iteration.}
     \label{fig:b}
   \end{center}
 \end{figure}
@@ -112,7 +118,7 @@ Conversely, a density weighted model has been suggested, as it escapes the intro
   \end{center}
 \end{figure}
 
-As demonstrated by \ref{fig:ClusterResults} demonstrates, there are multiple
+As demonstrated by \ref{fig:ClusterResults} demonstrates, there are multiple different interpretations of the solution to the problem of clustering. The makers of the Sci-kit learn package also discuss the scalability of each algorithm \cite{SciClus}. In order to prepare a high number of features (beyond the two used within this section for demonstration) and large number of data points, it is required that the algorithm scales accordingly. Further, for an adaptive process, it is more suitable for an algorithm to be adaptive to differing distribution. This limits the suitable algorithms to K-Means, Ward and Birch - columns one, five, and nine of Figure~\ref{fig:ClusterResults} respectively.
 
 \subsection{Estimated Future}
 These methods attempt to minimise a future attribute of the model. This works by predicting changes given with the inclusion of more data.
@@ -121,14 +127,18 @@ These methods attempt to minimise a future attribute of the model. This works by
 \blindtext[1]
 \section{Batch Active Learning}
 Several naive methods are available here. Firstly, getting the top $N$ data points from a model described in Section. However, this method does not take into account the equivalence of the data points. This is extremely clear using the highest uncertainty method. Each method in Section[] has been modified to demonstrate this weakness.
+\begin{figure}
+  \begin{center}
+    \includegraphics{batchrodPhantom.pdf}
+    \caption[Batch Uncertainty Sampling]{a}
+  \end{center}
+\end{figure}
 
-\begin{center}
-  \includegraphics[width=150mm]{BKB_10_120_all3.pdf}
-\end{center}
-\begin{center}
-  \includegraphics[width=150mm]{US_10_120_all3.pdf}
-\end{center}
-
+\begin{figure}
+  \begin{center}
+    \includegraphics{batchbroadPhantom.pdf}
+  \end{center}
+\end{figure}
 It stands to reason that the area which has the highest uncertainty will see this for the data points nearest neighbours. Thus, this singular data point suffers the potential of being surrounded by $N-1$ other data points. The benefit this provides in fitting the model is thus extremely limited, and only slightly greater than if one data point had been chosen. A simple fix would be to simulate the model after 1 iteration, and select the next point from here. By doing this $N-1$ times, a better solution may be found, although this may prove to be computationally very expensive.
 
 \section{Drug Data for Machine Learning}

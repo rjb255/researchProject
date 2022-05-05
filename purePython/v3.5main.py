@@ -23,6 +23,9 @@ from sklearn.neighbors import KNeighborsRegressor as KNN
 from sklearn.ensemble import RandomForestRegressor as RFR
 from sklearn.svm import SVR
 
+from sklearn.cluster import Birch as BIRCH
+
+
 proj_path = os.path.join(
     "/", "home", "rjb255", "University", "ChemEng", "ResearchProject"
 )
@@ -152,8 +155,54 @@ def rod_hotspots(m, X, Y, x, *args, **kwargs):
     return series * err * Y
 
 
-def clusterise():
-    pass
+def clusterise(m, X, Y, x, mem, *args, **kwargs):
+
+    Y_predict, Y_error = m.predict_error(x)
+    err = -Y_error
+
+    # todo CLUSTER ALGORITHM FIRST
+    # todo INCLUDE Y_predict and Y_std, consider a restriction on std error
+    temp1 = pd.Series(Y_predict)
+    temp2 = pd.Series(err)
+    cluster_x = copy.deepcopy(pd.DataFrame(x))
+
+    # cluster_x["err"] = err
+    # cluster_x["y"] = Y_predict
+
+    lower_lvl = np.quantile(err, 0.75)
+    index = np.ones_like(err)
+    index[cluster_x["err"] < lower_lvl] = 0
+
+    cluster_x = cluster_x[index == 1]
+    if "cluster" in mem:
+        mem["cluster"].partial_fit(cluster_x)
+    else:
+        mem["cluster"] = Birch(
+            n_cluster=None, random_state=1, compute_labels=False
+        ).fit(cluster_x)
+
+    # if "tree" in mem:
+    #     pass
+    # else:
+    #     mem["tree"] = KDTree(cluster_x)
+
+    # # todo WORK WITH CLUSTERS
+
+    # alias_points = mem["tree"].query(mem["cluster"])
+
+    # todo return std^alpha*y_predict^beta for alias_points
+    score = index
+    try:
+        err[err < 0] = 0
+        Y_predict[Y_predict < 0] = 0
+        score[index == 1] = np.array(mem["cluster"].score_samples(cluster_x))
+    except e:
+        print(err[index == 1])
+        print(f"{mem['alpha'][1]}, {mem['alpha'][2]}")
+        print(np.power(err[index == 1], mem["alpha"][1]))
+        score[index == 1] = err[index == 1] * 10
+        print(e)
+    return score
 
 
 def density(x1, x2, mem):
@@ -209,8 +258,8 @@ def main():
         Y_test,
         model,
         algorithm,
-        iterations=50 + 1,
-        sample_size=1,
+        iterations=6,
+        sample_size=10,
         score=score,
     )
 
