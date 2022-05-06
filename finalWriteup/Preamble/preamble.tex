@@ -5,8 +5,8 @@
 % Set {innerside margin / outerside margin / topmargin / bottom margin}  and
 % other page dimensions
 \ifsetCustomMargin
-  \RequirePackage[left=37mm,right=30mm,top=35mm,bottom=30mm]{geometry}
-  \setFancyHdr % To apply fancy header after geometry package is loaded
+    \RequirePackage[left=37mm,right=30mm,top=35mm,bottom=30mm]{geometry}
+    \setFancyHdr % To apply fancy header after geometry package is loaded
 \fi
 
 % Add spaces between paragraphs
@@ -23,22 +23,22 @@
 % Add `customfont' in the document class option to use this section
 
 \ifsetCustomFont
-  % Set your custom font here and use `customfont' in options. Leave empty to
-  % load computer modern font (default LaTeX font).
-  %\RequirePackage{helvet}
+    % Set your custom font here and use `customfont' in options. Leave empty to
+    % load computer modern font (default LaTeX font).
+    %\RequirePackage{helvet}
 
-  % For use with XeLaTeX
-  %  \setmainfont[
-  %    Path              = ./libertine/opentype/,
-  %    Extension         = .otf,
-  %    UprightFont = LinLibertine_R,
-  %    BoldFont = LinLibertine_RZ, % Linux Libertine O Regular Semibold
-  %    ItalicFont = LinLibertine_RI,
-  %    BoldItalicFont = LinLibertine_RZI, % Linux Libertine O Regular Semibold Italic
-  %  ]
-  %  {libertine}
-  %  % load font from system font
-  %  \newfontfamily\libertinesystemfont{Linux Libertine O}
+    % For use with XeLaTeX
+    %  \setmainfont[
+    %    Path              = ./libertine/opentype/,
+    %    Extension         = .otf,
+    %    UprightFont = LinLibertine_R,
+    %    BoldFont = LinLibertine_RZ, % Linux Libertine O Regular Semibold
+    %    ItalicFont = LinLibertine_RI,
+    %    BoldItalicFont = LinLibertine_RZI, % Linux Libertine O Regular Semibold Italic
+    %  ]
+    %  {libertine}
+    %  % load font from system font
+    %  \newfontfamily\libertinesystemfont{Linux Libertine O}
 \fi
 
 % *****************************************************************************
@@ -118,12 +118,12 @@
 
 % Add `custombib' in the document class option to use this section
 \ifuseCustomBib
-  % \RequirePackage[square, sort, numbers, authoryear]{natbib} % CustomBib
+    % \RequirePackage[square, sort, numbers, authoryear]{natbib} % CustomBib
 
-  % If you would like to use biblatex for your reference management, as opposed to the default `natbibpackage` pass the option `custombib` in the document cl`ass. Comment out the previous line to make sure you don't load the natbib package. Uncomment the following lines and specify the location of references.bib file
+    % If you would like to use biblatex for your reference management, as opposed to the default `natbibpackage` pass the option `custombib` in the document cl`ass. Comment out the previous line to make sure you don't load the natbib package. Uncomment the following lines and specify the location of references.bib file
 
-  % \RequirePackage[backend=biber, style=numeric-comp, citestyle=numeric, sorting=nty, natbib=true]{biblatex}
-  \addbibresource{References/references.bib} %Location of references.bib only for biblatex, Do not omit the .bib extension from the filename.
+    % \RequirePackage[backend=biber, style=numeric-comp, citestyle=numeric, sorting=nty, natbib=true]{biblatex}
+    \addbibresource{References/references.bib} %Location of references.bib only for biblatex, Do not omit the .bib extension from the filename.
 
 \fi
 

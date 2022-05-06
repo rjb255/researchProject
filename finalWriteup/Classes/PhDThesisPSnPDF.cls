@@ -161,7 +161,7 @@
 % ****************** Chapter Mode - To print only selected chapters ************
 \newif \ifdefineChapter\defineChapterfalse %To enable Separate abstract
 
-\newif\ifPHD@chapter\PHD@chapterfalse % Enable Separate Abstract
+\newif\ifPHD@chapter\PHD@chaptertrue % Enable Separate Abstract
 \DeclareOption{chapter}{
   \PHD@chaptertrue
   \ClassWarning{PhDThesisPSnPDF}{You have chosen an option that generates only 
@@ -200,7 +200,7 @@ footnotes.}
 \DeclareOption{twoside}{\PassOptionsToClass{\CurrentOption}{book}}%
 
 % ****************************** Draft Option **********************************
-\newif\ifsetDraft\setDraftfalse
+\newif\ifsetDraft\setDrafttrue
 \newif\ifsetDraftClassic\setDraftClassicfalse
 % Draft Mode
 \DeclareOption{draftclassic}{\PassOptionsToClass{draft}{book}
@@ -308,7 +308,7 @@ supported!}
 
 % ******************************* Draft Mode ***********************************
 % Initializing Draft Text
-\newcommand\SetDraftText[1]{}
+\newcommand\SetDraftText[3]{}
 % Initializing Draft Version
 \newcommand\SetDraftVersion[1]{}
 % Initializing Draft Content
@@ -387,7 +387,7 @@ supported!}
 }
 
 % Draft Version
-\newcommand\draftVersion{v1.0}
+\newcommand\draftVersion{v1.1}
 \renewcommand\SetDraftVersion[1]{%
   \renewcommand\draftVersion{#1}
 }

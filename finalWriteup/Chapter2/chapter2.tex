@@ -11,6 +11,18 @@
 \nomenclature[c-1-x]{$x$}{Data points where $x=\{x_0, x_1, ..., x_{N-1}\}$}
 \nomenclature[c-1-y]{$y$}{Labels for the dataset where $y=\{y_0, y_1, ..., y_{N-1}\}$}
 \nomenclature[c-1-N]{$N$}{Number of features/dimensions of $x$}
+
+\nomenclature[c-2-IC50]{$\mathrm{IC_{50}}$}{Half maximal inhibitory molar concentration}
+\nomenclature[c-2-XC50]{$\mathrm{XC_{50}}$}{Half maximal effective or inhibitory molar concentration}
+\nomenclature[c-2-EC50]{$\mathrm{EC_{50}}$}{Half maximal effective molar concentration}
+\nomenclature[c-2-AC50]{$\mathrm{AC_{50}}$}{Half maximal effective molar concentration}
+\nomenclature[c-2-Ki]{$\mathrm{Ki}$}{Half maximal molar concentration for half receptor occupancy}
+\nomenclature[c-2-LD50]{$\mathrm{LD_{50}}$}{Median lethal dose}
+
+
+
+
+
 %*****************************************************************************
 
 
@@ -158,9 +170,16 @@ There are numerous data categories that can be used to represent a chemical in a
 
 \subsection{Physical Properties}
 A selection of physical properties from chemicals are known, from melting points to solubility. Many of these provide important aspects for consideration and allow human scientists to predict interactions, especially when determining new drugs. These data are often reported in tables within textbooks such as Perry's [] or provided through software [chembl ...].
-\\
-Several of these data can be predicted through theoretical models, although the difficulty increases for larger molecules. For example,
-\blindtext[1]
+
+Several of these data can be predicted through theoretical models, although the difficulty increases for larger molecules. For example, models exist for density predictions, but predicting the $\mathrm{LD_{50}}$ of a drug is  far more challenging task. Indeed, even with animal testing, this property is deemed difficult to trully assess.
+
+Within drug discovery, physical and biological properties are usually the sought after labels. An example of this is supplied by \textcite{CHEMBL} with a custom property named pChEMBL, as defined by \ref{eq:pChEMBL} where  "|" is synonymous with or.
+
+\begin{equation}
+  \label{eq:pChEMBL}
+  \mathrm{pChEMBL}=-\log_{10}{\left(\mathrm{IC_{50}}|\mathrm{XC_{50}}|\mathrm{EC_{50}}|\mathrm{AC_{50}}|\mathrm{Ki}|\mathrm{LD_{50}}|\mathrm{Potency}\right)}
+\end{equation}
+
 \subsection{Fingerprints}
 Another methodology is to develop a fingerprint: a unique code based on the chemical structure, either of the atomic arrangement, or by the electron cloud distribution. The latter of these is more fundamental to the activity of molecules but far harder to calculate. Indeed, for accurate representation of the latter, both atomic structure is needed \textit{and} solutions for the Schrödinger equations corresponding to molecule in question.
 
@@ -172,4 +191,6 @@ According to \textcite{Cap20}, the most popular fingerprint in use are Morgan Fi
   \item \textbf{Duplicate Removal}: Duplicate features are removed for hashing.
 \end{enumerate}
 
-The iteration process is involves each atom and adjacent atoms sharing numbers before in an array. A hash function is applied to this array and becomes the atoms new identifier.
+The iteration process involves each atom and adjacent atoms sharing numbers before in an array. A hash function is applied to this array and becomes the atoms new identifier. Fingerprints of this class are labelled according to the number of iterations, $n$, with the final name given as ECFP\_$\langle{}2n\rangle{}$. Morgan fingerprints, the most common form, are thus also called ECFP\_4 \cite{Cap20, Mor2020}. Thus, these come under the remit of fingerprints based upon two-dimensional chemical structure, rather than three-dimensional or even electron distribution. Morgan fingerprints are readily available for millions of compounds from the publicly accessible ChEMBL database \cite{CHEMBL}.
+
+Alternative common fingerprints include SMILES, InChI, and the MDL molfile.

@@ -41,15 +41,17 @@ def custom_print(output: int, *args, **kwargs):
 
 # endregion
 
+
 def to_minimise(data_set, alpha):
-    print(f'alpha: {alpha}')
+    print(f"alpha: {alpha}")
     temp = partial(algs.post_main, alpha=alpha)
     with Pool() as p:
         scores = p.map(temp, [data for data in data_set])
     scores = np.array(scores)
-    print(len(scores[:,-1]))
+    print(len(scores[:, -1]))
     print(f"alpha score: {np.mean(scores[:,-1])}")
-    return np.mean(scores[:,-1])
+    return np.mean(scores[:, -1])
+
 
 def callback_minimise(*args):
     print(f"CALLBACK: {args}")
@@ -67,9 +69,9 @@ def main(*, output=0, alpha=[]):
 
     dataset_lens = np.zeros([len(datasets)])
     for i, data in enumerate(datasets):
-        with open(data, 'r') as f:
+        with open(data, "r") as f:
             dataset_lens[i] = len(f.readlines())
-            
+    print(len(datasets))
     datasets = datasets[dataset_lens > 1200]
 
     split = [int(len(datasets) * 0.8), int(len(datasets) * 0.8)]
@@ -85,13 +87,14 @@ def main(*, output=0, alpha=[]):
     a_boundary = [(0.5, 1), (-4, 4), (-4, 4)]
     if a0:
         alef = opt.minimize(
-            lambda a: to_minimise(data_train, a), 
-            a0, 
-            bounds=a_boundary, 
-            options={'maxiter': 8}, 
-            method='Nelder-Mead', 
-            callback=callback_minimise)
-        alpha = alef['x']
+            lambda a: to_minimise(data_train, a),
+            a0,
+            bounds=a_boundary,
+            options={"maxiter": 8},
+            method="Nelder-Mead",
+            callback=callback_minimise,
+        )
+        alpha = alef["x"]
         print(alpha)
     with_alpha = partial(algs.post_main, alpha=alpha)
     with Pool() as p:
@@ -102,7 +105,7 @@ def main(*, output=0, alpha=[]):
     # plt.ion()
     # plt.plot([1, 101, 201, 301, 401], np.transpose(scores))
     # plt.show(block=True)
-    results.to_csv('output.csv')
+    results.to_csv("output.csv")
 
 
 if __name__ == "__main__":
