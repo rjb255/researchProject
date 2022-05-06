@@ -47,9 +47,16 @@ The machine learning model is the only custom class used. Here, a similar struct
 This is a simple method with greater potential than has been explored. By providing this as a separate method, a more computationally intensive validation model could be used without interference as parallelisation could be exploited. However, as it currently stands, it returns the weighted mean squared error using the standard method provided by [].
 \subsection{Active Learning Algorithms}
 \subsubsection{Dumb}
-\blindtext[1]
-\subsubsection{The Greatest Uncertainty}
-\blindtext[1]
+The dumb algorithm, also referred to as random sampling or Monte Carlo sampling, refers to an algorithm that calls upon random samples to be tested. This represents the computationally least expensive approach, and is thus used as a baseline in comparing other algorithms. Since the datasets are shuffled prior to being used, the algorithm is extremely simple, as demonstrated in Algorithm~\ref{alg:MC}.
+
+\begin{algorithm}[h]
+    \KwData{$X_\mathrm{unknown}$}
+    \KwResult{$X$ ordered according to priority for sampling}
+    \Return{$X_\mathrm{unknown}$}
+    \caption{Uncertainty Sampling Selection}
+    \label{alg:MC}\SetAlgoLined
+\end{algorithm}
+
 \subsubsection{Region of Disagreement}
 \blindtext[1]
 \subsection{Training Framework}

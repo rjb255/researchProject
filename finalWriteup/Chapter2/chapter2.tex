@@ -8,7 +8,7 @@
 
 \graphicspath{{Chapter2/Figs/Vector/}{Chapter2/Figs/Raster/}}
 % **************************** Nomenclature **********************************
-\nomenclature[c-1-x]{$x$}{Datapoints where $x=\{x_0, x_1, ..., x_{N-1}\}$}
+\nomenclature[c-1-x]{$x$}{Data points where $x=\{x_0, x_1, ..., x_{N-1}\}$}
 \nomenclature[c-1-y]{$y$}{Labels for the dataset where $y=\{y_0, y_1, ..., y_{N-1}\}$}
 \nomenclature[c-1-N]{$N$}{Number of features/dimensions of $x$}
 %*****************************************************************************
@@ -38,11 +38,11 @@ There are several schools of thought regarding active learning. These can be sep
 \subsection{Current Data}
 
 \subsubsection{Uncertainty Sampling and Regions of Disagreements}
-\label{sec:Uncertainty Sampling}
+\label{sec:UncertaintySampling}
 
 The simplest is applicable to cases in which a certainty is provided with each prediction. \textcite{Set09} suggests selecting the data point with the largest uncertainty according to the current model. Using the dataset '', this is demonstrated in Figure~\ref{fig:rodPhantom} with the algorithm for deciding the next sample point given in Algorithm~\ref{alg:US}.
 
-\begin{algorithm}[H]
+\begin{algorithm}[h]
   \KwData{$X_\mathrm{known}$, $Y_\mathrm{known}$, $X_\mathrm{unknown}$}
   \KwResult{Next $X$ to label}
   model = BayesianRidge()\;
@@ -57,7 +57,7 @@ The simplest is applicable to cases in which a certainty is provided with each p
 \begin{figure}[H]
   \begin{center}
     \includegraphics{rodPhantom.pdf}
-    \caption[Uncertainty Sampling Demonstration]{The outcome of the investigating the areas of the highest uncertainty. A) Demonstrates the final set of points tested by the algorithm and B) shows the change in the mean squared error for the algorithm after each iteration.}
+    \caption[Uncertainty Sampling Demonstration]{The outcome of the investigating the areas of the highest uncertainty. An initial set of 5 random points was provided, and 50 further iterations were then carried out of sample size 1. A) Demonstrates the final set of points tested by the algorithm and B) shows the change in the mean squared error for the algorithm after each iteration.}
     \label{fig:rodPhantom}
   \end{center}
 \end{figure}
@@ -94,7 +94,7 @@ Alternatively, nearest neighbour requires little explanation. $x_\mathrm{next}$ 
 \begin{figure}[H]
   \begin{center}
     \includegraphics{broadPhantom.pdf}
-    \caption[Broad-Base Sampling Illustration]{The outcome of the investigating the areas of using a broad base. A) Demonstrates the final set of points tested by the algorithm and B) shows the change in the mean squared error for the algorithm after each iteration.}
+    \caption[Broad-Base Sampling Illustration]{The outcome of the investigating the areas of using a broad base. An initial set of 5 random points was provided, and 50 further iterations were then carried out of sample size 1. A) Demonstrates the final set of points tested by the algorithm and B) shows the change in the mean squared error for the algorithm after each iteration.}
     \label{fig:b}
   \end{center}
 \end{figure}
@@ -124,31 +124,52 @@ As demonstrated by \ref{fig:ClusterResults} demonstrates, there are multiple dif
 These methods attempt to minimise a future attribute of the model. This works by predicting changes given with the inclusion of more data.
 
 \subsubsection{Expected Model Change}
-\blindtext[1]
+As the name implies, this method chooses points which are likely to have the largest impact on the final model. By instigating each potential point, the impact on the eventual model can be found. However, this requires a method for quantifying the model change.
+
+\textcite{Set08,Set09} investigate models which can be trained "online": i.e. models which can use the previous iteration to reduce the time taken for convergence. They present a method called "Expected Gradient Length" (EGL) which has a couple of prerequisites: \textbf{1)} A probabilistic model is used \textbf{2)} Linear gradient based optimisation is used \textbf{3)} The model can be improved from previous iterations. Given these prerequisites, the problem becomes less computationally inexpensive given a small dataset or extensive parallelisation, and scales as $\mathcal{O}(n)$. However, it does have the distinct drawback of requiring close control of the data models used. Here, the length of the training gradient (the gradient used in re-fitting the parameters with gradient based optimisation) can be used as a measure of model change. In the case of a small model change, as is expected, the lenth of the training gradient can be written as ${\left\|\nabla{}l(\langle{}x, y_i\rangle{};\theta{})\right\|}$. Combining this with the probability distribution of $y$, the next sample to undergo labelling is given by \ref{eq:EGL}.
+
+\begin{equation}
+  \label{eq:EGL}
+  x_{EGL}^*=\argmax_x{\sum_i{P(y_i|x;\theta{})\left\|\nabla{}l(\langle{}x, y_i\rangle{};\theta{})\right\|}}
+\end{equation}
+
+
 \section{Batch Active Learning}
 Several naive methods are available here. Firstly, getting the top $N$ data points from a model described in Section. However, this method does not take into account the equivalence of the data points. This is extremely clear using the highest uncertainty method. Each method in Section[] has been modified to demonstrate this weakness.
+
 \begin{figure}
   \begin{center}
     \includegraphics{batchrodPhantom.pdf}
-    \caption[Batch Uncertainty Sampling]{a}
+    \caption[Batch Uncertainty Sampling]{The outcome of the investigating the areas of using uncertainty sampling. An initial set of 5 random points was provided, and 5 further iterations were then carried out of sample size 10. A) Demonstrates the final set of points tested by the algorithm and B) shows the change in the mean squared error for the algorithm after each iteration.}
   \end{center}
 \end{figure}
 
 \begin{figure}
   \begin{center}
     \includegraphics{batchbroadPhantom.pdf}
+    \caption[Batch Broad-Base Sampling]{The outcome of the investigating the areas of using broad-base sampling. An initial set of 5 random points was provided, and 5 further iterations were then carried out of sample size 10. A) Demonstrates the final set of points tested by the algorithm and B) shows the change in the mean squared error for the algorithm after each iteration.}
   \end{center}
 \end{figure}
+
 It stands to reason that the area which has the highest uncertainty will see this for the data points nearest neighbours. Thus, this singular data point suffers the potential of being surrounded by $N-1$ other data points. The benefit this provides in fitting the model is thus extremely limited, and only slightly greater than if one data point had been chosen. A simple fix would be to simulate the model after 1 iteration, and select the next point from here. By doing this $N-1$ times, a better solution may be found, although this may prove to be computationally very expensive.
 
 \section{Drug Data for Machine Learning}
 There are numerous data categories that can be used to represent a chemical in a suitable form for machine learning. Indeed, the field of chemoinformatics is dedicated to the pursuit of describing chemicals for computational models. Each of these methods have various strengths and weaknesses. Some are directly based upon the chemical structure whereas others are based upon physical properties. These can be combined to produce models with high predictive capabilities.
 
-\section{Physical Properties}
+\subsection{Physical Properties}
 A selection of physical properties from chemicals are known, from melting points to solubility. Many of these provide important aspects for consideration and allow human scientists to predict interactions, especially when determining new drugs. These data are often reported in tables within textbooks such as Perry's [] or provided through software [chembl ...].
 \\
 Several of these data can be predicted through theoretical models, although the difficulty increases for larger molecules. For example,
 \blindtext[1]
-\section{Fingerprints}
-Another methodology is to develop a fingerprint: a unique code based on the chemical structure, either of the atomic arrangement, or by the electron cloud distribution. The latter of these is more fundamental to the activity of molecules but far harder to calculate. Indeed, for accurate representation of the latter, both atomic structure is needed \textit{and} solutions for the Schrödinger equations corresponding to these structure.
-...Morgan Fingerprints
+\subsection{Fingerprints}
+Another methodology is to develop a fingerprint: a unique code based on the chemical structure, either of the atomic arrangement, or by the electron cloud distribution. The latter of these is more fundamental to the activity of molecules but far harder to calculate. Indeed, for accurate representation of the latter, both atomic structure is needed \textit{and} solutions for the Schrödinger equations corresponding to molecule in question.
+
+According to \textcite{Cap20}, the most popular fingerprint in use are Morgan Fingerprints, a form of Extended Chemical Fingerprint (ECFP). ECFPs use a simple algorithm in order to generate a unique identifier, as described by \textcite{Mor2020}:
+
+\begin{enumerate}
+  \item \textbf{Initial Assignment}: Each atom has an integer assigned as an identifier.
+  \item \textbf{Iterative Updating}: Updating the identifier assigned to atoms based on adjacent atoms and structural duplications.
+  \item \textbf{Duplicate Removal}: Duplicate features are removed for hashing.
+\end{enumerate}
+
+The iteration process is involves each atom and adjacent atoms sharing numbers before in an array. A hash function is applied to this array and becomes the atoms new identifier.
