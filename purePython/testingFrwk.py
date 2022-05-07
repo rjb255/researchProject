@@ -92,7 +92,7 @@ def main(*, output=0, alpha=[]):
     a_boundary = [(0, 150)]
     if a0:
         if minimise == 1:
-            arrays = [np.linspace(_a[0], _a[1], 10) for _a in a_boundary]
+            arrays = [np.linspace(_a[0], _a[1], 11) for _a in a_boundary]
             if len(arrays) > 1:
                 grid = np.array(itx(arrays))
             else:
