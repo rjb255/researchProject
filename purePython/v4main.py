@@ -130,8 +130,7 @@ def first_split(
 
 
 def base(m, X, Y, x, *args, **kwargs):
-    next_index = x.index
-    return next_index
+    return np.ones_like(x.index)
 
 
 def uncertainty_sampling(m, X, Y, x, *args, **kwargs):
@@ -216,9 +215,7 @@ def density(x1, x2, mem):
 
 
 def greedy(m, X, Y, x, *args, **kwargs):
-    Y_predict = -m.predict(x)
-    index = np.argsort(Y_predict)
-    return x.index[index]
+    return -m.predict(x)
 
 
 def main():

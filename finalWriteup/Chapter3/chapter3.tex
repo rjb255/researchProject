@@ -87,24 +87,56 @@ The\lstinline{split} function allows for each dataset to be split into $x_\mathr
     \begin{algorithm}[h]
         \KwData{$X_\mathrm{unknown}$}
         \KwResult{$X$ ordered according to priority for sampling}
-        \Return{$X_\mathrm{unknown}.\mathrm{indicies}$}
+        \Return{$\mathrm{ones\_like}(X_\mathrm{unknown})$}
         \caption{Uncertainty Sampling Selection}
         \label{alg:MC}\SetAlgoLined
     \end{algorithm}
 
+    \subsubsection{Greedy}
+    Since the largest activity is sought, a methodology proposed is to simply seek the predicted highest label. Here, the predict() method (see Table~\ref{tab:Model}) was used to return a prediction and a standard deviation. The indices of $x_\mathrm{unknown}$ were then returned, ordered descending with respect to the afore mentioned standard deviations.
+
+    \begin{algorithm}[h]
+        \KwData{$X_\mathrm{known}$, $Y_\mathrm{known}$, $X_\mathrm{unknown}$, Model}
+        \KwResult{$X$ ordered according to priority for sampling}
+        Model.fit($X_\mathrm{known}$, $Y_\mathrm{known}$)\;
+        prediction = Model.predict\_error($X_\mathrm{unknown}$)\;
+        \Return{$-\mathrm{prediction}$}
+        \caption{Greedy Sampling Selection}
+        \label{alg:greedy}\SetAlgoLined
+    \end{algorithm}
+
     \subsubsection{Region of Disagreement}
-    This is the second-simplest active learning model used. Here, the predict\_error() method (see Table~\ref{tab:Model}) was used to return a prediction and a standard deviation. The indices of $x_\mathrm{unknown}$ were then returned, ordered descending with respect to the afore mentioned standard deviations.
+    Similarly to the region of disagreement method, this is a very simple algorithm. Here, the predict\_error() method (see Table~\ref{tab:Model}) is used to return a prediction and a standard deviation. The prediction is ignored, and instead the standard deviation is returned, multiplied by $-1$ to ensure the largest uncertainty has the lowest "score". This is shown in \ref{alg:rod}.
 
 \begin{algorithm}[h]
     \KwData{$X_\mathrm{known}$, $Y_\mathrm{known}$, $X_\mathrm{unknown}$, Model}
     \KwResult{$X$ ordered according to priority for sampling}
     Model.fit($X_\mathrm{known}$, $Y_\mathrm{known}$)\;
     \_, error = Model.predict\_error($X_\mathrm{unknown}$)\;
-    order = argsort(error, order="descending")\;
-    \Return{$X_\mathrm{unknown}.\mathrm{indicies[order]}$}
+    \Return{$-\mathrm{error}$}
     \caption{Uncertainty Sampling Selection}
     \label{alg:rod}\SetAlgoLined
 \end{algorithm}
+
+\subsubsection{Hotspot Cluster I}
+This is the first of the clustering algorithms and the first parametric algorithm. This algorithm is identical to the algorithm presented in Section~\ref{sec:litRevDH}.
+
+\begin{algorithm}[h]
+    \KwData{$X_\mathrm{known}$, $X_\mathrm{unknown}$, $n$}
+    \KwResult{$X$ ordered according to priority for sampling}
+    combined\_x = concat(X, x)\;
+    clusters = cluster(number\_of\_clusters=$n$)\;
+    clusters.fit(combined\_x)\;
+    predicted\_custers = clusters.predict($X_\mathrm{unknown}$)
+
+    \Return{$-\mathrm{error}$}
+    \caption{Uncertainty Sampling Selection}
+    \label{alg:cluster1}\SetAlgoLined
+\end{algorithm}
+
+\subsubsection{Hotspot Cluster II}
+
+\subsubsection{Hotspot Cluster III}
 
 \subsection{Training Framework}
 \blindtext[1]
@@ -112,5 +144,3 @@ The\lstinline{split} function allows for each dataset to be split into $x_\mathr
 \blindtext[1]
 \subsubsection{Minimisation}
 \blindtext[1]
-
-

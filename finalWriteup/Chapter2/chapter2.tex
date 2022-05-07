@@ -49,7 +49,6 @@ Scores displayed in examples have been based on the entire data set. Although th
 There are several schools of thought regarding active learning. These can be separated into two distinct categories: current data and future predictions. The former of these is computationally cheaper, as will be apparent on description.
 
 \subsection{Current Data}
-
 \subsubsection{Uncertainty Sampling and Regions of Disagreements}
 \label{sec:UncertaintySampling}
 
@@ -115,6 +114,7 @@ Alternatively, nearest neighbour requires little explanation. $x_\mathrm{next}$ 
 
 
 \subsubsection{Density Hotspots}
+\label{sec:litRevDH}
 Conversely, a density weighted model has been suggested, as it escapes the introduction of error from outliers (i.e.\ data points far away from alternative data points). \textcite{Set08} suggest (\ref{eq:Settles_density}) which can be broken down into two parts: a function for selection, $\phi_A$, and a function for similarity, $\simm$. The former arises from  another method described in this section. The latter requires a function to describe the similarity between data points.
 
 \begin{equation}
