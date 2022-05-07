@@ -10,6 +10,7 @@
 \nomenclature[d-2-xknown]{$x_\mathrm{known}$}{Data points where the true label is available to the algorithms used}
 \nomenclature[d-3-yunknown]{$y_\mathrm{known}$}{True labels available to the algorithms used}
 \nomenclature[d-3-yunknown]{$y_\mathrm{unknown}$}{True labels unavailable to the algorithms used}
+\nomenclature[d-3-yunknown]{$n$}{The number of samples per iteration}
 % \nomenclature[u-3-ypredict]{$y_\mathrm{predict}$}{Predicted labels by the algorithm}
 % **************************** Define Graphics Path **************************
 
@@ -108,26 +109,32 @@ The\lstinline{split} function allows for each dataset to be split into $x_\mathr
     \subsubsection{Region of Disagreement}
     Similarly to the region of disagreement method, this is a very simple algorithm. Here, the predict\_error() method (see Table~\ref{tab:Model}) is used to return a prediction and a standard deviation. The prediction is ignored, and instead the standard deviation is returned, multiplied by $-1$ to ensure the largest uncertainty has the lowest "score". This is shown in \ref{alg:rod}.
 
-\begin{algorithm}[h]
-    \KwData{$X_\mathrm{known}$, $Y_\mathrm{known}$, $X_\mathrm{unknown}$, Model}
-    \KwResult{$X$ ordered according to priority for sampling}
-    Model.fit($X_\mathrm{known}$, $Y_\mathrm{known}$)\;
-    \_, error = Model.predict\_error($X_\mathrm{unknown}$)\;
-    \Return{$-\mathrm{error}$}
-    \caption{Uncertainty Sampling Selection}
-    \label{alg:rod}\SetAlgoLined
-\end{algorithm}
+    \begin{algorithm}[h]
+        \KwData{$X_\mathrm{known}$, $Y_\mathrm{known}$, $X_\mathrm{unknown}$, Model}
+        \KwResult{$X$ ordered according to priority for sampling}
+        Model.fit($X_\mathrm{known}$, $Y_\mathrm{known}$)\;
+        \_, error = Model.predict\_error($X_\mathrm{unknown}$)\;
+        \Return{$-\mathrm{error}$}
+        \caption{Uncertainty Sampling Selection}
+        \label{alg:rod}\SetAlgoLined
+    \end{algorithm}
 
-\subsubsection{Hotspot Cluster I}
-This is the first of the clustering algorithms and the first parametric algorithm. This algorithm is identical to the algorithm presented in Section~\ref{sec:litRevDH}.
+    \subsubsection{Hotspot Cluster I}
+    This is the first of the clustering algorithms and the first parametric algorithm. This algorithm is based upon the ideology presented in Section~\ref{sec:litRevDH}, and is shown in Algorithm~\ref{alg:cluster1}. Here, $c$ is the number of cluster sought, and is a parameter that requires fitting. Bounds can be placed upon this. The lower limit can be set as the number of known data points, and the upper as the total number of data points in the data set, although it is hypothesised that beyond the sum of the known points and the samples sought would make little, to no difference. To test this hypothesis, the upper limit will be set at $\mathrm{len}(X_\mathrm{unknown})+1.5n$. The combined limits have been shown in \ref{eq:limsClust1}.
+
+\begin{equation}
+    \label{eq:limsClust1}
+    {\mathrm{len}(X_\mathrm{known})<c<\mathrm{len}(X_\mathrm{unknown})+1.5n}
+\end{equation}
 
 \begin{algorithm}[h]
-    \KwData{$X_\mathrm{known}$, $X_\mathrm{unknown}$, $n$}
+    \KwData{$X_\mathrm{known}$, $X_\mathrm{unknown}$, $c$}
     \KwResult{$X$ ordered according to priority for sampling}
     combined\_x = concat(X, x)\;
-    clusters = cluster(number\_of\_clusters=$n$)\;
+    clusters = cluster(number\_of\_clusters=$c$)\;
     clusters.fit(combined\_x)\;
-    predicted\_custers = clusters.predict($X_\mathrm{unknown}$)
+    predicted\_custers = clusters.predict($X_\mathrm{unknown}$)\;
+    distances = clusters.distance\_to\_nearest\_centroid($X_\mathrm{unknown}$)\;
 
     \Return{$-\mathrm{error}$}
     \caption{Uncertainty Sampling Selection}
@@ -135,8 +142,10 @@ This is the first of the clustering algorithms and the first parametric algorith
 \end{algorithm}
 
 \subsubsection{Hotspot Cluster II}
+This is similar to the previous algorithm with one difference, the labels. Both known and predicted are used within the algorithm to ...
 
 \subsubsection{Hotspot Cluster III}
+The final hotpsot clustering algorithm also encompasses the uncertainty from the prediction models.
 
 \subsection{Training Framework}
 \blindtext[1]
