@@ -233,9 +233,9 @@ def clusterise(m, X, Y, x, mem, *args, **kwargs):
         mem["cluster"].set_params(n_clusters=10 + len(X))
         mem["cluster"].fit(Xx)
     else:
-        mem["cluster"] = KM(
-            n_clusters=int(mem["alpha"][0]) + len(X), random_state=1
-        ).fit(Xx)
+        mem["cluster"] = KM(n_clusters=int(mem["alpha"]) + len(X), random_state=1).fit(
+            Xx
+        )
 
     labels = mem["cluster"].predict(x)
     t1 = mem["cluster"].transform(x)
