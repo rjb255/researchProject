@@ -124,7 +124,7 @@ def main(*, output=0, alpha=[]):
     # plt.ion()
     # plt.plot([1, 101, 201, 301, 401], np.transpose(scores))
     # plt.show(block=True)
-    results.to_csv(f"{input('FILE NAME: ')}.csv")
+    results.to_csv("greedyROD1.csv")
 
 
 if __name__ == "__main__":
