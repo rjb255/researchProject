@@ -64,6 +64,7 @@ def main(*, output=0, alpha=[]):
     data_location = os.path.join(proj_path, "data", "big", "qsar_data")
 
     data_names = os.listdir(data_location)
+    random.seed(1)
     random.shuffle(data_names)
     datasets = np.array([os.path.join(data_location, data) for data in data_names])
 
@@ -72,7 +73,7 @@ def main(*, output=0, alpha=[]):
         with open(data, "r") as f:
             dataset_lens[i] = len(f.readlines())
     print(len(datasets))
-    datasets = datasets[dataset_lens > 1200]
+    datasets = datasets[dataset_lens > 1000]
 
     split = [int(len(datasets) * 0.8), int(len(datasets) * 0.8)]
     data_train = datasets[: split[0]]
@@ -96,6 +97,7 @@ def main(*, output=0, alpha=[]):
         )
         alpha = alef["x"]
         print(alpha)
+
     with_alpha = partial(algs.post_main, alpha=alpha)
     with Pool() as p:
         scores = p.map(with_alpha, [data for data in data_test])
@@ -105,7 +107,7 @@ def main(*, output=0, alpha=[]):
     # plt.ion()
     # plt.plot([1, 101, 201, 301, 401], np.transpose(scores))
     # plt.show(block=True)
-    results.to_csv("output.csv")
+    results.to_csv(f"{input('FILE NAME: ')}.csv")
 
 
 if __name__ == "__main__":

@@ -4,9 +4,10 @@
 %*******************************************************************************
 
 \chapter{Previous Work}
-
+\label{ch:2}
 
 \graphicspath{{Chapter2/Figs/Vector/}{Chapter2/Figs/Raster/}}
+
 % **************************** Nomenclature **********************************
 \nomenclature[c-1-x]{$x$}{Data points where $x=\{x_0, x_1, ..., x_{N-1}\}$}
 \nomenclature[c-1-y]{$y$}{Labels for the dataset where $y=\{y_0, y_1, ..., y_{N-1}\}$}
@@ -73,6 +74,7 @@ The simplest is applicable to cases in which a certainty is provided with each p
     \label{fig:rodPhantom}
   \end{center}
 \end{figure}
+
 Interestingly, Figure \ref{fig:rodPhantom}B shows how the mean squared error for the random sampling method performed to worse within the iterations tested. This is likely due to a bias in the use of linear models in fitting leading to large uncertainties surrounding areas with high curvature. Evidence to this is provided in \ref{fig:rodPhantom}A with a large proportion of the sampled points at areas of high curvature.
 
 As addressed by \textcite{Set09}, this can be extended to any probabilistic model through \ref{eq:x_next1}. \textcite{Set09} also notes the use of information theory for probabilistic models(\ref{eq:info_uncertainty}), where $y_i$ refers to all possible categorisations for $x$. This derives from the principle that the greatest entropy requires the most information to encode, and thus the least certain. However, \textcite{Set09} fails to address non-probabilistic models in this instance, instead converting such models into probabilistic ones.
@@ -84,7 +86,7 @@ As addressed by \textcite{Set09}, this can be extended to any probabilistic mode
 
 In order to adapt non-probabilistic models into probabilistic ones, composite models may be used. These are an amalgamation of other models where the standard deviation of the individual models can be taken as the degree of certainty for a given point. Many authors have called this as minimising the region of disagreement as it attempts to produce a coherent hypothesis space. By minimising the region of disagreement between various models, a finer fit may be achieved. Indeed, this was the method used in Figure \ref{fig:rodPhantom}.
 
-One way of achieving this, especially in a regression model where boundaries are not quite so distinct, is to declare $n$ models ${M = \{m_1,\ldots{}, m_n\}}$. Combining these allow for a model $\hat{m}$ to be defined with prediction $\hat{y}$, being the mean prediction of $M$, ${\frac{1}{n}\sum{y_i}}$ and a sample standard deviation $\hat{s}$ defined as the sample standard deviation of $y_i$. This standard deviation can be used as a measure of the disagreement between the models. Thus, using a method as in Section~\ref{sec:Uncertainty Sampling}.
+One way of achieving this, especially in a regression model where boundaries are not quite so distinct, is to declare $n$ models ${M = \{m_1,\ldots{}, m_n\}}$. Combining these allow for a model $\hat{m}$ to be defined with prediction $\hat{y}$, being the mean prediction of $M$, ${\frac{1}{n}\sum{y_i}}$ and a sample standard deviation $\hat{s}$ defined as the sample standard deviation of $y_i$. This standard deviation can be used as a measure of the disagreement between the models.
 
 \begin{equation}
   \label{eq:info_uncertainty}
@@ -96,7 +98,7 @@ A second form stems from information theory. Here, the aim is to produce an even
 
 The former of these requires a definition of density in a sparsely populated space. As an analogy, although the density of a gas appears well-defined, it becomes non-smooth once the volume defined over is comparable to the distance between particles. Thus, a new definition is required.
 
-Alternatively, nearest neighbour requires little explanation. $x_\mathrm{next}$ is the unlabelled data point furthest from any labelled data point.
+Alternatively, nearest neighbour requires little explanation. $x_\mathrm{next}$ is the unlabelled data point furthest from any labelled data point. The results of \ref{eq:inverseSim} can be seen in Figure~\ref{fig:b}.
 
 \begin{equation}
   \label{eq:inverseSim}
@@ -130,7 +132,15 @@ Conversely, a density weighted model has been suggested, as it escapes the intro
   \end{center}
 \end{figure}
 
-As demonstrated by \ref{fig:ClusterResults} demonstrates, there are multiple different interpretations of the solution to the problem of clustering. The makers of the Sci-kit learn package also discuss the scalability of each algorithm \cite{SciClus}. In order to prepare a high number of features (beyond the two used within this section for demonstration) and large number of data points, it is required that the algorithm scales accordingly. Further, for an adaptive process, it is more suitable for an algorithm to be adaptive to differing distribution. This limits the suitable algorithms to K-Means, Ward and Birch - columns one, five, and nine of Figure~\ref{fig:ClusterResults} respectively.
+As demonstrated by \ref{fig:ClusterResults} demonstrates, there are multiple different interpretations of the solution to the problem of clustering. The makers of the Sci-kit learn package also discuss the scalability of each algorithm \cite{SciClus}. In order to prepare a high number of features (beyond the two used within this section for demonstration) and large number of data points, it is required that the algorithm scales accordingly. Further, for an adaptive process, it is more suitable for an algorithm to be adaptive to differing distribution. This limits the suitable algorithms to K-Means, Ward and Birch - columns one, five, and nine of Figure~\ref{fig:ClusterResults} respectively. Targetting the largest clusters qithout a known result,
+
+\begin{figure}[H]
+  \begin{center}
+    \includegraphics{clusterPhantom.pdf}
+    \caption[Cluster Hotspot Sampling Illustration]{The outcome of the investigating the areas of using a cluster hotspot sampling methodology. An initial set of 5 random points was provided, and 50 further iterations were then carried out of sample size 1. A) Demonstrates the final set of points tested by the algorithm and B) shows the change in the mean squared error for the algorithm after each iteration.}
+    \label{fig:clusterPhantom}
+  \end{center}
+\end{figure}
 
 \subsection{Estimated Future}
 These methods attempt to minimise a future attribute of the model. This works by predicting changes given with the inclusion of more data.
@@ -162,6 +172,14 @@ Several naive methods are available here. Firstly, getting the top $N$ data poin
     \caption[Batch Broad-Base Sampling]{The outcome of the investigating the areas of using broad-base sampling. An initial set of 5 random points was provided, and 5 further iterations were then carried out of sample size 10. A) Demonstrates the final set of points tested by the algorithm and B) shows the change in the mean squared error for the algorithm after each iteration.}
   \end{center}
 \end{figure}
+
+\begin{figure}
+  \begin{center}
+    \includegraphics{broadClusterPhantom.pdf}
+    \caption[Batch Cluster Sampling]{The outcome of the investigating the areas of using cluster sampling. An initial set of 5 random points was provided, and 5 further iterations were then carried out of sample size 10. A) Demonstrates the final set of points tested by the algorithm and B) shows the change in the mean squared error for the algorithm after each iteration.}
+  \end{center}
+\end{figure}
+
 
 It stands to reason that the area which has the highest uncertainty will see this for the data points nearest neighbours. Thus, this singular data point suffers the potential of being surrounded by $N-1$ other data points. The benefit this provides in fitting the model is thus extremely limited, and only slightly greater than if one data point had been chosen. A simple fix would be to simulate the model after 1 iteration, and select the next point from here. By doing this $N-1$ times, a better solution may be found, although this may prove to be computationally very expensive.
 

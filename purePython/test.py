@@ -23,7 +23,7 @@ _x_p = ((rand - _y_p) / sx).astype(int)
 
 x_p = X[(_x_p, _y_p)]
 y_p = Y[_x_p, _y_p]
-z_p = Z[_x_p, _y_p] + np.random.normal(scale=0.1, size=200)
+z_p = Z[_x_p, _y_p] + np.random.normal(scale=0.1, size=150)
 plt.plot(x_p, y_p, "x")
 
 df = pd.DataFrame(np.transpose([z_p, x_p, y_p]), columns=["z", "x", "y"])

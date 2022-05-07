@@ -19,7 +19,11 @@
 Each dataset used consists of a 1024 bit Morgan fingerprint for the features and these associated pChEMBL values. The sets used for parameter fitting and score reporting make up a set of 2094 files from \textcite{CHEMBL}. These were filtered to prevent datasets with fewer than 1000 entries to be admitted into the main script.
 
 Morgan fingerprints were chosen due to the ease in which it is to calculate the vectors, the popularity of them within the chemoinformatics sphere, and the success enjoyed by others when using them for predictive purposes. It was decided that physical properties would not be used as this could increase the onus on data sanitation and preparation rather than active learning.
-\subsection{Algorithmic}
+
+\subsection{Custom Algorithms}
+As well as the algorithms used mentioned in Chapter~\ref{ch:2}, several custom algorithms were developed and added to the testing set. These methods do use parameters, and so require the minimisation technique. Addtionally, these algorithms take a composite methodology, using other active learning methods in order to reach a conclusion, so some concepts will be assumed knowledge for Chapter~\ref{ch:2}.
+
+\section{Computational Methodology}
 The methodology presents a novel means of assessing different parametrised active learning methods on existing data sets, allowing for a robust answer into the use of active learning in drug rediscovery. Results can thus be given with a given belief. This approach has taken principles commonly used in machine learning and applied it to more traditional algorithmic methods.
 \\
 Firstly, a collection of pre-existing data sets, $X$, are used. $X$ is then split into two sub sets: $X_{\mathrm{train}}$ and $X_\mathrm{test}$. Similarly to machine learning, the former of these subsets is used in fitting the parameters of the equation, and the latter is used to provide a result without the risk of data leakage into the training set. This is represented in []. Parallelisation is used to efficiently train the algorithms allowing the time for training to be $\sim{}\mathcal{O}(c)$.
@@ -28,66 +32,85 @@ Examining the smaller details, each algorithm is provided with the sets $x_\math
 \\
 In Section [], it was discussed that there are various methodologies of representing chemicals and drugs. ... (if time)
 
-\section{Integral Functions and Classes}
+\subsection{Integral Functions and Classes}
 Several key methods and classes are required for the smooth operation of the computational frameworks used
 
 \subsection{Custom Base Functions}
 \subsubsection{\lstinline{Split}}
 The\lstinline{split} function allows for each dataset to be split into $x_\mathrm{known}$, $y_\mathrm{known}$, $x_\mathrm{unknown}$, and $y_\mathrm{unknown}$, as demonstrated in Figure \ref{fig:Split}. This is required as a fundamental step for the algorithmic testing. To demonstrate the validity of this function, ...
 
-\begin{figure}
-    \begin{center}
-        \includegraphics[width=\textwidth]{split.png}
-    \end{center}
-    \caption[Representation of the split function]{Graphical representation of the\lstinline{split}function. The red dashed boundary represents the input (additional colour coding has been performed to assist the reader in understanding the transposition of the base components).}
-    \label{fig:Split}
-\end{figure}
+    \begin{figure}
+        \begin{center}
+            \includegraphics[width=\textwidth]{split.png}
+        \end{center}
+        \caption[Representation of the split function]{Graphical representation of the\lstinline{split}function. The red dashed boundary represents the input (additional colour coding has been performed to assist the reader in understanding the transposition of the base components).}
+        \label{fig:Split}
+    \end{figure}
 
 
-\subsubsection{\lstinline{Repartition}}
-Upon each iteration, the sets provided to the algorithms need to be repartitioned to allow for the continual operation of the algorithm. This consists of two parts: expanding the known sets and removing entries from the unknown sets.
-\\
-\subsubsection{\lstinline{Model}}
-The machine learning model is the only custom class used. Here, a similar structure is used when compared with sci-kit's machine learning \cite{scikit}, as is demonstrated in Table~\ref{tab:Model}. To manage this, it has four methods:\lstinline{__init__},\lstinline{fit},\lstinline{predict}, and\lstinline{predict_error}. The last of these is not seen in all sci-kit's machine learning models and is reserved for those which can report a certainty of prediction. Here, this was achieved by taking a standard deviation of the models.
+    \subsubsection{\lstinline{Repartition}}
+    Upon each iteration, the sets provided to the algorithms need to be repartitioned to allow for the continual operation of the algorithm. This consists of two parts: expanding the known sets and removing entries from the unknown sets.
 
-\begin{table}[h]
-    \centering
-    \begin{tabular}{@{}ccc@{}}
-        \toprule
-                                               & Name         & Description                                                                                                      \\ \midrule
-        Attributes                             & Models: List & List of models to be used in composite                                                                           \\ \midrule
-        \multirow{3}{*}{Methods}               & fit()        & Fits the models in Models                                                                                        \\
-                                               &
-        predict(X: int[][]): double[]          &
-        \begin{tabular}[c]{@{}c@{}}Takes a set of labels and returns mean\\ predicted label from all the models.\end{tabular}                                                    \\
-                                               &
-        predict\_error(X: int[][]): double[][] &
-        \begin{tabular}[c]{@{}c@{}}Takes a set of labels and returns the mean\\ predicted label from all the models and\\ standard deviations of model predictions.\end{tabular} \\
-        \bottomrule
-    \end{tabular}
-    \caption{Schema for the Model Class.}
-    \label{tab:Model}
-\end{table}
+    \subsubsection{\lstinline{Model}}
+    The machine learning model is the only custom class used. Here, a similar structure is used when compared with sci-kit's machine learning \cite{scikit}, as is demonstrated in Table~\ref{tab:Model}. To manage this, it has four methods:\lstinline{__init__},\lstinline{fit},\lstinline{predict}, and\lstinline{predict_error}. The last of these is not seen in all sci-kit's machine learning models and is reserved for those which can report a certainty of prediction. Here, this was achieved by taking a standard deviation of the models.
 
-\subsubsection{\lstinline{Validate}}
-This is a simple method with greater potential than has been explored. By providing this as a separate method, a more computationally intensive validation model could be used without interference as parallelisation could be exploited. However, as it currently stands, it returns the weighted mean squared error using the standard method provided by [].
-\subsection{Active Learning Algorithms}
-\subsubsection{Dumb}
-The dumb algorithm, also referred to as random sampling or Monte Carlo sampling, refers to an algorithm that calls upon random samples to be tested. This represents the computationally least expensive approach, and is thus used as a baseline in comparing other algorithms. Since the datasets are shuffled prior to being used, the algorithm is extremely simple, as demonstrated in Algorithm~\ref{alg:MC}.
+    \begin{table}[h]
+        \centering
+        \begin{tabular}{@{}ccc@{}}
+            \toprule
+                                                   & Name                         & Description                                                                                      \\ \midrule
+            Attributes                             & Models: List                 & List of models to be used in composite                                                           \\ \midrule
+            \multirow{3}{*}{Methods}               & fit(X: int[][], Y: double[]) & Fits the models in Models                                                                        \\
+                                                   &
+            predict(X: int[][]): double[]          &
+            \begin{tabular}[c]{@{}c@{}}Takes a set of labels and returns mean\\ predicted label from all the models.\end{tabular}                                                    \\
+                                                   &
+            predict\_error(X: int[][]): double[][] &
+            \begin{tabular}[c]{@{}c@{}}Takes a set of labels and returns the mean\\ predicted label from all the models and\\ standard deviations of model predictions.\end{tabular} \\
+            \bottomrule
+        \end{tabular}
+        \caption{Schema for the Model Class.}
+        \label{tab:Model}
+    \end{table}
+
+    The models used for the composite model were \dots which will be consistent across all algorithms. This allows direct comparison of the algorithms without interference from machine learning models used.
+
+    \subsubsection{\lstinline{Validate}}
+    This is a simple method with greater potential than has been explored. By providing this as a separate method, a more computationally intensive validation model could be used without interference as parallelisation could be exploited. However, as it currently stands, it returns the weighted mean squared error using the standard method provided by [].
+
+    \subsection{Active Learning Algorithms}
+
+    \subsubsection{Dumb}
+
+    The dumb algorithm, also referred to as random sampling or Monte Carlo sampling, refers to an algorithm that calls upon random samples to be tested. This represents the computationally least expensive approach, and is thus used as a baseline in comparing other algorithms. Since the datasets are shuffled prior to being used, the algorithm is extremely simple, as demonstrated in Algorithm~\ref{alg:MC}.
+
+    \begin{algorithm}[h]
+        \KwData{$X_\mathrm{unknown}$}
+        \KwResult{$X$ ordered according to priority for sampling}
+        \Return{$X_\mathrm{unknown}.\mathrm{indicies}$}
+        \caption{Uncertainty Sampling Selection}
+        \label{alg:MC}\SetAlgoLined
+    \end{algorithm}
+
+    \subsubsection{Region of Disagreement}
+    This is the second-simplest active learning model used. Here, the predict\_error() method (see Table~\ref{tab:Model}) was used to return a prediction and a standard deviation. The indices of $x_\mathrm{unknown}$ were then returned, ordered descending with respect to the afore mentioned standard deviations.
 
 \begin{algorithm}[h]
-    \KwData{$X_\mathrm{unknown}$}
+    \KwData{$X_\mathrm{known}$, $Y_\mathrm{known}$, $X_\mathrm{unknown}$, Model}
     \KwResult{$X$ ordered according to priority for sampling}
-    \Return{$X_\mathrm{unknown}$}
+    Model.fit($X_\mathrm{known}$, $Y_\mathrm{known}$)\;
+    \_, error = Model.predict\_error($X_\mathrm{unknown}$)\;
+    order = argsort(error, order="descending")\;
+    \Return{$X_\mathrm{unknown}.\mathrm{indicies[order]}$}
     \caption{Uncertainty Sampling Selection}
-    \label{alg:MC}\SetAlgoLined
+    \label{alg:rod}\SetAlgoLined
 \end{algorithm}
 
-\subsubsection{Region of Disagreement}
-This is the second simplest active learnign model used. Here, the predict error model is used
 \subsection{Training Framework}
 \blindtext[1]
 \subsubsection{Parallelisation}
 \blindtext[1]
 \subsubsection{Minimisation}
 \blindtext[1]
+
+

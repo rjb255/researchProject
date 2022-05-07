@@ -23,7 +23,7 @@ from sklearn.neighbors import KNeighborsRegressor as KNN
 from sklearn.ensemble import RandomForestRegressor as RFR
 from sklearn.svm import SVR
 
-from sklearn.cluster import Birch as BIRCH
+from sklearn.cluster import KMeans as KM
 
 
 proj_path = os.path.join(
@@ -46,6 +46,19 @@ def spec_max(x):
 def score(Y_test, kwargs, q):
     y_predict = kwargs["model"].predict(kwargs["X_test"])
     q.put(mse(y_predict, Y_test))  # , sample_weight=Y_test))
+
+
+def riffle(a):
+    lens = np.array([len(_a) for _a in a])
+    eq1 = []
+    eq2 = []
+    order = np.argsort(-lens)
+    for order_ in order:
+        eq1 += list(a[order_])
+        eq2 += list(np.arange(lens[order_]) / lens[order_])
+    order = np.argsort(eq2, kind="mergesort")
+
+    return np.array(eq1)[order]
 
 
 def framework(
@@ -122,7 +135,7 @@ def framework(
 
 
 def base(m, X, Y, x, *args, **kwargs):
-    next_index = x.index
+    next_index = np.ones_like(x.index)
     return next_index
 
 
@@ -156,52 +169,39 @@ def rod_hotspots(m, X, Y, x, *args, **kwargs):
 
 
 def clusterise(m, X, Y, x, mem, *args, **kwargs):
-
-    Y_predict, Y_error = m.predict_error(x)
-    err = -Y_error
-
-    # todo CLUSTER ALGORITHM FIRST
-    # todo INCLUDE Y_predict and Y_std, consider a restriction on std error
-    temp1 = pd.Series(Y_predict)
-    temp2 = pd.Series(err)
-    cluster_x = copy.deepcopy(pd.DataFrame(x))
-
-    # cluster_x["err"] = err
-    # cluster_x["y"] = Y_predict
-
-    lower_lvl = np.quantile(err, 0.75)
-    index = np.ones_like(err)
-    index[cluster_x["err"] < lower_lvl] = 0
-
-    cluster_x = cluster_x[index == 1]
+    Xx = pd.concat([X, x])
     if "cluster" in mem:
-        mem["cluster"].partial_fit(cluster_x)
+        mem["cluster"].set_params(n_clusters=10 + len(X))
+        mem["cluster"].fit(Xx)
     else:
-        mem["cluster"] = Birch(
-            n_cluster=None, random_state=1, compute_labels=False
-        ).fit(cluster_x)
+        mem["cluster"] = KM(n_clusters=10 + len(X), random_state=1).fit(Xx)
 
-    # if "tree" in mem:
-    #     pass
-    # else:
-    #     mem["tree"] = KDTree(cluster_x)
+    labels = mem["cluster"].predict(x)
+    t1 = mem["cluster"].transform(x)
+    t2 = np.min(t1, axis=1)
+    minDif = np.max(t2) + 1
+    lab2 = labels * minDif + t2
 
-    # # todo WORK WITH CLUSTERS
+    s1 = np.argsort(lab2)
+    t2 = t1[s1]
 
-    # alias_points = mem["tree"].query(mem["cluster"])
+    bounds = np.unique(labels, return_counts=True)
 
-    # todo return std^alpha*y_predict^beta for alias_points
-    score = index
-    try:
-        err[err < 0] = 0
-        Y_predict[Y_predict < 0] = 0
-        score[index == 1] = np.array(mem["cluster"].score_samples(cluster_x))
-    except e:
-        print(err[index == 1])
-        print(f"{mem['alpha'][1]}, {mem['alpha'][2]}")
-        print(np.power(err[index == 1], mem["alpha"][1]))
-        score[index == 1] = err[index == 1] * 10
-        print(e)
+    prev = 0
+    b2 = []
+    excess = []
+    for index, i in zip(bounds[0], bounds[1]):
+        if index in mem["cluster"].labels_[: len(X)]:
+            excess.append(s1[prev : i + prev])
+        else:
+            b2.append(s1[prev : i + prev])
+        prev += i
+
+    r1 = list(riffle(b2))
+    r2 = list(riffle(excess))
+    temp = np.arange(len(r1 + r2))
+    score = np.ones_like(temp)
+    score[r1 + r2] = temp
     return score
 
 
@@ -236,6 +236,7 @@ def main():
         "rod": region_of_disagreement,
         "broad": broad_base,
         "mine": rod_hotspots,
+        "cluster": clusterise,
     }
 
     # For when this isn't the only one: makes keeping track easier
@@ -246,7 +247,8 @@ def main():
         # algorithms["uncertainty_sampling"],
         # algorithms["rod"],
         # algorithms["dumb"],
-        algorithms["broad"],
+        # algorithms["broad"],
+        algorithms["cluster"],
     )
 
     framework(
@@ -258,7 +260,7 @@ def main():
         Y_test,
         model,
         algorithm,
-        iterations=6,
+        iterations=5 + 1,
         sample_size=10,
         score=score,
     )

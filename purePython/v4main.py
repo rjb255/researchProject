@@ -76,7 +76,7 @@ def framework(
     results = [inner_func(alg) for alg in algorithm]
 
     pprint(f"{alpha}: {results}")
-    return results
+    return results[0]
 
 
 def first_split(
@@ -105,7 +105,11 @@ def first_split(
             m.fit(X, Y)
             ranking = f(m, X, Y, x, mem)
             next_index = x.index[np.argsort(ranking)]
+            _t = [len(X), len(x)]
             X, Y, x, y = getPI((X, Y), (x, y), next_index[:sample_size])
+            _a = np.array([_t[0] - len(X) + sample_size, _t[1] - len(x) - sample_size])
+            if np.count_nonzero(_a) > 0:
+                print(f"ERROR: {_a}")
         score_record.append(Queue())
         processes.append(
             Process(
@@ -211,10 +215,10 @@ def density(x1, x2, mem):
     return np.sum(1 / tree, axis=0)
 
 
-def start(
-    data_path: str,
-):
-    pass
+def greedy(m, X, Y, x, *args, **kwargs):
+    Y_predict = -m.predict(x)
+    index = np.argsort(Y_predict)
+    return x.index[index]
 
 
 def main():
@@ -233,16 +237,17 @@ def main():
 
 def post_main(dataset, alpha=[]):
     data = pd.read_csv(dataset)
-    data: List[pd.DataFrame] = data.sample(frac=1, random_state=1)
+    data: pd.DataFrame = data.sample(frac=1, random_state=1)
     print(len(data))
 
-    X_known, Y_known, X_unknown, Y_unknown, _, _ = split(data, 5, frac=1)
+    X_known, Y_known, X_unknown, Y_unknown, X_test, Y_test = split(data, 5, frac=1)
     X_test, Y_test = pd.concat([X_known, X_unknown]), pd.concat([Y_known, Y_unknown])
     models = {
         "BayesianRidge": BR(),
         "KNN": KNN(),
         "RandomForrest": RFR(random_state=1),
     }
+
     algorithms = {
         "dumb": base,
         "uncertainty_sampling": uncertainty_sampling,
@@ -269,8 +274,8 @@ def post_main(dataset, alpha=[]):
         Y_test,
         model,
         algorithm,
-        iterations=4,
-        sample_size=120,
+        iterations=6,
+        sample_size=100,
         score=score,
         alpha=alpha,
     )
