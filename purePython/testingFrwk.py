@@ -60,7 +60,7 @@ def callback_minimise(*args):
 
 
 def main(*, output=0, alpha=[]):
-    minimise = 2
+    minimise = 1
     ppprint = partial(custom_print, output)
     ppprint(output)
     data_location = os.path.join(proj_path, "data", "big", "qsar_data")
@@ -89,10 +89,10 @@ def main(*, output=0, alpha=[]):
     # a0: list = [0.85, 0, 0]
     # a_boundary = [(0.5, 1), (-4, 4), (-4, 4)]
     a0: list = [0]
-    a_boundary = [(0, 0.1)]
+    a_boundary = [(0, 1)]
     if a0:
         if minimise == 1:
-            arrays = [np.linspace(_a[0], _a[1], 5) for _a in a_boundary]
+            arrays = [np.linspace(_a[0], _a[1], 15) for _a in a_boundary]
             if len(arrays) > 1:
                 grid = np.array(itx(arrays))
             else:
