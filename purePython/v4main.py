@@ -46,6 +46,19 @@ def spec_max(x):
         return x
 
 
+def riffle(a):
+    lens = np.array([len(_a) for _a in a])
+    eq1 = []
+    eq2 = []
+    order = np.argsort(-lens)
+    for order_ in order:
+        eq1 += list(a[order_])
+        eq2 += list(np.arange(lens[order_]) / lens[order_])
+    order = np.argsort(eq2, kind="mergesort")
+
+    return np.array(eq1)[order]
+
+
 def framework(
     X_train: pd.DataFrame,
     Y_train: pd.Series,
@@ -213,8 +226,41 @@ def rod_hotspots(m, X, Y, x, mem, *args, **kwargs):
     return score
 
 
-def clusterise():
-    pass
+def clusterise(m, X, Y, x, mem, *args, **kwargs):
+    Xx = pd.concat([X, x])
+    if "cluster" in mem:
+        mem["cluster"].set_params(n_clusters=10 + len(X))
+        mem["cluster"].fit(Xx)
+    else:
+        mem["cluster"] = KM(n_clusters=mem["alpha"][0] + len(X), random_state=1).fit(Xx)
+
+    labels = mem["cluster"].predict(x)
+    t1 = mem["cluster"].transform(x)
+    t2 = np.min(t1, axis=1)
+    minDif = np.max(t2) + 1
+    lab2 = labels * minDif + t2
+
+    s1 = np.argsort(lab2)
+    t2 = t1[s1]
+
+    bounds = np.unique(labels, return_counts=True)
+
+    prev = 0
+    b2 = []
+    excess = []
+    for index, i in zip(bounds[0], bounds[1]):
+        if index in mem["cluster"].labels_[: len(X)]:
+            excess.append(s1[prev : i + prev])
+        else:
+            b2.append(s1[prev : i + prev])
+        prev += i
+
+    r1 = list(riffle(b2))
+    r2 = list(riffle(excess))
+    temp = np.arange(len(r1 + r2))
+    score = np.ones_like(temp)
+    score[r1 + r2] = temp
+    return score
 
 
 def density(x1, x2, mem):
@@ -264,6 +310,7 @@ def post_main(dataset, alpha=[]):
         "mine": rod_hotspots,
         "greedy": greedy,
         "rg": rod_greed,
+        "cluster": clusterise,
     }
 
     # For when this isn't the only one: makes keeping track easier
@@ -274,7 +321,8 @@ def post_main(dataset, alpha=[]):
         # algorithms["rod"],
         # algorithms["dumb"],
         # algorithms["greedy"],
-        algorithms["rg"],
+        # algorithms["rg"],
+        algorithms["cluster"],
     )
 
     return framework(
