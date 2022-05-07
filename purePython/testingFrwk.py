@@ -49,7 +49,7 @@ def to_minimise(data_set, alpha):
     with Pool() as p:
         scores = p.map(temp, [data for data in data_set])
     scores = np.array(scores)
-    print(len(scores[:, -1]))
+    # print(len(scores[:, -1]))
     print(f"alpha score: {np.mean(scores[:,-1])}")
     return np.mean(scores[:, -1])
 
@@ -88,7 +88,7 @@ def main(*, output=0, alpha=[]):
     # todo - Minimise alpha
     # a0: list = [0.85, 0, 0]
     # a_boundary = [(0.5, 1), (-4, 4), (-4, 4)]
-    a0: list = [0.5]
+    a0: list = [0]
     a_boundary = [(0, 0.1)]
     if a0:
         if minimise == 1:
@@ -108,7 +108,7 @@ def main(*, output=0, alpha=[]):
                 lambda a: to_minimise(data_train, a),
                 a0,
                 bounds=a_boundary,
-                options={"maxiter": 8},
+                # options={"maxiter": 8},
                 method="Nelder-Mead",
                 callback=callback_minimise,
             )
