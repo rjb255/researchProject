@@ -108,7 +108,7 @@ The\lstinline{split} function allows for each dataset to be split into $x_\mathr
     \end{algorithm}
 
     \subsubsection{Region of Disagreement}
-    Similarly to the region of disagreement method, this is a very simple algorithm. Here, the predict\_error() method (see Table~\ref{tab:Model}) is used to return a prediction and a standard deviation. The prediction is ignored, and instead the standard deviation is returned, multiplied by $-1$ to ensure the largest uncertainty has the lowest "score". This is shown in \ref{alg:rod}.
+    Similarly to the region of disagreement method, this is a very simple algorithm. Here, the predict\_error() method (see Table~\ref{tab:Model}) is used to return a prediction and a standard deviation. The prediction is ignored, and instead the standard deviation is returned, multiplied by $-1$ to ensure the largest uncertainty has the lowest "score". This is shown with Algorithm~\ref{alg:rod}.
 
     \begin{algorithm}[h]
         \KwData{$X_\mathrm{known}$, $Y_\mathrm{known}$, $X_\mathrm{unknown}$, Model}

@@ -129,6 +129,15 @@ def first_split(
     return [score.get() for score in score_record]
 
 
+# TODO:
+
+
+def rod_greed(m, X, Y, x, mem, *args, **kwargs):
+    return np.power(greedy(m, X, Y, x, *args, **kwargs), mem["alpha"]) * np.power(
+        greedy(m, X, Y, x, *args, **kwargs), 1 - mem["alpha"]
+    )
+
+
 def base(m, X, Y, x, *args, **kwargs):
     return np.ones_like(x.index)
 

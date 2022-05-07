@@ -143,7 +143,7 @@ As demonstrated by \ref{fig:ClusterResults} demonstrates, there are multiple dif
 \end{figure}
 
 \subsection{Estimated Future}
-These methods attempt to minimise a future attribute of the model. This works by predicting changes given with the inclusion of more data.
+These methods attempt to minimise a future attribute of the model. This works by predicting changes given with the inclusion of more data with a higher degree f theoretical underpinning that the sampling methods discussed thus far.
 
 \subsubsection{Expected Model Change}
 As the name implies, this method chooses points which are likely to have the largest impact on the final model. By instigating each potential point, the impact on the eventual model can be found. However, this requires a method for quantifying the model change.
@@ -157,7 +157,7 @@ As the name implies, this method chooses points which are likely to have the lar
 
 
 \section{Batch Active Learning}
-Several naive methods are available here. Firstly, getting the top $N$ data points from a model described in Section. However, this method does not take into account the equivalence of the data points. This is extremely clear using the highest uncertainty method. Each method in Section[] has been modified to demonstrate this weakness.
+Little literature exists with respect to batch active learning. Naive implimentation exist whereby the methods explored earlier present a stack of data points to be chosen, and the top $N$ are used. However, this method does not take into account the equivalence of the data points. This can be seen by the formation of clusters within the broad and uncertainty sampling methods, although it is not present within the clusterisation algorithm.
 
 \begin{figure}
   \begin{center}
@@ -182,6 +182,8 @@ Several naive methods are available here. Firstly, getting the top $N$ data poin
 
 
 It stands to reason that the area which has the highest uncertainty will see this for the data points nearest neighbours. Thus, this singular data point suffers the potential of being surrounded by $N-1$ other data points. The benefit this provides in fitting the model is thus extremely limited, and only slightly greater than if one data point had been chosen. A simple fix would be to simulate the model after 1 iteration, and select the next point from here. By doing this $N-1$ times, a better solution may be found, although this may prove to be computationally very expensive.
+
+
 
 \section{Drug Data for Machine Learning}
 There are numerous data categories that can be used to represent a chemical in a suitable form for machine learning. Indeed, the field of chemoinformatics is dedicated to the pursuit of describing chemicals for computational models. Each of these methods have various strengths and weaknesses. Some are directly based upon the chemical structure whereas others are based upon physical properties. These can be combined to produce models with high predictive capabilities.
