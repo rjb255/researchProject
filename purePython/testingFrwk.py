@@ -60,7 +60,7 @@ def callback_minimise(*args):
 
 
 def main(*, output=0, alpha=[]):
-    minimise = 1
+    minimise = 2
     ppprint = partial(custom_print, output)
     ppprint(output)
     data_location = os.path.join(proj_path, "data", "big", "qsar_data")
