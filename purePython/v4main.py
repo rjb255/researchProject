@@ -135,8 +135,8 @@ def first_split(
 def rod_greed(m, X, Y, x, mem, *args, **kwargs):
     f = greedy(m, X, Y, x)
     g = region_of_disagreement(m, X, Y, x)
-    return np.power(f - np.min(f), mem["alpha"]) * np.power(
-        g - np.min(g), 1 - mem["alpha"]
+    return np.power(0.1 + f - np.min(f), mem["alpha"]) * np.power(
+        0.1 + g - np.min(g), 1 - mem["alpha"]
     )
 
 
