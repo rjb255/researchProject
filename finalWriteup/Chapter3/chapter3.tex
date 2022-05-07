@@ -3,6 +3,7 @@
 %****************************** Third Chapter **********************************
 %*******************************************************************************
 \chapter{Methodology}
+\label{ch:method}
 % **************************** Nomenclature **********************************
 \nomenclature[d-1-XTrain]{$X_\mathrm{train}$}{Datasets used for training the algorithms}
 \nomenclature[d-1-XTest]{$X_\mathrm{test}$}{Datasets used to provide a score for the algorithms}
@@ -27,7 +28,7 @@ As well as the algorithms used mentioned in Chapter~\ref{ch:2}, several custom a
 \section{Computational Methodology}
 The methodology presents a novel means of assessing different parametrised active learning methods on existing data sets, allowing for a robust answer into the use of active learning in drug rediscovery. Results can thus be given with a given belief. This approach has taken principles commonly used in machine learning and applied it to more traditional algorithmic methods.
 \\
-Firstly, a collection of pre-existing data sets, $X$, are used. $X$ is then split into two sub sets: $X_{\mathrm{train}}$ and $X_\mathrm{test}$. Similarly to machine learning, the former of these subsets is used in fitting the parameters of the equation, and the latter is used to provide a result without the risk of data leakage into the training set. This is represented in []. Parallelisation is used to efficiently train the algorithms allowing the time for training to be $\sim{}\mathcal{O}(c)$.
+Firstly, a collection of pre-existing data sets, $X$, are used. $X$ is then split into two sub sets: $X_{\mathrm{train}}$ and $X_\mathrm{test}$. Similarly to machine learning, the former of these subsets is used in fitting the parameters of the equation, and the latter is used to provide a result without the risk of data leakage into the training set. This is represented in []. Parallelisation is used to efficiently train the algorithms allowing the time for training to be $\sim{}\mathcal{O}(c)$. Datasets used have at least 1000 entries. This results in 164 datasets used for training, and a further 42 used for testing.
 \\
 Examining the smaller details, each algorithm is provided with the sets $x_\mathrm{known}$, $y_\mathrm{known}$, and $x_\mathrm{unknown}$. Various algorithms are given these sets and allowed to generate a subset of $x_\mathrm{unknown}$ to be added into $x_\mathrm{known}$ alongside corresponding $y_\mathrm{known}$. This can then repeat until a predefined stopping point is reached. Scores are reported using a weighted mean squared error [] based upon $y_\mathrm{predict}$ for all $x$. This is similar to a standard machine learning methodology with a couple of differences. Firstly, no distinction is made between the training and testing set within a dataset contrary to standard practice. This is due to two reasons. Firstly, the datasets are not large enough for an accurate representation of the data within the testing set, and secondly, the scoring to each dataset is not used within the machine learning algorithms to fit parameters as is usually the case. All algorithms used rely upon a simple custom composite model to allow for flexibility and consistency.
 \\
@@ -157,11 +158,10 @@ The\lstinline{split} function allows for each dataset to be split into $x_\mathr
 
     Here, $\alpha$ is a parameter which needs to be found, bounded as $0<\alpha{}<1$. Note here that the limits are identical to the uncertainty sampling and the greedy methodologies.
 
-\subsection{Training Framework}
-\blindtext[1]
-\subsubsection{Parallelisation}
-\blindtext[1]
+    \subsection{Training Framework}
+    \blindtext[1]
+    \subsubsection{Parallelisation}
+    The large number of datasets used presents a problem: time. Indeed, each iteration sees a new fitting of a machine learning model. Within the training stage, this would correspond to 984 models trained: a considerable number. Thus, by exploiting parallelisation, the time can be reduced in execution to the case, where given an infinite number of processes, the training and testing framework would scale as $\mathcal{O}(c)$. This requires circumventing pythons global interpreter lock. Pathos was used to accomplish this due to several shortcomings found with the default multiprocessing package \cite{pathos1,pathos2}.
 \subsubsection{Minimisation}
-
-
+The methodology for minimisation was dependent on the circumstance. Firstly, the range was proved viable using a grid of points within the bound suggested earlier. Upon confirmation of the bounds, a more vigarous method was used: particularly in the case where doubles could be used. In several examples, such as in Clusterisation I, the parameter used was a integer. This was minisimised through a binary search, as most available optimisers fail to adapt to integer arguments.
 \blindtext[1]
