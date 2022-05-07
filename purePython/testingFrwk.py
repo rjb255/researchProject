@@ -101,6 +101,8 @@ def main(*, output=0, alpha=[]):
             for g in grid:
                 score.append(to_minimise(data_train, g))
             alpha = grid[np.argmin(score)[0]]
+            ppprint(f"SCOREEEEEEEEEEEE: {score}")
+            ppprint(f"ALPHAAAAAAAAAAAA: {alpha}")
         elif minimise == 2:
             alef = opt.minimize(
                 lambda a: to_minimise(data_train, a),
