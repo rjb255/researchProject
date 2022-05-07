@@ -100,7 +100,7 @@ def main(*, output=0, alpha=[]):
             score = []
             for g in grid:
                 score.append(to_minimise(data_train, g))
-            alpha = grid[np.argmin(score)[0]]
+            alpha = grid[np.argsort(score)[0]]
             ppprint(f"SCOREEEEEEEEEEEE: {score}")
             ppprint(f"ALPHAAAAAAAAAAAA: {alpha}")
         elif minimise == 2:
