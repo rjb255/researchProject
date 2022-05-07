@@ -22,6 +22,7 @@ from sklearn.neighbors import KNeighborsRegressor as KNN
 from sklearn.ensemble import RandomForestRegressor as RFR
 from sklearn.mixture import GaussianMixture as GMM
 from sklearn.cluster import Birch as BIRCH
+from sklearn.cluster import KMeans as KM
 
 
 proj_path = os.path.join(
