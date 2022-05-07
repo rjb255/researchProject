@@ -261,6 +261,7 @@ def post_main(dataset, alpha=[]):
         "broad": broad_base,
         "mine": rod_hotspots,
         "greedy": greedy,
+        "rg": rod_greed,
     }
 
     # For when this isn't the only one: makes keeping track easier
@@ -269,8 +270,9 @@ def post_main(dataset, alpha=[]):
     algorithm = (
         # algorithms["mine"],
         # algorithms["rod"],
-        algorithms["dumb"],
+        # algorithms["dumb"],
         # algorithms["greedy"],
+        algorithms["rg"],
     )
 
     return framework(
