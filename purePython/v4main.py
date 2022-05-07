@@ -269,8 +269,8 @@ def post_main(dataset, alpha=[]):
     algorithm = (
         # algorithms["mine"],
         # algorithms["rod"],
-        # algorithms["dumb"],
-        algorithms["greedy"],
+        algorithms["dumb"],
+        # algorithms["greedy"],
     )
 
     return framework(

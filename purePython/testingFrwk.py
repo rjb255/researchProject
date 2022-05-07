@@ -5,6 +5,7 @@ import sys
 from pprint import pprint
 from functools import partial
 import matplotlib.pyplot as plt
+from itertools import product as itx
 
 from pathos.multiprocessing import ProcessPool as Pool
 import numpy as np
@@ -59,6 +60,7 @@ def callback_minimise(*args):
 
 
 def main(*, output=0, alpha=[]):
+    minimise = 1
     ppprint = partial(custom_print, output)
     ppprint(output)
     data_location = os.path.join(proj_path, "data", "big", "qsar_data")
@@ -85,18 +87,31 @@ def main(*, output=0, alpha=[]):
     a0 = []
     # todo - Minimise alpha
     # a0: list = [0.85, 0, 0]
-    a_boundary = [(0.5, 1), (-4, 4), (-4, 4)]
+    # a_boundary = [(0.5, 1), (-4, 4), (-4, 4)]
+    a0: list = [0.5]
+    a_boundary = [(0, 1)]
     if a0:
-        alef = opt.minimize(
-            lambda a: to_minimise(data_train, a),
-            a0,
-            bounds=a_boundary,
-            options={"maxiter": 8},
-            method="Nelder-Mead",
-            callback=callback_minimise,
-        )
-        alpha = alef["x"]
-        print(alpha)
+        if minimise == 1:
+            arrays = [np.linspace(_a[0], _a[1], 5) for _a in a_boundary]
+            if len(arrays) > 1:
+                grid = np.array(itx(arrays))
+            else:
+                grid = arrays[0]
+            score = []
+            for g in grid:
+                score.append(to_minimise(data_train, g))
+            alpha = grid[np.argmin(score)[0]]
+        elif minimise == 2:
+            alef = opt.minimize(
+                lambda a: to_minimise(data_train, a),
+                a0,
+                bounds=a_boundary,
+                options={"maxiter": 8},
+                method="Nelder-Mead",
+                callback=callback_minimise,
+            )
+            alpha = alef["x"]
+            print(alpha)
 
     with_alpha = partial(algs.post_main, alpha=alpha)
     with Pool() as p:
