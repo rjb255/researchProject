@@ -70,7 +70,7 @@ def main(*, output=0, alpha=[]):
         "rg"  # ?: rod_greed,
         # "cluster"  # ?: clusterise,
     )
-    minimise = 1
+    minimise = 0
     ppprint = partial(custom_print, output)
     ppprint(output)
     data_location = os.path.join(proj_path, "data", "big", "qsar_data")
@@ -119,7 +119,7 @@ def main(*, output=0, alpha=[]):
 
             alpha = grid[np.argsort(score)[0]]
             keeping_track_pd = pd.DataFrame(data=keeping_track)
-            rosette = f"data/param/{alg}1.csv"
+            rosette = f"I_GIVE_UP_{alg}1.csv"
             ppprint(f"SCOREEEEEEEEEEEE: {score}")
             ppprint(f"ALPHAAAAAAAAAAAA: {alpha}")
             print(rosette)
