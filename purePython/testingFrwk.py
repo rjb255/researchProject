@@ -47,7 +47,7 @@ def to_minimise(data_set, alpha, alg, ongoing=[]):
     print(f"alpha: {alpha}")
     temp = partial(algs.post_main, alpha=alpha, alg=alg)
     with Pool() as p:
-        scores = p.map(temp, [data for data in data_set], 1)
+        scores = p.map(temp, [data for data in data_set], chunksize=1)
     scores = np.array(scores)
     ongoing.append(([alpha] + list(scores)))
     # print(len(scores[:, -1]))
@@ -120,11 +120,12 @@ def main(*, output=0, alpha=[]):
             alpha = grid[np.argsort(score)[0]]
             keeping_track_pd = pd.DataFrame(data=keeping_track)
             rosette = f"data/param/{alg}1.csv"
-            print(rosette)
-            keeping_track_pd.to_csv(rosette)
-
             ppprint(f"SCOREEEEEEEEEEEE: {score}")
             ppprint(f"ALPHAAAAAAAAAAAA: {alpha}")
+            print(rosette)
+            os.makedirs(rosette, exist_ok=True)
+            keeping_track_pd.to_csv(rosette)
+
         elif minimise == 2:
             alef = opt.minimize(
                 lambda a: to_minimise(data_train, a, alg),
@@ -139,7 +140,7 @@ def main(*, output=0, alpha=[]):
 
     with_alpha = partial(algs.post_main, alpha=alpha, alg=alg)
     with Pool() as p:
-        scores = p.map(with_alpha, [data for data in data_test], 1)
+        scores = p.map(with_alpha, [data for data in data_test], chunksize=1)
 
     results = pd.DataFrame(data=scores, index=data_test)
     # ppprint(results)

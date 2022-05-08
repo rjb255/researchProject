@@ -12,7 +12,7 @@
 Non-parametric equations have the benefit of not requiring the minimisation function. Due to this, all testing of these algorithms were undertaken on a standard laptop. These also tend to be the easiest to implement, as uncovered in Chapter~\ref{ch:method}. Particularly important is the Monte Carlo method as this allows shows what should be a minimum baseline to achieve.
 
 \subsection{Monte Carlo}
-The first non-parametised algorithm discussed in Chapter~\ref{ch:method} was the Monte Carlo method. Due to the non-parametric nature of this algorithm, execution was simply carried out on the test data set. Results are presented in Figure~\ref{fig:MCTestSet}, demonstrating a final weighted mse of ${0.68\pm{}0.19}$.
+The first non-parametised algorithm discussed in Chapter~\ref{ch:method} was the Monte Carlo method. Due to the non-parametric nature of this algorithm, execution was simply carried out on the test data set. Results are presented in Figure~\ref{fig:MCTestSet}, demonstrating a final weighted mse of ${0.74\pm{}0.20}$.
 \begin{figure}[h]
     \begin{center}
         \includegraphics{dumb1.pdf}
@@ -22,7 +22,7 @@ The first non-parametised algorithm discussed in Chapter~\ref{ch:method} was the
 \end{figure}
 
 \subsection{Greedy}
-Likewise, the greedy algorithm was tested, with results presented in Figure~\ref{fig:GreedyTestSet}. Here, a final weighted mse of ${1.0\pm{}0.5}$ was found indicating a worse scoring despite more precise results when compared to Monte Carlo - the base case.
+Likewise, the greedy algorithm was tested, with results presented in Figure~\ref{fig:GreedyTestSet}. Here, a final weighted mse of ${1.2\pm{}0.7}$ was found indicating a worse scoring despite more precise results when compared to Monte Carlo - the base case.
 \begin{figure}[h]
     \begin{center}
         \includegraphics{greedy1.pdf}
@@ -32,7 +32,7 @@ Likewise, the greedy algorithm was tested, with results presented in Figure~\ref
 \end{figure}
 
 \subsection{ROD Sampling}
-The final non-parametic algorithm to be tested was ROD. A final weighted mse of ${0.81\pm{}0.27}$, over performing the previous two algorithms in both accuracy and precision.
+The final non-parametic algorithm to be tested was ROD. A final weighted mse of ${0.89\pm{}0.30}$, over performing the previous two algorithms in both accuracy and precision.
 
 \begin{figure}[h]
     \begin{center}
