@@ -102,7 +102,8 @@ def main(*, output=0, alpha=[]):
     a_boundary = [(0, 150)]
     if a0:
         if minimise == 1:
-            arrays = [np.linspace(_a[0], _a[1], 11) for _a in a_boundary]
+            arrays = [0, 15, *range(30, 60), 80, 100, 125, 150]
+            # arrays = [np.linspace(_a[0], _a[1], 11) for _a in a_boundary]
             # arrays = [
             #     list(range(0, 115, 10))
             #     + list(range(115, 125))
@@ -123,7 +124,7 @@ def main(*, output=0, alpha=[]):
             ppprint(f"SCOREEEEEEEEEEEE: {score}")
             ppprint(f"ALPHAAAAAAAAAAAA: {alpha}")
             print(rosette)
-            os.makedirs(rosette, exist_ok=True)
+            # os.makedirs(rosette, exist_ok=True)
             keeping_track_pd.to_csv(rosette)
 
         elif minimise == 2:
