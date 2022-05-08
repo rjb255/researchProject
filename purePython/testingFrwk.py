@@ -122,7 +122,7 @@ def main(*, output=0, alpha=[]):
 
             alpha = grid[np.argsort(score)[0]]
             keeping_track_pd = pd.DataFrame(data=keeping_track)
-            rosette = f"I_GIVE_UP_{alg}1.csv"
+            rosette = f"data/param/I_GIVE_UP_{alg}1.csv"
             ppprint(f"SCOREEEEEEEEEEEE: {score}")
             ppprint(f"ALPHAAAAAAAAAAAA: {alpha}")
             print(rosette)
