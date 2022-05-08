@@ -7,7 +7,7 @@ from functools import partial
 import matplotlib.pyplot as plt
 from itertools import product as itx
 
-from pathos.multiprocessing import ProcessPool as Pool
+from pathos.multiprocessing import _ProcessPool as Pool
 import numpy as np
 import random
 import pandas as pd
@@ -47,7 +47,7 @@ def to_minimise(data_set, alpha, alg, ongoing=[]):
     print(f"alpha: {alpha}")
     temp = partial(algs.post_main, alpha=alpha, alg=alg)
     with Pool() as p:
-        scores = p.map(temp, [data for data in data_set])
+        scores = p.map(temp, [data for data in data_set], 1)
     scores = np.array(scores)
     ongoing.append(([alpha] + list(scores)))
     # print(len(scores[:, -1]))
@@ -67,8 +67,8 @@ def main(*, output=0, alpha=[]):
         # "broad" #?: broad_base,
         # "mine" #?: rod_hotspots,
         # "greedy"  # ?: greedy,
-        "rg"  # ?: rod_greed,
-        # "cluster" #?: clusterise,
+        # "rg"  # ?: rod_greed,
+        "cluster"  # ?: clusterise,
     )
     minimise = 1
     ppprint = partial(custom_print, output)
@@ -99,10 +99,10 @@ def main(*, output=0, alpha=[]):
     # a0: list = [0.85, 0, 0]
     # a_boundary = [(0.5, 1), (-4, 4), (-4, 4)]
     a0: list = [0]
-    a_boundary = [(0, 1)]
+    a_boundary = [(0, 150)]
     if a0:
         if minimise == 1:
-            arrays = [np.linspace(_a[0], _a[1], 50) for _a in a_boundary]
+            arrays = [np.linspace(_a[0], _a[1], 11) for _a in a_boundary]
             # arrays = [
             #     list(range(0, 115, 10))
             #     + list(range(115, 125))
@@ -139,7 +139,7 @@ def main(*, output=0, alpha=[]):
 
     with_alpha = partial(algs.post_main, alpha=alpha, alg=alg)
     with Pool() as p:
-        scores = p.map(with_alpha, [data for data in data_test])
+        scores = p.map(with_alpha, [data for data in data_test], 1)
 
     results = pd.DataFrame(data=scores, index=data_test)
     # ppprint(results)
