@@ -43,7 +43,7 @@ def custom_print(output: int, *args, **kwargs):
 # endregion
 
 
-def to_minimise(data_set, alpha, ongoing=[]):
+def to_minimise(data_set, alpha, alg, ongoing=[]):
     print(f"alpha: {alpha}")
     temp = partial(algs.post_main, alpha=alpha, alg=alg)
     with Pool() as p:
@@ -94,11 +94,11 @@ def main(*, output=0, alpha=[]):
 
     ppprint(f"{len(data_train)}, {len(data_valid)}, {len(data_test)}")
     alpha = []
-    a0 = []
+    # a0 = []
     # todo - Minimise alpha
     # a0: list = [0.85, 0, 0]
     # a_boundary = [(0.5, 1), (-4, 4), (-4, 4)]
-    # a0: list = [0]
+    a0: list = [0]
     a_boundary = [(0, 1)]
     if a0:
         if minimise == 1:
@@ -115,7 +115,7 @@ def main(*, output=0, alpha=[]):
             score = []
             keeping_track = []
             for g in grid:
-                score.append(to_minimise(data_train, g, keeping_track))
+                score.append(to_minimise(data_train, g, alg, keeping_track))
 
             alpha = grid[np.argsort(score)[0]]
             keeping_track_pd = pd.DataFrame(data=keeping_track)
@@ -127,7 +127,7 @@ def main(*, output=0, alpha=[]):
             ppprint(f"ALPHAAAAAAAAAAAA: {alpha}")
         elif minimise == 2:
             alef = opt.minimize(
-                lambda a: to_minimise(data_train, a),
+                lambda a: to_minimise(data_train, a, alg),
                 a0,
                 bounds=a_boundary,
                 # options={"maxiter": 8},
