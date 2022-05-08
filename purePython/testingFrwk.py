@@ -67,8 +67,8 @@ def main(*, output=0, alpha=[]):
         # "broad" #?: broad_base,
         # "mine" #?: rod_hotspots,
         # "greedy"  # ?: greedy,
-        "rg"  # ?: rod_greed,
-        # "cluster"  # ?: clusterise,
+        # "rg"  # ?: rod_greed,
+        "cluster"  # ?: clusterise,
     )
     minimise = 1
     ppprint = partial(custom_print, output)
@@ -104,7 +104,9 @@ def main(*, output=0, alpha=[]):
         if minimise == 1:
             # arrays = [[*np.arange(0, 1.1, 0.5)]]
 
-            arrays = [[*np.arange(0, 0.3, 0.01), *np.arange(0.3, 1.1, 0.1)]]
+            arrays = [
+                [*np.arange(0, 30, 15), *np.arange(35, 55, 1), *np.arange(60, 151, 30)]
+            ]
             # arrays = [np.linspace(_a[0], _a[1], 11) for _a in a_boundary]
             # arrays = [
             #     list(range(0, 115, 10))
