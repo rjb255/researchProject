@@ -127,7 +127,7 @@ def main(*, output=0, alpha=[]):
             ppprint(f"ALPHAAAAAAAAAAAA: {alpha}")
             print(rosette)
             # os.makedirs(rosette, exist_ok=True)
-            keeping_track_pd.to_csv(rosette)
+            keeping_track_pd.to_csv(rosette, index=False)
 
         elif minimise == 2:
             alef = opt.minimize(
