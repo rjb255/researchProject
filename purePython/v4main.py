@@ -19,6 +19,7 @@ from scipy.spatial import distance_matrix as dist_mat
 from scipy.spatial import KDTree
 from sklearn.linear_model import BayesianRidge as BR
 from sklearn.neighbors import KNeighborsRegressor as KNN
+from sklearn.ensemble import AdaBoostRegressor as ABR
 from sklearn.ensemble import RandomForestRegressor as RFR
 from sklearn.mixture import GaussianMixture as GMM
 from sklearn.cluster import Birch as BIRCH
@@ -141,7 +142,7 @@ def first_split(
             )
         )
         processes[-1].start()
-        # print(f"{i} with {f.__name__}")
+        print(f"{i} with {f.__name__}")
     return [score.get() for score in score_record]
 
 
@@ -294,7 +295,7 @@ def main():
     post_main(data)
 
 
-def post_main(dataset, alpha=[]):
+def post_main(dataset, alg, alpha=[]):
     data = pd.read_csv(dataset)
     data: pd.DataFrame = data.sample(frac=1, random_state=1)
     print(len(data))
@@ -303,10 +304,11 @@ def post_main(dataset, alpha=[]):
     X_test, Y_test = pd.concat([X_known, X_unknown]), pd.concat([Y_known, Y_unknown])
     models = {
         "BayesianRidge": BR(),
-        "KNN": KNN(n_jobs=-1),
+        "KNN": KNN(),
         "RandomForrest": RFR(random_state=1),
-        "SGD": SGD(loss="huber", random_state=0),
+        "SGD": SGD(loss="huber", random_state=1),
         "SVM": SVR(),
+        "ABR": ABR(random_state=1),
     }
     algorithms = {
         "dumb": base,
@@ -320,16 +322,9 @@ def post_main(dataset, alpha=[]):
     }
 
     # For when this isn't the only one: makes keeping track easier
-    model = Models([models["BayesianRidge"], models["KNN"], models["RandomForrest"]])
+    model = Models(list(models.values()))
 
-    algorithm = (
-        # algorithms["mine"],
-        algorithms["rod"],
-        # algorithms["dumb"],
-        # algorithms["greedy"],
-        # algorithms["rg"],
-        # algorithms["cluster"],
-    )
+    algorithm = (algorithms[alg],)
 
     return framework(
         X_known,

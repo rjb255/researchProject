@@ -43,12 +43,13 @@ def custom_print(output: int, *args, **kwargs):
 # endregion
 
 
-def to_minimise(data_set, alpha):
+def to_minimise(data_set, alpha, ongoing=[]):
     print(f"alpha: {alpha}")
-    temp = partial(algs.post_main, alpha=alpha)
+    temp = partial(algs.post_main, alpha=alpha, alg=alg)
     with Pool() as p:
         scores = p.map(temp, [data for data in data_set])
     scores = np.array(scores)
+    ongoing.append((list(alpha) + list(scores)))
     # print(len(scores[:, -1]))
     print(f"alpha score: {np.mean(scores[:,-1])}")
     return np.mean(scores[:, -1])
@@ -60,7 +61,16 @@ def callback_minimise(*args):
 
 
 def main(*, output=0, alpha=[]):
-    minimise = 0
+    alg = (
+        # "dumb"  # ?: base,
+        # "rod"  # ?: region_of_disagreement,
+        # "broad" #?: broad_base,
+        # "mine" #?: rod_hotspots,
+        # "greedy"  # ?: greedy,
+        "rg"  # ?: rod_greed,
+        # "cluster" #?: clusterise,
+    )
+    minimise = 1
     ppprint = partial(custom_print, output)
     ppprint(output)
     data_location = os.path.join(proj_path, "data", "big", "qsar_data")
@@ -89,18 +99,30 @@ def main(*, output=0, alpha=[]):
     # a0: list = [0.85, 0, 0]
     # a_boundary = [(0.5, 1), (-4, 4), (-4, 4)]
     # a0: list = [0]
-    a_boundary = [(0, 150)]
+    a_boundary = [(0, 1)]
     if a0:
         if minimise == 1:
-            arrays = [np.linspace(_a[0], _a[1], 11) for _a in a_boundary]
+            arrays = [np.linspace(_a[0], _a[1], 50) for _a in a_boundary]
+            # arrays = [
+            #     list(range(0, 115, 10))
+            #     + list(range(115, 125))
+            #     + list(range(130, 151, 10))
+            # ]
             if len(arrays) > 1:
                 grid = np.array(itx(arrays))
             else:
                 grid = arrays[0]
             score = []
+            keeping_track = []
             for g in grid:
-                score.append(to_minimise(data_train, g))
+                score.append(to_minimise(data_train, g, keeping_track))
+
             alpha = grid[np.argsort(score)[0]]
+            keeping_track_pd = pd.DataFrame(data=keeping_track)
+            rosette = f"data/param/{alg}1.csv"
+            print(rosette)
+            keeping_track_pd.to_csv(rosette)
+
             ppprint(f"SCOREEEEEEEEEEEE: {score}")
             ppprint(f"ALPHAAAAAAAAAAAA: {alpha}")
         elif minimise == 2:
@@ -115,7 +137,7 @@ def main(*, output=0, alpha=[]):
             alpha = alef["x"]
             print(alpha)
 
-    with_alpha = partial(algs.post_main, alpha=alpha)
+    with_alpha = partial(algs.post_main, alpha=alpha, alg=alg)
     with Pool() as p:
         scores = p.map(with_alpha, [data for data in data_test])
 
@@ -124,7 +146,7 @@ def main(*, output=0, alpha=[]):
     # plt.ion()
     # plt.plot([1, 101, 201, 301, 401], np.transpose(scores))
     # plt.show(block=True)
-    rosette = "data/4/rod1.csv"
+    rosette = f"data/4/{alg}1.csv"
     print(rosette)
     results.to_csv(rosette)
 
