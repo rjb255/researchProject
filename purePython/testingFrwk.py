@@ -49,7 +49,7 @@ def to_minimise(data_set, alpha, alg, ongoing=[]):
     with Pool() as p:
         scores = p.map(temp, [data for data in data_set])
     scores = np.array(scores)
-    ongoing.append((list(alpha) + list(scores)))
+    ongoing.append(([alpha] + list(scores)))
     # print(len(scores[:, -1]))
     print(f"alpha score: {np.mean(scores[:,-1])}")
     return np.mean(scores[:, -1])
