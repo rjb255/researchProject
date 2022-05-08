@@ -324,9 +324,9 @@ def post_main(dataset, alpha=[]):
 
     algorithm = (
         # algorithms["mine"],
-        # algorithms["rod"],
+        algorithms["rod"],
         # algorithms["dumb"],
-        algorithms["greedy"],
+        # algorithms["greedy"],
         # algorithms["rg"],
         # algorithms["cluster"],
     )

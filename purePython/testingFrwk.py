@@ -124,7 +124,7 @@ def main(*, output=0, alpha=[]):
     # plt.ion()
     # plt.plot([1, 101, 201, 301, 401], np.transpose(scores))
     # plt.show(block=True)
-    rosette = "data/4/greed1.csv"
+    rosette = "data/4/rod1.csv"
     print(rosette)
     results.to_csv(rosette)
 
