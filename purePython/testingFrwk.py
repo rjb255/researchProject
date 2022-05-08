@@ -102,7 +102,7 @@ def main(*, output=0, alpha=[]):
     a_boundary = [(0, 150)]
     if a0:
         if minimise == 1:
-            arrays = [*range(0, 0.3, 0.03), *range(0.3, 1.1, 0.1)]
+            arrays = [*np.arange(0, 0.3, 0.01), *np.arange(0.3, 1.1, 0.1)]
             # arrays = [np.linspace(_a[0], _a[1], 11) for _a in a_boundary]
             # arrays = [
             #     list(range(0, 115, 10))
