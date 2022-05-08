@@ -40,7 +40,7 @@ from purePython.modules.shared.custom import split, getPI, Models
 
 def score(Y_test, kwargs, q):
     y_predict = kwargs["model"].predict(kwargs["X_test"])
-    q.put(mse(y_predict, Y_test, sample_weight=np.array(Y_test) + np.min(Y_test)))
+    q.put(mse(y_predict, Y_test, sample_weight=np.array(Y_test) - np.min(Y_test)))
 
 
 def spec_max(x):
