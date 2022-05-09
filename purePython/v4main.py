@@ -39,6 +39,8 @@ from purePython.modules.shared.custom import split, getPI, Models
 
 
 def score(Y_test, kwargs, lims, q):
+    lims = kwargs["lims"]
+    print(f"lims: {lims}")
     y_predict = kwargs["model"].predict(kwargs["X_test"])
     weight = np.array(Y_test) - np.min(Y_test)
     print(np.max(weight))
@@ -149,6 +151,7 @@ def first_split(
                     {
                         "model": copy.deepcopy(m),
                         "X_test": X_test,  # No need for deepcopy (no change to X_test)
+                        "lims": lims,
                     },
                     score_record[-1],
                 ),
