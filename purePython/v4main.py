@@ -44,6 +44,7 @@ def score(Y_test, kwargs, q):
     print(np.max(weight))
     if np.max(weight) == 0:
         print("Issue")
+        weight = weight + 1
     else:
         weight /= np.max(weight)
     if (weight < 0).any():
