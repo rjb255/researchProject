@@ -38,7 +38,7 @@ from purePython.modules.shared.custom import split, getPI, Models
 # endregion
 
 
-def score(Y_test, kwargs, lims, q):
+def score(Y_test, kwargs, q):
     lims = kwargs["lims"]
     print(f"lims: {lims}")
     y_predict = kwargs["model"].predict(kwargs["X_test"])
