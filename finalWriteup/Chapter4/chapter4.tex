@@ -45,9 +45,16 @@ The final non-parametic algorithm to be tested was ROD. A final weighted mse of 
 \section{Parametric}
 Parametric algorithms require a minimisation procedure on the training set. This leads to a computationally challenging script, and for this the author is grateful for the services provided by the HPC \cite{HPC}.
 \subsection{Hotspot Clusters}
-\blindtext[1]
+
+${0.155\pm{}0.020}$
+
+\begin{figure}[h]
+    \begin{center}
+        \includegraphics{cluster.pdf}
+    \end{center}
+\end{figure}
 \subsection{ROD with Greed}
-When testing the ROD with greed sampling method, it was found that despite the weighting towards higher value targets, no improvement was seen over ROD with $\alpha{}=0$, with $\alpha$ defined in \ref{eq:rodAndGreed}. However, the tolerance at small $\alpha$ is low, as shown with the errors attached during parameter fitting.
+When testing the ROD with greed sampling method, it was found that despite the weighting towards higher value targets, no improvement was seen over ROD with $\alpha{}=0.06$, with $\alpha$ defined in \ref{eq:rodAndGreed}. However, the tolerance at small $\alpha$ is low, as shown with the errors attached during parameter fitting. This gives a score of ${0.206\pm{}0.011}$, a slight improvement over simply using ROD.
 
 \begin{figure}[h]
     \begin{center}

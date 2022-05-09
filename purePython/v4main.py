@@ -229,6 +229,30 @@ def rod_hotspots(m, X, Y, x, mem, *args, **kwargs):
     return score
 
 
+def clusterI(m, X, Y, x, mem, *args, **kwargs):
+    return clusterise(m, X, Y, x, mem, *args, **kwargs)
+
+
+def clusterII(m, X, Y, x, mem, *args, **kwargs):
+    _X = copy.deepcopy(X)
+    _X["Y"] = Y
+    y = m.predict(x)
+    _x = copy.deepcopy(x)
+    _x["Y"] = y
+    return clusterise(m, _X, Y, _x, mem, *args, **kwargs)
+
+
+def clusterIII(m, X, Y, x, mem, *args, **kwargs):
+    _X = copy.deepcopy(X)
+    _X["Y"] = Y
+    _X["err"] = 0
+    y, err = m.predict_error(x)
+    _x = copy.deepcopy(x)
+    _x["Y"] = y
+    _x["err"] = err
+    return clusterise(m, _X, Y, _x, mem, *args, **kwargs)
+
+
 def clusterise(m, X, Y, x, mem, *args, **kwargs):
     Xx = pd.concat([X, x])
     if "cluster" in mem:
@@ -322,7 +346,9 @@ def post_main(dataset, alg, alpha=[]):
         "mine": rod_hotspots,
         "greedy": greedy,
         "rg": rod_greed,
-        "cluster": clusterise,
+        "clusterI": clusterI,
+        "clusterII": clusterII,
+        "clusterIII": clusterIII,
     }
 
     # For when this isn't the only one: makes keeping track easier

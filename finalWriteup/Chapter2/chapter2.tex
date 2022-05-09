@@ -181,11 +181,11 @@ It stands to reason that the area which has the highest uncertainty will see thi
 There are numerous data categories that can be used to represent a chemical in a suitable form for machine learning. Indeed, the field of chemoinformatics is dedicated to the pursuit of describing chemicals for computational models. Each of these methods have various strengths and weaknesses. Some are directly based upon the chemical structure whereas others are based upon physical properties. These can be combined to produce models with high predictive capabilities.
 
 \subsection{Physical Properties}
-A selection of physical properties from chemicals are known, from melting points to solubility. Many of these provide important aspects for consideration and allow human scientists to predict interactions, especially when determining new drugs. These data are often reported in tables within textbooks such as Perry's [] or provided through software [chembl ...].
+A selection of physical properties from chemicals are known, from melting points to solubility. Many of these provide important aspects for consideration and allow human scientists to predict interactions, especially when determining new drugs. These data are often reported in tables within textbooks such as Perry's Chemical Engineering Handbook or provided through software \cite{CHEMBL,Perrys}.
 
 Several of these data can be predicted through theoretical models, although the difficulty increases for larger molecules. For example, models exist for density predictions, but predicting the $\mathrm{LD_{50}}$ of a drug is  far more challenging task. Indeed, even with animal testing, this property is deemed difficult to trully assess.
 
-Within drug discovery, physical and biological properties are usually the sought after labels. An example of this is supplied by \textcite{CHEMBL} with a custom property named pChEMBL, as defined by \ref{eq:pChEMBL} where  "|" is synonymous with or.
+Within drug discovery, physical and biological properties are usually the sought after labels. An example of this is supplied by \textcite{CHEMBL} with a custom property named pChEMBL, as defined by \ref{eq:pChEMBL} where  "|" is synonymous with "or".
 
 \begin{equation}
   \label{eq:pChEMBL}
