@@ -66,11 +66,11 @@ def main(*, output=0, alpha=[]):
         # "rod"  # ?: region_of_disagreement,
         # "broad" #?: broad_base,
         # "mine" #?: rod_hotspots,
-        "greedy"  # ?: greedy,
-        # "rg"  # ?: rod_greed,
+        # "greedy"  # ?: greedy,
+        "rg"  # ?: rod_greed,
         # "cluster"  # ?: clusterise,
     )
-    minimise = 0
+    minimise = 1
     ppprint = partial(custom_print, output)
     ppprint(output)
     data_location = os.path.join(proj_path, "data", "big", "qsar_with_lims")
@@ -104,7 +104,7 @@ def main(*, output=0, alpha=[]):
         if minimise == 1:
             # arrays = [[*np.arange(0, 1.1, 0.5)]]
 
-            arrays = [[*np.arange(0, 5, 150)]]
+            # arrays = [[*np.arange(0, 5, 150)]]
             arrays = [[*np.arange(0, 0.01, 0.5), *np.arange(0.5, 0.05, 1.01)]]
             # arrays = [np.linspace(_a[0], _a[1], 11) for _a in a_boundary]
             # arrays = [
