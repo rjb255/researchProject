@@ -18,11 +18,11 @@ def split(data: DataFrame, n: int = 20, frac: int = None, count=None, lims=False
         limSpace = 2
         alter = 1
     splitBoundary = [n, c]
-    X1 = data.iloc[: splitBoundary[0], 2 + alter : -limSpace]
+    X1 = data.iloc[: splitBoundary[0], 2 + alter : 1026 + alter]
     Y1 = data.iloc[: splitBoundary[0], 1 + alter]
-    X2 = data.iloc[splitBoundary[0] : splitBoundary[1], 2 + alter : -limSpace]
+    X2 = data.iloc[splitBoundary[0] : splitBoundary[1], 2 + alter : 1026 + alter]
     Y2 = data.iloc[splitBoundary[0] : splitBoundary[1], 1 + alter]
-    X3 = data.iloc[splitBoundary[1] :, 2 + alter : -limSpace]
+    X3 = data.iloc[splitBoundary[1] :, 2 + alter : 1026 + alter]
     Y3 = data.iloc[splitBoundary[1] :, 1 + alter]
     if lims:
         return X1, Y1, X2, Y2, X3, Y3, data["llim"][1], data["ulim"][1]

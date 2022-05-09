@@ -38,8 +38,7 @@ from purePython.modules.shared.custom import split, getPI, Models
 # endregion
 
 
-def score(Y_test, kwargs, q):
-    lims = kwargs["lims"]
+def score(Y_test, lims=[0, 1], **kwargs):
     print(f"lims: {lims}")
     y_predict = kwargs["model"].predict(kwargs["X_test"])
     weight = np.array(Y_test) - np.min(Y_test)
@@ -53,7 +52,7 @@ def score(Y_test, kwargs, q):
         print(f"ERROR: {weight}")
     s = mse(y_predict, Y_test, sample_weight=weight)
     s = (s - lims[0]) / (lims[1] - lims[0])
-    q.put(s)
+    return s
 
 
 def spec_max(x):
@@ -144,24 +143,10 @@ def first_split(
             _a = np.array([_t[0] - len(X) + sample_size, _t[1] - len(x) - sample_size])
             if np.count_nonzero(_a) > 0:
                 print(f"ERROR: {_a}")
-        score_record.append(Queue())
-        processes.append(
-            Process(
-                target=score,
-                args=(
-                    Y_test,
-                    {
-                        "model": _m,
-                        "X_test": X_test,  # No need for deepcopy (no change to X_test)
-                        "lims": lims,
-                    },
-                    score_record[-1],
-                ),
-            )
-        )
-        processes[-1].start()
+        score_record.append(score(Y_test, model=_m, X_test=X_test, lims=lims))
+
         print(f"{i} with {f.__name__}")
-    return [score.get() for score in score_record]
+    return score_record
 
 
 # TODO:

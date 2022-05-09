@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 from pathos.multiprocessing import _ProcessPool as Pool
-from multiprocessing import Queue, Process
 import os
 import sys
 import copy
@@ -42,41 +41,14 @@ def main(dataset):
 
     m.fit(X_known, Y_known)
     _m = copy.deepcopy(m)
-    s = [Queue()]
-    p = [
-        Process(
-            target=score,
-            args=(
-                Y_test,
-                {
-                    "model": _m,
-                    "X_test": X_test,  # No need for deepcopy (no change to X_test)
-                },
-                s[0],
-            ),
-        )
-    ]
-    p[0].start()
+    s = [score(Y_test, model=_m, X_test=X_test)]
+
     m.fit(X_test, Y_test)
     _m = copy.deepcopy(m)
-    s.append(Queue())
-    p.append(
-        Process(
-            target=score,
-            args=(
-                Y_test,
-                {
-                    "model": _m,
-                    "X_test": X_test,  # No need for deepcopy (no change to X_test)
-                },
-                s[1],
-            ),
-        )
-    )
-    p[1].start()
-    limits = [_s.get() for _s in s]
-    data["llim"] = limits[0]
-    data["ulim"] = limits[1]
+    s.append(score(Y_test, model=_m, X_test=X_test))
+
+    data["llim"] = s[0]
+    data["ulim"] = s[1]
     data.to_csv(dataset[1])
     print("Survived")
 
@@ -87,14 +59,6 @@ datasets = np.array([os.path.join(data_location, data) for data in data_names])
 data_location2 = os.path.join(proj_path, "data", "big", "qsar_with_lims")
 data2 = np.array([os.path.join(data_location2, data) for data in data_names])
 
-models = {
-    "BayesianRidge": BR(),
-    "KNN": KNN(),
-    "RandomForrest": RFR(random_state=1),
-    "SGD": SGD(loss="huber", random_state=1),
-    "SVM": SVR(),
-    "ABR": ABR(random_state=1),
-}
 
 with Pool() as p:
     dataframes = p.map(main, [(a, b) for a, b in zip(datasets, data2)])
