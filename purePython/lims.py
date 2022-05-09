@@ -26,6 +26,7 @@ from purePython.v4main import score
 
 def main(dataset):
     data = pd.read_csv(dataset[0])
+    backup = copy.deepcopy(data)
     models = {
         "BayesianRidge": BR(),
         "KNN": KNN(),
@@ -47,9 +48,9 @@ def main(dataset):
     _m = copy.deepcopy(m)
     s.append(score(Y_test, model=_m, X_test=X_test))
 
-    data["llim"] = s[0]
-    data["ulim"] = s[1]
-    data.to_csv(dataset[1])
+    backup["llim"] = s[0]
+    backup["ulim"] = s[1]
+    backup.to_csv(dataset[1])
     print("Survived")
 
 
