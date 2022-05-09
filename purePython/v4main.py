@@ -39,10 +39,8 @@ from purePython.modules.shared.custom import split, getPI, Models
 
 
 def score(Y_test, lims=[0, 1], **kwargs):
-    print(f"lims: {lims}")
     y_predict = kwargs["model"].predict(kwargs["X_test"])
     weight = np.array(Y_test) - np.min(Y_test)
-    print(np.max(weight))
     if np.max(weight) == 0:
         print("Issue")
         weight = weight + 1
