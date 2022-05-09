@@ -69,8 +69,8 @@ def main(*, output=0, alpha=[]):
         # "greedy"  # ?: greedy,
         # "rg"  # ?: rod_greed,
         # "clusterI"  # ?: clusteriseI,
-        "clusterII"  # ?: clusteriseII,
-        # "clusterIII"  # ?: clusteriseIII,
+        # "clusterII"  # ?: clusteriseII,
+        "clusterIII"  # ?: clusteriseIII,
     )
     minimise = 1
     ppprint = partial(custom_print, output)
