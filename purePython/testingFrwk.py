@@ -73,7 +73,7 @@ def main(*, output=0, alpha=[]):
     minimise = 1
     ppprint = partial(custom_print, output)
     ppprint(output)
-    data_location = os.path.join(proj_path, "data", "big", "qsar_data")
+    data_location = os.path.join(proj_path, "data", "big", "qsar_with_lims")
 
     data_names = os.listdir(data_location)
     random.seed(1)

@@ -41,7 +41,11 @@ from purePython.modules.shared.custom import split, getPI, Models
 def score(Y_test, kwargs, q):
     y_predict = kwargs["model"].predict(kwargs["X_test"])
     weight = np.array(Y_test) - np.min(Y_test)
-    weight /= np.max(weight)
+    print(np.max(weight))
+    if np.max(weight) == 0:
+        print("Issue")
+    else:
+        weight /= np.max(weight)
     if (weight < 0).any():
         print(f"ERROR: {weight}")
     q.put(mse(y_predict, Y_test, sample_weight=weight))
@@ -304,7 +308,12 @@ def post_main(dataset, alg, alpha=[]):
     data: pd.DataFrame = data.sample(frac=1, random_state=1)
     print(len(data))
 
-    X_known, Y_known, X_unknown, Y_unknown, X_test, Y_test = split(data, 5, frac=1)
+    X_known, Y_known, X_unknown, Y_unknown, X_test, Y_test = split(
+        data,
+        5,
+        frac=1,
+        lims=True,
+    )
     X_test, Y_test = pd.concat([X_known, X_unknown]), pd.concat([Y_known, Y_unknown])
     models = {
         "BayesianRidge": BR(),
