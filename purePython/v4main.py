@@ -52,7 +52,7 @@ def score(Y_test, kwargs, q):
     if (weight < 0).any():
         print(f"ERROR: {weight}")
     s = mse(y_predict, Y_test, sample_weight=weight)
-    s = (s - lims[1]) / (lims[0] - lims[1])
+    s = (s - lims[0]) / (lims[1] - lims[0])
     q.put(s)
 
 
@@ -136,6 +136,7 @@ def first_split(
     for i in range(iterations):
         if len(x) > 0:
             m.fit(X, Y)
+            _m = copy.deepcopy(m)
             ranking = f(m, X, Y, x, mem)
             next_index = x.index[np.argsort(ranking)]
             _t = [len(X), len(x)]
@@ -150,7 +151,7 @@ def first_split(
                 args=(
                     Y_test,
                     {
-                        "model": copy.deepcopy(m),
+                        "model": _m,
                         "X_test": X_test,  # No need for deepcopy (no change to X_test)
                         "lims": lims,
                     },

@@ -41,6 +41,7 @@ def main(dataset):
     X_test, Y_test = pd.concat([X_known, X_unknown]), pd.concat([Y_known, Y_unknown])
 
     m.fit(X_known, Y_known)
+    _m = copy.deepcopy(m)
     s = [Queue()]
     p = [
         Process(
@@ -48,7 +49,7 @@ def main(dataset):
             args=(
                 Y_test,
                 {
-                    "model": copy.deepcopy(m),
+                    "model": _m,
                     "X_test": X_test,  # No need for deepcopy (no change to X_test)
                 },
                 s[0],
@@ -57,6 +58,7 @@ def main(dataset):
     ]
     p[0].start()
     m.fit(X_test, Y_test)
+    _m = copy.deepcopy(m)
     s.append(Queue())
     p.append(
         Process(
@@ -64,7 +66,7 @@ def main(dataset):
             args=(
                 Y_test,
                 {
-                    "model": copy.deepcopy(m),
+                    "model": _m,
                     "X_test": X_test,  # No need for deepcopy (no change to X_test)
                 },
                 s[1],
