@@ -78,7 +78,14 @@ The\lstinline{split} function allows for each dataset to be split into $x_\mathr
     The models used for the composite model were \dots which will be consistent across all algorithms. This allows direct comparison of the algorithms without interference from machine learning models used.
 
     \subsubsection{\lstinline{Validate}}
-    This is a simple method with greater potential than has been explored. By providing this as a separate method, a more computationally intensive validation model could be used without interference as parallelisation could be exploited. However, as it currently stands, it returns the weighted mean squared error using the standard method provided by [].
+    This method implements a weighted mean squared error ($\mathrm{wmse}$) given in \ref{eq:wmse} where $w$ is given as a normalisation of the true label such that $\sum{w}=1$ and ${0\leq{}w\leq{}1}$. Further modification to this ensures the base case with five data points provides a $\mathrm{wmse}=1$ and the score if the entire dataset is modelled provides a $\mathrm{wmse}=0$.
+
+    \begin{equation}
+        \mathrm{wmse}=\frac{1}{n}\sum_{i=0}^{n-1}{w_i(y_i-\bar{y})^2}
+        \label{eq:wmse}
+    \end{equation}
+
+    This achieves several goals. Firstly, it targets the higher values of pChEMBL, as these are the most beneficial for drug development. Secondly, it reduces the natural spread in results for datasets, preventing those poorly capable of being predicted the model from displacing results from the algorithm. Finally, it allows the results to be given as a fractional improvement instead. It allows a target of "85\%" prediction to be given for stopping criteria if desired.
 
     \subsection{Active Learning Algorithms}
 
