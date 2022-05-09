@@ -162,6 +162,7 @@ The\lstinline{split} function allows for each dataset to be split into $x_\mathr
     \blindtext[1]
     \subsubsection{Parallelisation}
     The large number of datasets used presents a problem: time. Indeed, each iteration sees a new fitting of a machine learning model. Within the training stage, this would correspond to 984 models trained: a considerable number. Thus, by exploiting parallelisation, the time can be reduced in execution to the case, where given an infinite number of processes, the training and testing framework would scale as $\mathcal{O}(c)$. This requires circumventing pythons global interpreter lock. Pathos was used to accomplish this due to several shortcomings found with the default multiprocessing package \cite{pathos1,pathos2}.
+
 \subsubsection{Minimisation}
 The methodology for minimisation was dependent on the circumstance. Firstly, the range was proved viable using a grid of points within the bound suggested earlier. Upon confirmation of the bounds, a more vigarous method was used: particularly in the case where doubles could be used. In several examples, such as in Clusterisation I, the parameter used was a integer. This was minisimised through a binary search, as most available optimisers fail to adapt to integer arguments.
 \blindtext[1]
