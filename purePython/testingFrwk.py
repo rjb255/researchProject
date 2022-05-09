@@ -65,8 +65,8 @@ def main(*, output=0, alpha=[]):
         # "dumb"  # ?: base,
         # "rod"  # ?: region_of_disagreement,
         # "broad" #?: broad_base,
-        "mine"  # ?: rod_hotspots,
-        # "greedy"  # ?: greedy,
+        # "mine"  # ?: rod_hotspots,
+        "greedy"  # ?: greedy,
         # "rg"  # ?: rod_greed,
         # "cluster"  # ?: clusterise,
     )
