@@ -104,10 +104,10 @@ def framework(
         alpha=alpha,
         lims=lims,
     )
-    results = [inner_func(alg) for alg in algorithm]
+    results = inner_func(alg) for alg in algorithm
 
     pprint(f"{alpha}: {results}")
-    return results[0]
+    return results
 
 
 def first_split(
@@ -130,7 +130,6 @@ def first_split(
     m = copy.deepcopy(model)
     mem = {}  # If sth is stored between executions
     score_record = []
-    processes = []
     mem["alpha"] = alpha
     for i in range(iterations):
         if len(x) > 0:
