@@ -83,15 +83,14 @@ def framework(
     X_test: pd.DataFrame,
     Y_test: pd.Series,
     model: object,
-    algorithm: tuple,
+    algorithm,
     iterations: int,
     sample_size: int,
     score: object,
     alpha: list = [],
     lims=[0, 1],
 ):
-    inner_func = partial(
-        first_split,
+    results = first_split(
         X_train,
         Y_train,
         X_unknown,
@@ -101,10 +100,10 @@ def framework(
         sample_size,
         Y_test,
         X_test,
+        algorithm,
         alpha=alpha,
         lims=lims,
     )
-    results = inner_func(alg)
 
     pprint(f"{alpha}: {results}")
     return results
@@ -331,7 +330,7 @@ def post_main(dataset, alg, alpha=[]):
     # For when this isn't the only one: makes keeping track easier
     model = Models(list(models.values()))
 
-    algorithm = (algorithms[alg],)
+    algorithm = algorithms[alg]
 
     return framework(
         X_known,
