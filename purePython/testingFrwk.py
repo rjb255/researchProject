@@ -66,11 +66,11 @@ def main(*, output=0, alpha=[]):
         # "rod"  # ?: region_of_disagreement,
         # "broad" #?: broad_base,
         # "mine" #?: rod_hotspots,
-        # "greedy"  # ?: greedy,
-        "rg"  # ?: rod_greed,
+        "greedy"  # ?: greedy,
+        # "rg"  # ?: rod_greed,
         # "cluster"  # ?: clusterise,
     )
-    minimise = 1
+    minimise = 0
     ppprint = partial(custom_print, output)
     ppprint(output)
     data_location = os.path.join(proj_path, "data", "big", "qsar_with_lims")
