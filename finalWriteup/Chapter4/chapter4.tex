@@ -13,7 +13,7 @@ Non-parametric equations have the benefit of not requiring the minimisation func
 
 \subsection{Monte Carlo}
 The first non-parametised algorithm discussed in Chapter~\ref{ch:method} was the Monte Carlo method. Due to the non-parametric nature of this algorithm, execution was simply carried out on the test data set. Results are presented in Figure~\ref{fig:MCTestSet}, demonstrating a final weighted mse of ${0.184\pm{}0.018}$.
-\begin{figure}[h]
+\begin{figure}[H]
     \begin{center}
         \includegraphics{dumb1.pdf}
         \caption[Monte Carlo]{Results of Monte Carlo sampling on the test datasets. Dotted lines represent the individual scoring for the data sets and the solid line shows the mean results at each iteration with error bars of 1 standard deviation.}
@@ -34,7 +34,7 @@ Likewise, the greedy algorithm was tested, with results presented in Figure~\ref
 \subsection{ROD Sampling}
 The final non-parametic algorithm to be tested was ROD. A final weighted mse of ${0.211\pm{}0.022}$, over performing the previous two algorithms in both accuracy and precision.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \begin{center}
         \includegraphics{rod1.pdf}
         \caption[ROD]{Results of ROD sampling on the test datasets. Dotted lines represent the individual scoring for the data sets and the solid line shows the mean results at each iteration with error bars of 1 standard deviation.}
@@ -48,7 +48,7 @@ Parametric algorithms require a minimisation procedure on the training set. This
 
 ${0.155\pm{}0.020}$
 
-\begin{figure}[h]
+\begin{figure}[H]
     \begin{center}
         \includegraphics{cluster.pdf}
     \end{center}
@@ -56,7 +56,7 @@ ${0.155\pm{}0.020}$
 \subsection{ROD with Greed}
 When testing the ROD with greed sampling method, it was found that despite the weighting towards higher value targets, no improvement was seen over ROD with $\alpha{}=0.06$, with $\alpha$ defined in \ref{eq:rodAndGreed}. However, the tolerance at small $\alpha$ is low, as shown with the errors attached during parameter fitting. This gives a score of ${0.206\pm{}0.011}$, a slight improvement over simply using ROD.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \begin{center}
         \includegraphics{rodGreedParam.pdf}
     \end{center}
