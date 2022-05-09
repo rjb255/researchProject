@@ -62,7 +62,7 @@ def callback_minimise(*args):
 
 def main(*, output=0, alpha=[]):
     alg = (
-        # "dumb"  # ?: base,
+        "dumb"  # ?: base,
         # "rod"  # ?: region_of_disagreement,
         # "broad" #?: broad_base,
         # "mine" #?: rod_hotspots,
@@ -70,7 +70,7 @@ def main(*, output=0, alpha=[]):
         # "rg"  # ?: rod_greed,
         # "cluster"  # ?: clusterise,
     )
-    minimise = 1
+    minimise = 0
     ppprint = partial(custom_print, output)
     ppprint(output)
     data_location = os.path.join(proj_path, "data", "big", "qsar_with_lims")
