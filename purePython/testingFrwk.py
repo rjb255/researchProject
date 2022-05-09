@@ -107,7 +107,7 @@ def main(*, output=0, alpha=[]):
         if minimise == 1:
             # arrays = [[*np.arange(0, 1.1, 0.5)]]
             arrays = [
-                np.arange(45, 76, 11),
+                np.arange(45, 76, 10),
                 np.arange(0, 0.5, 0.15),
                 np.arange(0, 1, 0.3),
             ]
