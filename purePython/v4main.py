@@ -242,6 +242,15 @@ def clusterII(m, X, Y, x, mem, *args, **kwargs):
     return clusterise(m, _X, Y, _x, mem, *args, **kwargs)
 
 
+def holyGrail(m, X, Y, x, mem, *args, **kwargs):
+    alpha = mem["alpha"]
+    p1 = clusterIII(m, X, Y, x, {"alpha": alpha[0]}, *args, **kwargs)
+    p2 = rod_greed(m, X, Y, x, {"alpha": alpha[1]}, *args, **kwargs)
+    p3 = np.power(p1, alpha[2])
+    p4 = np.power(p1, 1 - alpha[2])
+    return p1 * p2 * p3 * p4
+
+
 def clusterIII(m, X, Y, x, mem, *args, **kwargs):
     _X = copy.deepcopy(X)
     _X["Y"] = Y
@@ -338,6 +347,7 @@ def post_main(dataset, alg, alpha=[]):
         "SVM": SVR(),
         "ABR": ABR(random_state=1),
     }
+
     algorithms = {
         "dumb": base,
         "uncertainty_sampling": uncertainty_sampling,
@@ -349,6 +359,7 @@ def post_main(dataset, alg, alpha=[]):
         "clusterI": clusterI,
         "clusterII": clusterII,
         "clusterIII": clusterIII,
+        "holyGrail": holyGrail,
     }
 
     # For when this isn't the only one: makes keeping track easier

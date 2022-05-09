@@ -70,7 +70,8 @@ def main(*, output=0, alpha=[]):
         # "rg"  # ?: rod_greed,
         # "clusterI"  # ?: clusteriseI,
         # "clusterII"  # ?: clusteriseII,
-        "clusterIII"  # ?: clusteriseIII,
+        # "clusterIII"  # ?: clusteriseIII,
+        "holyGrail"  # ?: clusteriseIII,
     )
     minimise = 1
     ppprint = partial(custom_print, output)
@@ -105,8 +106,12 @@ def main(*, output=0, alpha=[]):
     if a0:
         if minimise == 1:
             # arrays = [[*np.arange(0, 1.1, 0.5)]]
-
-            arrays = [[*np.arange(0, 151, 15)]]
+            arrays = [
+                np.arange(50, 101, 10),
+                np.arange(0, 1, 0.1),
+                np.arange(0, 1, 0.1),
+            ]
+            # arrays = [[*np.arange(0, 151, 15)]]
             # arrays = [[*np.arange(0, 0.5, 0.01), *np.arange(0.5, 1.01, 0.05)]]
             # arrays = [np.linspace(_a[0], _a[1], 11) for _a in a_boundary]
             # arrays = [
@@ -115,7 +120,7 @@ def main(*, output=0, alpha=[]):
             #     + list(range(130, 151, 10))
             # ]
             if len(arrays) > 1:
-                grid = np.array(itx(arrays))
+                grid = np.array(list(itx(*arrays)))
             else:
                 grid = arrays[0]
             score = []

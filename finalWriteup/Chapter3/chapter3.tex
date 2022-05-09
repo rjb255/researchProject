@@ -54,7 +54,7 @@ The\lstinline{split} function allows for each dataset to be split into $x_\mathr
     Upon each iteration, the sets provided to the algorithms need to be repartitioned to allow for the continual operation of the algorithm. This consists of two parts: expanding the known sets and removing entries from the unknown sets.
 
     \subsubsection{\lstinline{Model}}
-    The machine learning model is the only custom class used. Here, a similar structure is used when compared with sci-kit's machine learning \cite{scikit}, as is demonstrated in Table~\ref{tab:Model}. To manage this, it has four methods:\lstinline{__init__},\lstinline{fit},\lstinline{predict}, and\lstinline{predict_error}. The last of these is not seen in all sci-kit's machine learning models and is reserved for those which can report a certainty of prediction. Here, this was achieved by taking a standard deviation of the models.
+    The machine learning model is the only custom class used. Here, a similar structure is used when compared with sci-kit's machine learning \cite{scikit}, as is demonstrated in Table~\ref{tab:Model}. To manage this, it has four methods:\lstinline{__init__},\lstinline{fit},\lstinline{predict}, and\lstinline{predict_error}. The last of these is not seen in all sci-kit's machine learning models and is usually reserved for those which can report a certainty of prediction. Here, this was achieved by taking a standard deviation of the models.
 
     \begin{table}[H]
         \centering
@@ -75,7 +75,7 @@ The\lstinline{split} function allows for each dataset to be split into $x_\mathr
         \label{tab:Model}
     \end{table}
 
-    The models used for the composite model were \dots which will be consistent across all algorithms. This allows direct comparison of the algorithms without interference from machine learning models used.
+    The models used for the composite model were bayesian-ridge, k-nearest neighbours, random forrest regressor, stochastic gradient descent regressorwith huber loss, epsilon-support vector regression, and ada-boost regressor. This was kept consistent during testing, allowing for direct comparison of the algorithms.
 
     \subsubsection{\lstinline{Validate}}
     This method implements a weighted mean squared error ($\mathrm{wmse}$) given in \ref{eq:wmse} where $w$ is given as a normalisation of the true label such that $\sum{w}=1$ and ${0\leq{}w\leq{}1}$. Further modification to this ensures the base case with five data points provides a $\mathrm{wmse}=1$ and the score if the entire dataset is modelled provides a $\mathrm{wmse}=0$.
@@ -89,9 +89,9 @@ The\lstinline{split} function allows for each dataset to be split into $x_\mathr
 
     \subsection{Active Learning Algorithms}
 
-    \subsubsection{Dumb}
+    \subsubsection{Monte Carlo}
 
-    The dumb algorithm, also referred to as random sampling or Monte Carlo sampling, refers to an algorithm that calls upon random samples to be tested. This represents the computationally least expensive approach, and is thus used as a baseline in comparing other algorithms. Since the datasets are shuffled prior to being used, the algorithm is extremely simple, as demonstrated in Algorithm~\ref{alg:MC}.
+    The Monte Carlo algorithm employs random sampling. This represents the computationally least expensive approach, and is thus used as a baseline in comparing other algorithms. Since the datasets are shuffled prior to being used, the algorithm is extremely simple, as demonstrated in Algorithm~\ref{alg:MC}.
 
     \begin{algorithm}[H]
         \KwData{$X_\mathrm{unknown}$}
