@@ -41,7 +41,7 @@ Several key methods and classes are required for the smooth operation of the com
 \subsubsection{\lstinline{Split}}
 The\lstinline{split} function allows for each dataset to be split into $x_\mathrm{known}$, $y_\mathrm{known}$, $x_\mathrm{unknown}$, and $y_\mathrm{unknown}$, as demonstrated in Figure \ref{fig:Split}. This is required as a fundamental step for the algorithmic testing. To demonstrate the validity of this function, ...
 
-    \begin{figure}
+    \begin{figure}[H]
         \begin{center}
             \includegraphics[width=\textwidth]{split.png}
         \end{center}
@@ -56,7 +56,7 @@ The\lstinline{split} function allows for each dataset to be split into $x_\mathr
     \subsubsection{\lstinline{Model}}
     The machine learning model is the only custom class used. Here, a similar structure is used when compared with sci-kit's machine learning \cite{scikit}, as is demonstrated in Table~\ref{tab:Model}. To manage this, it has four methods:\lstinline{__init__},\lstinline{fit},\lstinline{predict}, and\lstinline{predict_error}. The last of these is not seen in all sci-kit's machine learning models and is reserved for those which can report a certainty of prediction. Here, this was achieved by taking a standard deviation of the models.
 
-    \begin{table}[h]
+    \begin{table}[H]
         \centering
         \begin{tabular}{@{}ccc@{}}
             \toprule
@@ -86,7 +86,7 @@ The\lstinline{split} function allows for each dataset to be split into $x_\mathr
 
     The dumb algorithm, also referred to as random sampling or Monte Carlo sampling, refers to an algorithm that calls upon random samples to be tested. This represents the computationally least expensive approach, and is thus used as a baseline in comparing other algorithms. Since the datasets are shuffled prior to being used, the algorithm is extremely simple, as demonstrated in Algorithm~\ref{alg:MC}.
 
-    \begin{algorithm}[h]
+    \begin{algorithm}[H]
         \KwData{$X_\mathrm{unknown}$}
         \KwResult{$X$ ordered according to priority for sampling}
         \Return{$\mathrm{ones\_like}(X_\mathrm{unknown})$}
@@ -97,7 +97,7 @@ The\lstinline{split} function allows for each dataset to be split into $x_\mathr
     \subsubsection{Greedy}
     Since the largest activity is sought, a methodology proposed is to simply seek the predicted highest label. Here, the predict() method (see Table~\ref{tab:Model}) was used to return a prediction and a standard deviation. The indices of $x_\mathrm{unknown}$ were then returned, ordered descending with respect to the afore mentioned standard deviations.
 
-    \begin{algorithm}[h]
+    \begin{algorithm}[H]
         \KwData{$X_\mathrm{known}$, $Y_\mathrm{known}$, $X_\mathrm{unknown}$, Model}
         \KwResult{$X$ ordered according to priority for sampling}
         Model.fit($X_\mathrm{known}$, $Y_\mathrm{known}$)\;
@@ -110,7 +110,7 @@ The\lstinline{split} function allows for each dataset to be split into $x_\mathr
     \subsubsection{Region of Disagreement}
     Similarly to the region of disagreement method, this is a very simple algorithm. Here, the predict\_error() method (see Table~\ref{tab:Model}) is used to return a prediction and a standard deviation. The prediction is ignored, and instead the standard deviation is returned, multiplied by $-1$ to ensure the largest uncertainty has the lowest "score". This is shown with Algorithm~\ref{alg:rod}.
 
-    \begin{algorithm}[h]
+    \begin{algorithm}[H]
         \KwData{$X_\mathrm{known}$, $Y_\mathrm{known}$, $X_\mathrm{unknown}$, Model}
         \KwResult{$X$ ordered according to priority for sampling}
         Model.fit($X_\mathrm{known}$, $Y_\mathrm{known}$)\;
@@ -128,7 +128,7 @@ The\lstinline{split} function allows for each dataset to be split into $x_\mathr
         {\mathrm{len}(X_\mathrm{known})<c<\mathrm{len}(X_\mathrm{unknown})+1.5n}
     \end{equation}
 
-    \begin{algorithm}[h]
+    \begin{algorithm}[H]
         \KwData{$X_\mathrm{known}$, $X_\mathrm{unknown}$, $c$}
         \KwResult{$X$ ordered according to priority for sampling}
         combined\_x = concat(X, x)\;
