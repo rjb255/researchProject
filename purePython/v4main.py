@@ -103,6 +103,7 @@ def framework(
         Y_test,
         X_test,
         alpha=alpha,
+        lims=lims,
     )
     results = [inner_func(alg) for alg in algorithm]
 
