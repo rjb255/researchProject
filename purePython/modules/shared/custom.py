@@ -13,7 +13,7 @@ def split(data: DataFrame, n: int = 20, frac: int = None, count=None, lims=False
     else:
         c = len(data)
     if lims:
-        
+        pass
     splitBoundary = [n, c]
     X1 = data.iloc[: splitBoundary[0], 2:]
     Y1 = data.iloc[: splitBoundary[0], 1]
