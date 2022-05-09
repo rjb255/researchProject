@@ -247,8 +247,8 @@ def holyGrail(m, X, Y, x, mem, *args, **kwargs):
     p1 = clusterIII(m, X, Y, x, {"alpha": alpha[0]}, *args, **kwargs)
     p2 = rod_greed(m, X, Y, x, {"alpha": alpha[1]}, *args, **kwargs)
     p3 = np.power(p1, alpha[2])
-    p4 = np.power(p1, 1 - alpha[2])
-    return p2 * p3 * p4
+    p4 = np.power(p2, 1 - alpha[2])
+    return p3 * p4
 
 
 def clusterIII(m, X, Y, x, mem, *args, **kwargs):
