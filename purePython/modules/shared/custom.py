@@ -6,6 +6,7 @@ from sklearn.metrics import mean_squared_error as mse
 
 def split(data: DataFrame, n: int = 20, frac: int = None, count=None, lims=False):
     ## Splits data (dataframe) insto a known section, an unknown section, and a testing section
+    limSpace = 0
     if frac:
         c = len(data) * frac
     elif count:
@@ -13,14 +14,16 @@ def split(data: DataFrame, n: int = 20, frac: int = None, count=None, lims=False
     else:
         c = len(data)
     if lims:
-        pass
+        limSpace = 2
     splitBoundary = [n, c]
-    X1 = data.iloc[: splitBoundary[0], 2:]
+    X1 = data.iloc[: splitBoundary[0], 2:-limSpace]
     Y1 = data.iloc[: splitBoundary[0], 1]
-    X2 = data.iloc[splitBoundary[0] : splitBoundary[1], 2:]
+    X2 = data.iloc[splitBoundary[0] : splitBoundary[1], 2:-limSpace]
     Y2 = data.iloc[splitBoundary[0] : splitBoundary[1], 1]
-    X3 = data.iloc[splitBoundary[1] :, 2:]
+    X3 = data.iloc[splitBoundary[1] :, 2:-limSpace]
     Y3 = data.iloc[splitBoundary[1] :, 1]
+    if lims:
+        return X1, Y1, X2, Y2, X3, Y3, data["llim"][1], data["ulim"][1]
     return X1, Y1, X2, Y2, X3, Y3
 
 

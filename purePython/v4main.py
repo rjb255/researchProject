@@ -38,7 +38,7 @@ from purePython.modules.shared.custom import split, getPI, Models
 # endregion
 
 
-def score(Y_test, kwargs, q):
+def score(Y_test, kwargs, lims, q):
     y_predict = kwargs["model"].predict(kwargs["X_test"])
     weight = np.array(Y_test) - np.min(Y_test)
     print(np.max(weight))
@@ -49,7 +49,9 @@ def score(Y_test, kwargs, q):
         weight /= np.max(weight)
     if (weight < 0).any():
         print(f"ERROR: {weight}")
-    q.put(mse(y_predict, Y_test, sample_weight=weight))
+    s = mse(y_predict, Y_test, sample_weight=weight)
+    s = (s - lims[1]) / (lims[0] - lims[1])
+    q.put(s)
 
 
 def spec_max(x):
@@ -85,6 +87,7 @@ def framework(
     sample_size: int,
     score: object,
     alpha: list = [],
+    lims=[0, 1],
 ):
     inner_func = partial(
         first_split,
@@ -117,6 +120,7 @@ def first_split(
     X_test,
     f,
     alpha=[],
+    lims=[0, 1],
 ):
     # Deep copies
     X, Y = pd.DataFrame(X_train), pd.Series(Y_train)
@@ -309,7 +313,7 @@ def post_main(dataset, alg, alpha=[]):
     data: pd.DataFrame = data.sample(frac=1, random_state=1)
     print(len(data))
 
-    X_known, Y_known, X_unknown, Y_unknown, X_test, Y_test = split(
+    X_known, Y_known, X_unknown, Y_unknown, X_test, Y_test, llim, ulim = split(
         data,
         5,
         frac=1,
@@ -353,6 +357,7 @@ def post_main(dataset, alg, alpha=[]):
         sample_size=100,
         score=score,
         alpha=alpha,
+        lims=[ulim, llim],
     )
 
 
