@@ -63,10 +63,10 @@ def callback_minimise(*args):
 def main(*, output=0, alpha=[]):
     alg = (
         # "dumb"  # ?: base,
-        "rod"  # ?: region_of_disagreement,
+        # "rod"  # ?: region_of_disagreement,
         # "broad" #?: broad_base,
         # "mine"  # ?: rod_hotspots,
-        # "greedy"  # ?: greedy,
+        "greedy"  # ?: greedy,
         # "rg"  # ?: rod_greed,
         # "cluster"  # ?: clusterise,
     )
