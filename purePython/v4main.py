@@ -104,7 +104,7 @@ def framework(
         alpha=alpha,
         lims=lims,
     )
-    results = inner_func(alg) for alg in algorithm
+    results = inner_func(alg)
 
     pprint(f"{alpha}: {results}")
     return results
