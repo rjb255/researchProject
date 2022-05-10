@@ -376,7 +376,7 @@ def post_main(dataset, alpha=[], alg="dumb"):
         Y_test,
         model,
         algorithm,
-        iterations=2,
+        iterations=6,
         sample_size=100,
         score=score,
         alpha=alpha,
