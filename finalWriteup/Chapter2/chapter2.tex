@@ -55,7 +55,7 @@ There are several schools of thought regarding active learning. These can be sep
 The simplest is applicable to cases in which a certainty is provided with each prediction. \textcite{Set09} suggests selecting the data point with the largest uncertainty according to the current model. This has been shown with the toy dataset, as demonstrated in Figure~\ref{fig:rodPhantom}.
 
 
-\begin{figure}[h]
+\begin{figure}
   \begin{center}
     \includegraphics{rodPhantom.pdf}
     \caption[Uncertainty Sampling Demonstration]{The outcome of the investigating the areas of the highest uncertainty. An initial set of 5 random points was provided, and 50 further iterations were then carried out of sample size 1. A) Demonstrates the final set of points tested by the algorithm and B) shows the change in the mean squared error for the algorithm after each iteration.}
@@ -116,7 +116,7 @@ Conversely, a density weighted model has been suggested, as it escapes the intro
 
 \textcite{Set08} admit that $\simm$ is open for interpretation. It must also be recognised that this lays the foundation of a clusterisation algorithm. There exist many forms of these algorithms, with the results of several of these algorithms on toy data sets presented in Figure~\ref{fig:ClusterResults} \cite{SciClus}.
 
-\begin{figure}[h]
+\begin{figure}[H]
   \begin{center}
     \includegraphics[width=\textwidth]{clusters.png}
     \caption[]{Clusterisation algorithms used on sample two-dimensional data sets to demonstrate resultant clusters.}
@@ -126,7 +126,7 @@ Conversely, a density weighted model has been suggested, as it escapes the intro
 
 As Figure~\ref{fig:ClusterResults} demonstrates, there are multiple different interpretations of the solution to the problem of clustering. The makers of the Sci-kit learn package also discuss the scalability of each algorithm \cite{SciClus}. In order to prepare a high number of features (beyond the two used within this section for demonstration) and large number of data points, it is required that the algorithm scales accordingly. Further, for an adaptive process, it is more suitable for an algorithm to be adaptive to differing distribution. This limits the suitable algorithms to K-Means, Ward and Birch - columns one, five, and nine of Figure~\ref{fig:ClusterResults} respectively. Results for Birch can be seen in Figure~\ref{fig:clusterPhantom}. This appears do well, although it must be noted that this is likely due to the similarity between Monte Carlo (random) sampling, and clusterisation. I.e. areas distant from previously gathered points face a high chance of sampling.
 
-\begin{figure}[h]
+\begin{figure}[H]
   \begin{center}
     \includegraphics{clusterPhantom.pdf}
     \caption[Cluster Hotspot Sampling Illustration]{The outcome of the investigating the areas of using a cluster hotspot sampling methodology. An initial set of 5 random points was provided, and 50 further iterations were then carried out of sample size 1. A) Demonstrates the final set of points tested by the algorithm and B) shows the change in the mean squared error for the algorithm after each iteration.}
@@ -151,21 +151,21 @@ As the name implies, this method chooses points which are likely to have the lar
 \section{Batch Active Learning}
 Little literature exists with respect to batch active learning. Naive implimentation exist whereby the methods explored earlier present a stack of data points to be chosen, and the top $N$ are used. However, this method does not take into account the equivalence of the data points. This can be seen by the formation of clusters within the broad and uncertainty sampling methods, although it is not present within the clusterisation algorithm.
 
-\begin{figure}[h]
+\begin{figure}[H]
   \begin{center}
     \includegraphics{batchrodPhantom.pdf}
     \caption[Batch Uncertainty Sampling]{The outcome of the investigating the areas of using uncertainty sampling. An initial set of 5 random points was provided, and 5 further iterations were then carried out of sample size 10. A) Demonstrates the final set of points tested by the algorithm and B) shows the change in the mean squared error for the algorithm after each iteration.}
   \end{center}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
   \begin{center}
     \includegraphics{batchbroadPhantom.pdf}
     \caption[Batch Broad-Base Sampling]{The outcome of the investigating the areas of using broad-base sampling. An initial set of 5 random points was provided, and 5 further iterations were then carried out of sample size 10. A) Demonstrates the final set of points tested by the algorithm and B) shows the change in the mean squared error for the algorithm after each iteration.}
   \end{center}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
   \begin{center}
     \includegraphics{broadClusterPhantom.pdf}
     \caption[Batch Cluster Sampling]{The outcome of the investigating the areas of using cluster sampling. An initial set of 5 random points was provided, and 5 further iterations were then carried out of sample size 10. A) Demonstrates the final set of points tested by the algorithm and B) shows the change in the mean squared error for the algorithm after each iteration.}
