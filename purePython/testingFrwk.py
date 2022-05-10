@@ -141,8 +141,8 @@ def main(*, output=0, alpha=[]):
             # arrays = [[*np.arange(0, 1.1, 0.5)]]
             arrays = [
                 np.arange(60, 61, 2),
-                np.arange(0.4, 0.41, 0.1),
-                np.arange(0.1, 0.41, 0.02),
+                np.arange(0.25, 0.50, 0.02),
+                np.arange(0.22, 0.23, 0.02),
             ]
             # arrays = [[*np.arange(0, 151, 15)]]
             # arrays = [[*np.arange(0, 0.5, 0.01), *np.arange(0.5, 1.01, 0.05)]]
