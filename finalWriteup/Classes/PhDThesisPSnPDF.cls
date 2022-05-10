@@ -265,7 +265,7 @@ supported!}
 % Hides Contents appearing from TOC, but adds it to bookmarks
 \let\temptableofcontents\tableofcontents
 \renewcommand{\tableofcontents}{
-  \cleardoublepage
+  % \cleardoublepage
   \pdfbookmark[0]{\contentsname}{Contents}
   \temptableofcontents
 }
@@ -331,20 +331,20 @@ supported!}
 \ifPHD@lineno
 \RequirePackage[switch,pagewise,mathlines]{lineno}
 \renewcommand{\frontmatter}{%
-  \cleardoublepage
+  % \cleardoublepage
   \@mainmatterfalse
   \pagenumbering{roman}
   \nolinenumbers
 }
 \renewcommand{\mainmatter}{%
-  \cleardoublepage
+  % \cleardoublepage
   \@mainmattertrue
   \pagenumbering{arabic}
   \linenumbers
 }
 \renewcommand{\backmatter}{%
   \if@openright
-    \cleardoublepage
+    % \cleardoublepage
   \else
     \clearpage
   \fi
@@ -980,7 +980,7 @@ wish to left align your text}
 
 \newenvironment{dedication}
 {
-\cleardoublepage
+% \cleardoublepage
 \setsinglecolumn
 \vspace*{0.2\textheight}
 \thispagestyle{empty}
@@ -994,7 +994,7 @@ wish to left align your text}
 % "Declaration" label at the top of the page.
 
 \newenvironment{declaration}{
-\cleardoublepage
+% \cleardoublepage
 \setsinglecolumn
 \chapter*{\centering \Large Declaration}
 \thispagestyle{empty}
@@ -1012,7 +1012,7 @@ wish to left align your text}
 % "Acknowledgements" label at the top of the page.
 
 \newenvironment{acknowledgements}{
-\cleardoublepage
+% \cleardoublepage
 \setsinglecolumn
 \chapter*{\centering \Large Acknowledgements}
 \thispagestyle{empty}
@@ -1062,7 +1062,7 @@ wish to left align your text}
     \RequirePackage{makeidx}
     \makeindex
     \newcommand{\printthesisindex}{
-        \cleardoublepage
+        % \cleardoublepage
         \phantomsection
         \printindex}
 \else
@@ -1120,7 +1120,7 @@ wish to left align your text}
   \end{center}
 \else
 % Normal abstract in the thesis
-  \cleardoublepage
+  % \cleardoublepage
   \setsinglecolumn
   \chapter*{\centering \Large Abstract}
   \thispagestyle{empty}
