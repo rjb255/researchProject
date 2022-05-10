@@ -140,9 +140,9 @@ def main(*, output=0, alpha=[]):
         if minimise == 1:
             # arrays = [[*np.arange(0, 1.1, 0.5)]]
             arrays = [
-                np.arange(50, 71, 2),
-                np.arange(0.4, 0.61, 0.1),
-                np.arange(0.2, 0.41, 0.05),
+                np.arange(60, 61, 2),
+                np.arange(0.4, 0.41, 0.1),
+                np.arange(0.1, 0.41, 0.05),
             ]
             # arrays = [[*np.arange(0, 151, 15)]]
             # arrays = [[*np.arange(0, 0.5, 0.01), *np.arange(0.5, 1.01, 0.05)]]
@@ -162,7 +162,7 @@ def main(*, output=0, alpha=[]):
 
             alpha = grid[np.argsort(score)[0]]
             keeping_track_pd = pd.DataFrame(data=keeping_track)
-            rosette = f"data/param/I_GIVE_UP_{alg}1.csv"
+            rosette = f"data/param/{alg}1.1.csv"
             ppprint(f"SCOREEEEEEEEEEEE: {score}")
             ppprint(f"ALPHAAAAAAAAAAAA: {alpha}")
             print(rosette)
@@ -190,7 +190,7 @@ def main(*, output=0, alpha=[]):
     # plt.ion()
     # plt.plot([1, 101, 201, 301, 401], np.transpose(scores))
     # plt.show(block=True)
-    rosette = f"data/4/{alg}1.csv"
+    rosette = f"data/4/{alg}1.1.csv"
     print(rosette)
     results.to_csv(rosette)
 
