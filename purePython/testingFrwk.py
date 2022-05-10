@@ -55,6 +55,40 @@ def to_minimise(data_set, alpha, alg, ongoing=[]):
     return np.mean(scores[:, -1])
 
 
+# region Subtle functions - functions similar to those in Python but improved in some way
+def custom_print(output: int, *args, **kwargs):
+    if output == 0:
+        pass
+    elif output == 1:
+        pprint(*args, **kwargs)
+    elif output == 2:
+        with open("logs/log.txt", "a+") as f:
+            f.write(*args, **kwargs)
+
+
+# endregion
+
+
+def to_minimise2(data_set, alphas, alg, ongoing=[]):
+    # print(f"alpha: {alphas}")
+    temp = partial(algs.post_main, alg=alg)
+    passthrough = [[(data, alpha) for data in data_set] for alpha in alphas]
+    b = []
+    for a in passthrough:
+        b += a
+    with Pool() as p:
+        scores = p.starmap(temp, b)
+    means = []
+    for i in range(len(alphas)):
+        score = scores[i * len(data_set) : (i + 1) * len(data_set)]
+        ongoing.append([alphas[i]] + [s[-1] for s in score])
+        means.append(np.mean(score[:, -1]))
+    scoresII = np.array(np.mean(scores[:, -1]))
+
+    print(f"alpha score: {scoresII}")
+    return scoresII
+
+
 def callback_minimise(*args):
     print(f"CALLBACK: {args}")
     return False
@@ -123,10 +157,9 @@ def main(*, output=0, alpha=[]):
                 grid = np.array(list(itx(*arrays)))
             else:
                 grid = arrays[0]
-            score = []
+
             keeping_track = []
-            for g in grid:
-                score.append(to_minimise(data_train, g, alg, keeping_track))
+            score = to_minimise2(data_train, grid, alg, keeping_track)
 
             alpha = grid[np.argsort(score)[0]]
             keeping_track_pd = pd.DataFrame(data=keeping_track)

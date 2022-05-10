@@ -313,21 +313,21 @@ def greedy(m, X, Y, x, *args, **kwargs):
     return -m.predict(x)
 
 
-def main():
-    paths = ["data_CHEMBL313.csv", "data_CHEMBL2637.csv", "data_CHEMBL4124.csv"]
+# def main():
+#     paths = ["data_CHEMBL313.csv", "data_CHEMBL2637.csv", "data_CHEMBL4124.csv"]
 
-    set_num = 0
-    start(paths[set_num])
-    #
-    data_sets: List[str] = [
-        os.path.join(proj_path, "data", "chembl", "Additional_datasets", path)
-        for path in paths
-    ]
-    data = data_sets[set_num]
-    post_main(data)
+#     set_num = 0
+#     start(paths[set_num])
+#     #
+#     data_sets: List[str] = [
+#         os.path.join(proj_path, "data", "chembl", "Additional_datasets", path)
+#         for path in paths
+#     ]
+#     data = data_sets[set_num]
+#     post_main(data)
 
 
-def post_main(dataset, alg, alpha=[]):
+def post_main(dataset, alpha=[], alg="dumb"):
     data = pd.read_csv(dataset)
     data: pd.DataFrame = data.sample(frac=1, random_state=1)
     print(len(data))
