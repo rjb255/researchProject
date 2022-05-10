@@ -121,7 +121,7 @@ def main(*, output=0, alpha=[]):
         with open(data, "r") as f:
             dataset_lens[i] = len(f.readlines())
     print(len(datasets))
-    datasets = datasets[dataset_lens > 2750]
+    datasets = datasets[dataset_lens > 1000]
 
     split = [int(len(datasets) * 0.8), int(len(datasets) * 0.8)]
     data_train = datasets[: split[0]]
@@ -158,7 +158,7 @@ def main(*, output=0, alpha=[]):
                 grid = arrays[0]
 
             keeping_track = []
-            score = to_minimise2(data_test, grid, alg, keeping_track)
+            score = to_minimise2(data_train, grid, alg, keeping_track)
 
             alpha = grid[np.argsort(score)[0]]
             keeping_track_pd = pd.DataFrame(data=keeping_track)
