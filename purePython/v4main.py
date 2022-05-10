@@ -330,7 +330,7 @@ def greedy(m, X, Y, x, *args, **kwargs):
 def post_main(dataset, alpha=[], alg="dumb"):
     data = pd.read_csv(dataset)
     data: pd.DataFrame = data.sample(frac=1, random_state=1)
-    print(len(data))
+    print(f"{len(data)}, {alpha}")
 
     X_known, Y_known, X_unknown, Y_unknown, X_test, Y_test, llim, ulim = split(
         data,
@@ -376,7 +376,7 @@ def post_main(dataset, alpha=[], alg="dumb"):
         Y_test,
         model,
         algorithm,
-        iterations=6,
+        iterations=2,
         sample_size=100,
         score=score,
         alpha=alpha,

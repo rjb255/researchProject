@@ -80,13 +80,12 @@ def to_minimise2(data_set, alphas, alg, ongoing=[]):
         scores = p.starmap(temp, b)
     means = []
     for i in range(len(alphas)):
-        score = scores[i * len(data_set) : (i + 1) * len(data_set)]
+        score = np.array(scores[i * len(data_set) : (i + 1) * len(data_set)])
         ongoing.append([alphas[i]] + [s[-1] for s in score])
         means.append(np.mean(score[:, -1]))
-    scoresII = np.array(np.mean(scores[:, -1]))
 
-    print(f"alpha score: {scoresII}")
-    return scoresII
+    print(f"alpha score: {means}")
+    return means
 
 
 def callback_minimise(*args):
@@ -105,7 +104,7 @@ def main(*, output=0, alpha=[]):
         # "clusterI"  # ?: clusteriseI,
         # "clusterII"  # ?: clusteriseII,
         # "clusterIII"  # ?: clusteriseIII,
-        "holyGrail"  # ?: clusteriseIII,
+        "holyGrail"  # ?: holy grail,
     )
     minimise = 1
     ppprint = partial(custom_print, output)
@@ -122,7 +121,7 @@ def main(*, output=0, alpha=[]):
         with open(data, "r") as f:
             dataset_lens[i] = len(f.readlines())
     print(len(datasets))
-    datasets = datasets[dataset_lens > 1000]
+    datasets = datasets[dataset_lens > 2750]
 
     split = [int(len(datasets) * 0.8), int(len(datasets) * 0.8)]
     data_train = datasets[: split[0]]
@@ -141,7 +140,7 @@ def main(*, output=0, alpha=[]):
         if minimise == 1:
             # arrays = [[*np.arange(0, 1.1, 0.5)]]
             arrays = [
-                np.arange(40, 71, 10),
+                np.arange(40, 71, 15),
                 np.arange(0, 0.5, 0.15),
                 np.arange(0, 1, 0.3),
             ]
@@ -159,7 +158,7 @@ def main(*, output=0, alpha=[]):
                 grid = arrays[0]
 
             keeping_track = []
-            score = to_minimise2(data_train, grid, alg, keeping_track)
+            score = to_minimise2(data_test, grid, alg, keeping_track)
 
             alpha = grid[np.argsort(score)[0]]
             keeping_track_pd = pd.DataFrame(data=keeping_track)
