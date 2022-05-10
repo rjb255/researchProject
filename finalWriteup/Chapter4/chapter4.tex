@@ -59,19 +59,21 @@ Parametric algorithms require a minimisation procedure on the training set. This
 \subsection{Clusters}
 The first set of algorithms tested were the clusters. Each of these outperformed all three of the other algorithms, with Cluster I, Cluster II, and Cluster III giving WMSEs of ${0.155\pm{}0.020}$, ${0.145\pm{}0.009}$, and respectively ${0.143\pm{}0.016}$. Due to the results from Cluster III, this is the one that will be used within the Holy Trinity. A variety of optimal ${c}$ were found when comparing to Algorithm~\ref{alg:cluster1}. An aditional cluster size of 45, 40, and 60 were found to be optimal for Cluster I, II, and III respectively.
 
-% \begin{figure}[H]
-%     \begin{center}
-%         \includegraphics{cluster.pdf}
-%     \end{center}
-% \end{figure}
-% \begin{figure}[H]
-%     \begin{center}
-%         \includegraphics{clusterII.pdf}
-%     \end{center}
-% \end{figure}
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics{cluster.pdf}
+    \end{center}
+\end{figure}
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics{clusterII.pdf}
+    \end{center}
+\end{figure}
 \begin{figure}[H]
     \begin{center}
         \includegraphics{clusterIII.pdf}
+        \caption[Cluster III]{The results of fitting $c$ to the Cluster III algorithm. A) shows the results from parameter fitting and B) shows the learning process on the test set.}
+        \label{fig:clusterTest}
     \end{center}
 \end{figure}
 
@@ -87,7 +89,14 @@ When testing the RoD with greed sampling method, it was found that despite the w
 \end{figure}
 
 \subsection{Holy Trinity}
-\blindtext[1]
+By sampling multiple values for $\alpha$, a final set of $\alpha=[60, 0.4, 0.2]$ was reached where $[\alpha{}_1, \alpha{}_2, \alpha{}_3]$ correspond to the constants used in Algorithm~\ref{alg:cluster1}, \ref{eq:rodAndGreed}, and \ref{eq:holyTrinity} respectively. When validated against the testing datasets, a final result of $\mathrm{wmse}=0.116\pm{}0.014$ was found; the best result.
 
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics{holyGrail.pdf}
+        \caption[Holy Trinity]{The results of fitting $\alpha{}$ to the Holy Trinity algorithm, showing the learning process on the test set. The learning of each data set has been added with dotted lines for illustative purposes.}
+        \label{fig:holyTrinity}
+    \end{center}
+\end{figure}
 
 % \section{Special Case: COVID-19}
