@@ -140,9 +140,9 @@ def main(*, output=0, alpha=[]):
         if minimise == 1:
             # arrays = [[*np.arange(0, 1.1, 0.5)]]
             arrays = [
-                np.arange(40, 71, 15),
-                np.arange(0, 0.5, 0.15),
-                np.arange(0, 1, 0.3),
+                np.arange(40, 71, 10),
+                np.arange(0.4, 0.61, 0.1),
+                np.arange(0.2, 0.41, 0.05),
             ]
             # arrays = [[*np.arange(0, 151, 15)]]
             # arrays = [[*np.arange(0, 0.5, 0.01), *np.arange(0.5, 1.01, 0.05)]]

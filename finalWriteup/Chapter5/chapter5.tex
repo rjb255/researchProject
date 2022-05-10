@@ -10,11 +10,11 @@
 
 
 \section{Non-Parametric}
-Three algorithms tested of non-parametric variety producing several noticeable results. Firstly, the baseline result did not produce the worst results with respect to accuracy, although precision was consistently worse. This is demonstrated convincingly through Figure~\ref{fig:nPComp} where results from the greedy results suggest the worst accuracy.
+Three algorithms tested of non-parametric variety producing several noticeable results. Firstly, Monte Carlo sampling outperformed both Greedy and RoD sampling. This is demonstrated convincingly through Figure~\ref{fig:nPComp} where results from the greedy results suggest the worst accuracy.
 
-Despite the greedy algorithm demonstrating the worst accuracy, interesting results were shown with ROD sampling. Indeed, the progression from the first to the second and third iteration demonstrates a faster average learning rate than the other algorithms. This is expected as the ROD algorithm specifically targets regions of the model which are challenging causing the largest changes towards proper fitting.
+Despite the greedy algorithm demonstrating the worst accuracy, interesting results were shown with ROD sampling. Poor selection is evidently present with the first sample set, although rapid improvement quickly follows. Indeed, after the first iteration, the learning rate is superior to the other two algorithms. An extra iteration may indeed have seen RoD surpassing Monte Carlo. This is expected as the ROD algorithm specifically targets regions of the model which are challenging causing the largest changes towards proper fitting.
 
-Both ROD and greedy sampling are suspected to suffer from clusterisation whereby data points similar to each other in the feature space are sampled within the same batch, thus reducing the total information conveyed per batch operation. The random nature of Monte Carlo reduces this prospect, hence the apparent promising performance of a random sampling methodology.
+Both ROD and greedy sampling are suspected to suffer from clusterisation whereby data points similar to each other in the feature space are sampled within the same batch, thus reducing the total information conveyed per batch operation. This is believed to be particularly costly with the first iteration as the model will heavily overfit to the new cluster it has sampled. The random nature of Monte Carlo reduces this prospect, hence the apparent promising performance of a random sampling methodology. Evidence to this is shown in Figure~\ref{fig:MCTestSet}, Figure~\ref{fig:GreedyTestSet}, and Figure~\ref{fig:RODTestSet}.
 
 \begin{figure}[h]
     \begin{center}
@@ -24,6 +24,9 @@ Both ROD and greedy sampling are suspected to suffer from clusterisation whereby
     \end{center}
 \end{figure}
 
+This demonstrates a danger with Batch Active Learning. It is very easy to produce a learning algorithm which actually performs worse than random screening.
+
 \section{Parametric}
-\blindtext[3]
+Different classes of parametric algorithms were tested. The first of these is a first order composite algorithm, RoD with Greed: i.e. uses different active learning algorithms as a base. The second is a clustering algorithm with the number of clusters left as a parameter. The third is a second order composite active learning algorithm which combines the other two parametric functions, affectionately named the Holy Trinity.
+
 
