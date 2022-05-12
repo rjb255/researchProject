@@ -1,0 +1,1 @@
+{"rule":"THIS_NNS","sentence":"^\\QWhat if these change?\\E$"}

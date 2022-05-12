@@ -22,7 +22,7 @@ Results are presented for the algorithms discussed in Chapter~\ref{ch:method}. W
 Non-parametric equations have the benefit of not requiring the minimisation function. Due to this, all testing of these algorithms were undertaken on a standard laptop. These also tend to be the easiest to implement, as uncovered in Chapter~\ref{ch:method}. Particularly important is the Monte Carlo method as this allows shows what should be a minimum baseline to achieve.
 
 \subsection{Monte Carlo}
-The first non-parametised algorithm discussed in Chapter~\ref{ch:method} was the Monte Carlo method. Due to the non-parametric nature of this algorithm, execution was simply carried out on the test data set. Results are presented in Figure~\ref{fig:MCTestSet}, demonstrating a final WMSE of ${0.184\pm{}0.018}$.
+The first non-parametised algorithm discussed in Chapter~\ref{ch:method} was the Monte Carlo method. Due to the non-parametric nature of this algorithm, execution was simply carried out on the test data set. Results are presented in Figure~\ref{fig:MCTestSet}, demonstrating a final score of ${0.184\pm{}0.018}$.
 
 \begin{figure}[H]
     \begin{center}
@@ -33,7 +33,7 @@ The first non-parametised algorithm discussed in Chapter~\ref{ch:method} was the
 \end{figure}
 
 \subsection{Greedy}
-Likewise, the Greedy algorithm was tested, with results presented in Figure~\ref{fig:GreedyTestSet}. Here, a final WMSE of ${0.323\pm{}0.039}$ was found indicating a worse scoring than the base case.
+Likewise, the Greedy algorithm was tested, with results presented in Figure~\ref{fig:GreedyTestSet}. Here, a final score of ${0.323\pm{}0.039}$ was found indicating a worse scoring than the base case.
 \begin{figure}[H]
     \begin{center}
         \includegraphics{greedy1.pdf}
@@ -43,7 +43,7 @@ Likewise, the Greedy algorithm was tested, with results presented in Figure~\ref
 \end{figure}
 
 \subsection{RoD Sampling}
-The final non-parametic algorithm to be tested was RoD. A final WMSE of ${0.211\pm{}0.022}$, leading to a middling position between the other two parametric algorithms. The imporvement in each iteration is shown in Figure~\ref{fig:RODTestSet}.
+The final non-parametic algorithm to be tested was RoD. A final score of ${0.211\pm{}0.022}$, leading to a middling position between the other two parametric algorithms. The improvement in each iteration is shown in Figure~\ref{fig:RODTestSet}.
 
 \begin{figure}[H]
     \begin{center}
@@ -57,7 +57,7 @@ The final non-parametic algorithm to be tested was RoD. A final WMSE of ${0.211\
 Parametric algorithms require a minimisation procedure on the training set. This leads to a computationally challenging script, and for this the author is grateful for the services provided by the HPC \cite{HPC}.
 
 \subsection{Clusters}
-The first set of algorithms tested were the clusters. Each of these outperformed all three of the other algorithms, with Cluster I, Cluster II, and Cluster III giving WMSEs of ${0.155\pm{}0.020}$, ${0.145\pm{}0.009}$, and respectively ${0.143\pm{}0.016}$. Due to the results from Cluster III, this is the one that will be used within the Holy Trinity. A variety of optimal ${c}$ were found when comparing to Algorithm~\ref{alg:cluster1}. An aditional cluster size of 45, 40, and 60 were found to be optimal for Cluster I, II, and III respectively.
+The first set of algorithms tested were the clusters. Each of these outperformed all three of the other algorithms, with Cluster I, Cluster II, and Cluster III giving scores of ${0.155\pm{}0.020}$, ${0.145\pm{}0.009}$, and respectively ${0.143\pm{}0.016}$. Due to the results from Cluster III, this is the one that will be used within the Holy Trinity. A variety of optimal ${c}$ were found when comparing to Algorithm~\ref{alg:cluster1}. An aditional cluster size of 45, 40, and 60 were found to be optimal for Cluster I, II, and III respectively.
 
 \begin{figure}[H]
     \begin{center}
@@ -78,7 +78,7 @@ The first set of algorithms tested were the clusters. Each of these outperformed
 \end{figure}
 
 \subsection{RoD with Greed}
-When testing the RoD with greed sampling method, it was found that despite the weighting towards higher value targets, no improvement was seen over ROD with $\alpha{}=0.06$, with $\alpha$ defined in \ref{eq:rodAndGreed}. However, the tolerance at small $\alpha$, as shown in Figure~\ref{fig:rogreed}A. This mehtod gave a final a score of ${0.206\pm{}0.011}$, a slight improvement over simply using RoD.
+When testing the RoD with Greed sampling method, it was found that despite the weighting towards higher value targets, no improvement was seen over ROD with $\alpha{}=0.06$, with $\alpha$ defined in \ref{eq:rodAndGreed}. However, the tolerance at small $\alpha$, as shown in Figure~\ref{fig:rogreed}A. This method gave a final a score of ${0.206\pm{}0.011}$, a slight improvement over simply using RoD.
 
 \begin{figure}[H]
     \begin{center}
@@ -89,12 +89,12 @@ When testing the RoD with greed sampling method, it was found that despite the w
 \end{figure}
 
 \subsection{Holy Trinity}
-By sampling multiple values for $\alpha$, a final set of $\alpha=[60, 0.47, 0.22]$ was reached where $[\alpha{}_1, \alpha{}_2, \alpha{}_3]$ correspond to the constants used in Algorithm~\ref{alg:cluster1}, \ref{eq:rodAndGreed}, and \ref{eq:holyTrinity} respectively. When validated against the testing datasets, a final result of $\mathrm{wmse}=0.115\pm{}0.013$ was found; the best result.
+By sampling multiple values for $\alpha$, a final set of $\alpha=[60, 0.47, 0.22]$ was reached where $[\alpha{}_1, \alpha{}_2, \alpha{}_3]$ correspond to the constants used in Algorithm~\ref{alg:cluster1}, \ref{eq:rodAndGreed}, and \ref{eq:holyTrinity} respectively. When validated against the testing datasets, a final score of $0.115\pm{}0.013$ was found; the best result.
 
 \begin{figure}[H]
     \begin{center}
         \includegraphics{holyGrail.pdf}
-        \caption[Holy Trinity]{The results of fitting $\alpha{}$ to the Holy Trinity algorithm, showing the learning process on the test set. The learning of each data set has been added with dotted lines for illustative purposes.}
+        \caption[Holy Trinity]{The results of fitting $\alpha{}$ to the Holy Trinity algorithm, showing the learning process on the test set. The learning of each data set has been added with dotted lines for illustrative purposes.}
         \label{fig:holyTrinity}
     \end{center}
 \end{figure}
