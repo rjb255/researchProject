@@ -16,7 +16,7 @@
 % **************************** Define Graphics Path **************************
 
 \graphicspath{{Chapter4/Figs/Vector/}{Chapter4/Figs/}}
-Results are presented for the algorithms discussed in Chapter~\ref{ch:method}. Where possible, errors have been provided by taking the sample standard deviation of the results provided and dividing by $\sqrt(N-1)$. This allows for robust discussion and comparison of each method used. Within figures, lines are added to guid the eye to changes.
+Results are presented for the algorithms discussed in Chapter~\ref{ch:method}. Where possible, errors have been provided by taking the sample standard deviation of the results provided and dividing by $\sqrt{N-1}$. This allows for robust discussion and comparison of each method used. Within figures, lines are added to guid the eye to changes.
 
 \section{Non-Parametric}
 Non-parametric equations have the benefit of not requiring the minimisation function. Due to this, all testing of these algorithms were undertaken on a standard laptop. These also tend to be the easiest to implement, as uncovered in Chapter~\ref{ch:method}. Particularly important is the Monte Carlo method as this allows shows what should be a minimum baseline to achieve.
@@ -89,7 +89,7 @@ When testing the RoD with greed sampling method, it was found that despite the w
 \end{figure}
 
 \subsection{Holy Trinity}
-By sampling multiple values for $\alpha$, a final set of $\alpha=[60, 0.4, 0.2]$ was reached where $[\alpha{}_1, \alpha{}_2, \alpha{}_3]$ correspond to the constants used in Algorithm~\ref{alg:cluster1}, \ref{eq:rodAndGreed}, and \ref{eq:holyTrinity} respectively. When validated against the testing datasets, a final result of $\mathrm{wmse}=0.116\pm{}0.014$ was found; the best result.
+By sampling multiple values for $\alpha$, a final set of $\alpha=[60, 0.47, 0.22]$ was reached where $[\alpha{}_1, \alpha{}_2, \alpha{}_3]$ correspond to the constants used in Algorithm~\ref{alg:cluster1}, \ref{eq:rodAndGreed}, and \ref{eq:holyTrinity} respectively. When validated against the testing datasets, a final result of $\mathrm{wmse}=0.115\pm{}0.013$ was found; the best result.
 
 \begin{figure}[H]
     \begin{center}
@@ -99,4 +99,3 @@ By sampling multiple values for $\alpha$, a final set of $\alpha=[60, 0.4, 0.2]$
     \end{center}
 \end{figure}
 
-% \section{Special Case: COVID-19}

@@ -43,11 +43,11 @@ The sampling process of the Cluster III algorithm demonstrates its ability at ou
 
 Upon investigation of the parameters settled upon within these several points arise. Firstly with RoD with Greed, at low $\alpha$, WMSE appears uncorrelated with $\alpha$, only experiencing a significant rise with $\alpha{}>0.4$. Thus, it can be surmised that RoD is the driving force, with evidence given by the final scores for RoD and RoD with Greed algorithms arising within error of each other.
 
-On the other hand, the sensitivity of Cluster III is extremely low to cluster size, demonstrated by Figure~\ref{fig:clusterTest}. Here, no significant change is observed within the significant parameter range. It is believed this is due to highest ranking points remaining within the top clusters as large clusters are likely to remain the largest, even with an increased number of clusters. Thus, the top candidates are likely to remain in the same region of the feature space.
+On the other hand, the sensitivity of Cluster III is extremely low to cluster size, demonstrated by Figure~\ref{fig:clusterTest}. Here, no significant change is observed within the significant parameter range. It is believed this is due to the highest ranking points remaining within the top clusters as large clusters are likely to remain the largest, even with an increased number of clusters. Thus, the top candidates are likely to remain in the same region of the feature space.
 
-Most surprising are the parameters found for the Holy Grail, shown in Figure~\ref{fig:paramHg}. Here, a distinct ...
+Most surprising are the parameters found for the Holy Grail, shown in Figure~\ref{fig:paramHg}. Here, it appears the highest sensitivity is based on $\alpha_2$, the exponent to the RoD with Greed score. This indeed shows a difference from Rod with Greed, where the Greed aspect appeared to be borderline irrelevant, with final results within error of RoD. Comparatively, $\alpha_0$ and $\alpha_1$ appear to have a linear fit.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \begin{center}
         \includegraphics{hgParams.pdf}
         \caption[Non-parametric comparison]{Comparison of different parametric algorithms with standard deviations represented as error bars.}
@@ -55,5 +55,16 @@ Most surprising are the parameters found for the Holy Grail, shown in Figure~\re
     \end{center}
 \end{figure}
 
+The use of curve fitting has, up until now been avoided. This is due to the difficulty in procuring the forms of these curves. Take Figure~\ref{fig:RODTestSet} where the first iteration produces no significant change. By fitting a curve, the results here could be misrepresented, so interpolation has been used in most cases to guide the eye. In Figure~\ref{fig:paramHg}, it was considered essential to present the different in form between ${\alpha_0}$, ${\alpha_1}$, and ${\alpha_2}$ so a curve has been added to guide the reader to the differences in form. Polynomial fits were used for each subfigure, with A and B using 1st order and C using 4th order.
+
+\section{Problem Sensitivity}
+The problem set up provides an estimation of a fixed number of iteration and sample size. What if these change? Are the parameters overfitted to this specific problem? If deviations from this are taken, are the intelligent methods worse than Monte Carlo? This is important to determine, as there is a significant potential cost to such an inefficiency.
+
+\section{Refinement}
+There are several points for progression that are worth discussing. Firstly, the training system requires improvement. Despite the observations of parallelisation leading to a situation of $\mathcal{O}(c)$ given an infinite number of processing units, an infinite number of processing units unfortunately do not exist. In the event of three parameters, the current methodology requires $N_\mathrm{train}\prod(n_{\alpha_i})$ executions of the learning algorithm, where $n_{\alpha_i}$ is the number of different values tested for $\alpha_i$. Even with simply 3 different values tested for each parameter in the Holy Trinity algorithm, this equates to $\sim{}4500$ executions of the algorithm. Thus, as the maximum number of CPUs available was 380, the training process became $\mathcal{O}\left(N_\mathrm{train}\prod{n_{\alpha_i}}\right)$. A potential solution would be segmentation, where the datasets are split into smaller groups with which are tested on a sample of the parameter space, with results from these smaller groups amalgamated at the end. Additionally, active learning could be used in the determination of the minima. Here, the goal would be to find the minima using as few parameter values as possible.
+
+The current implementation of the scoring system is simple. Although this would please Occam's barber, it is believed that this is not satisfactory for the aggressive pursuit of effective drugs. One possibility is only scoring samples which show a pChEMBL greater than seven. This puts a greater weight on these samples, although a multidisciplinary discussion is required here.
+
 \section{Link to Covid}
 \blindtext[1]
+
