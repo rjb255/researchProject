@@ -26,6 +26,7 @@ from sklearn.cluster import Birch as BIRCH
 from sklearn.cluster import KMeans as KM
 from sklearn.svm import SVR
 from sklearn.linear_model import SGDRegressor as SGD
+from sklearn.neural_network import MLPRegressor as NN
 
 
 proj_path = os.path.join(
@@ -343,9 +344,10 @@ def post_main(dataset, alpha=[], alg="dumb"):
         "BayesianRidge": BR(),
         "KNN": KNN(),
         # "RandomForrest": RFR(random_state=1),
-        "SGD": SGD(loss="huber", random_state=1),
+        # "SGD": SGD(loss="huber", random_state=1),
         # "SVM": SVR(),
         # "ABR": ABR(random_state=1),
+        "NN": NN(warm_start=True),
     }
 
     algorithms = {
