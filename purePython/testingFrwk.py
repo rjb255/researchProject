@@ -95,7 +95,7 @@ def callback_minimise(*args):
 
 def main(*, output=0, alpha=[]):
     alg = (
-        "dumb"  # ?: base,
+        # "dumb"  # ?: base,
         # "rod"  # ?: region_of_disagreement,
         # "broad" #?: broad_base,
         # "mine"  # ?: rod_hotspots,
@@ -104,7 +104,7 @@ def main(*, output=0, alpha=[]):
         # "clusterI"  # ?: clusteriseI,
         # "clusterII"  # ?: clusteriseII,
         # "clusterIII"  # ?: clusteriseIII,
-        # "holyGrail"  # ?: holy grail,
+        "holyGrail"  # ?: holy grail,
     )
     minimise = 0
     ppprint = partial(custom_print, output)
