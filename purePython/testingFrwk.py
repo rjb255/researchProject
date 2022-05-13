@@ -96,7 +96,7 @@ def callback_minimise(*args):
 def main(*, output=0, alpha=[]):
     alg = (
         # "dumb"  # ?: base,
-        "rod"  # ?: region_of_disagreement,
+        # "rod"  # ?: region_of_disagreement,
         # "broad" #?: broad_base,
         # "mine"  # ?: rod_hotspots,
         # "greedy"  # ?: greedy,
@@ -104,7 +104,7 @@ def main(*, output=0, alpha=[]):
         # "clusterI"  # ?: clusteriseI,
         # "clusterII"  # ?: clusteriseII,
         # "clusterIII"  # ?: clusteriseIII,
-        # "holyGrail"  # ?: holy grail,
+        "holyGrail"  # ?: holy grail,
     )
     minimise = 0
     ppprint = partial(custom_print, output)
@@ -191,7 +191,7 @@ def main(*, output=0, alpha=[]):
     # plt.ion()
     # plt.plot([1, 101, 201, 301, 401], np.transpose(scores))
     # plt.show(block=True)
-    rosette = f"data/5/{alg}5.csv"
+    rosette = f"data/5/{alg}50.csv"
     print(rosette)
     results.to_csv(rosette)
 
