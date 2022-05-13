@@ -13,6 +13,8 @@ from sklearn.cluster import Birch as BIRCH
 from sklearn.cluster import KMeans as KM
 from sklearn.svm import SVR
 from sklearn.linear_model import SGDRegressor as SGD
+from sklearn.neural_network import MLPRegressor as NN
+
 
 proj_path = os.path.join(
     "/", "home", "rjb255", "University", "ChemEng", "ResearchProject"
@@ -27,14 +29,25 @@ from purePython.v4main import score
 def main(dataset):
     data = pd.read_csv(dataset[0])
     backup = copy.deepcopy(data)
-    models = {
+    # models = {
+    #     "BayesianRidge": BR(),
+    #     "KNN": KNN(),
+    #     "RandomForrest": RFR(random_state=1),
+    #     "SGD": SGD(loss="huber", random_state=1),
+    #     "SVM": SVR(),
+    #     "ABR": ABR(random_state=1),
+    # }
+
+        models = {
         "BayesianRidge": BR(),
         "KNN": KNN(),
-        "RandomForrest": RFR(random_state=1),
-        "SGD": SGD(loss="huber", random_state=1),
-        "SVM": SVR(),
-        "ABR": ABR(random_state=1),
+        # "RandomForrest": RFR(random_state=1),
+        # "SGD": SGD(loss="huber", random_state=1),
+        # "SVM": SVR(),
+        # "ABR": ABR(random_state=1),
+        "NN": NN(warm_start=True, random_state=1),
     }
+    
     m = Models(list(models.values()))
     data: pd.DataFrame = data.sample(frac=1, random_state=1)
     X_known, Y_known, X_unknown, Y_unknown, X_test, Y_test = split(data, 5, frac=1)
@@ -57,7 +70,7 @@ def main(dataset):
 data_location = os.path.join(proj_path, "data", "big", "qsar_data")
 data_names = os.listdir(data_location)
 datasets = np.array([os.path.join(data_location, data) for data in data_names])
-data_location2 = os.path.join(proj_path, "data", "big", "qsar_with_lims")
+data_location2 = os.path.join(proj_path, "data", "big", "qsar_with_lims_2")
 data2 = np.array([os.path.join(data_location2, data) for data in data_names])
 
 

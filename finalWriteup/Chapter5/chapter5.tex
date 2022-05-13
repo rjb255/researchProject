@@ -80,6 +80,16 @@ Using sample sizes of 50 and 150 on Monte Carlo and RoDGer supports the power of
     \end{center}
 \end{figure}
 
+Finally, an investigation into using a reduced set of models is undertaken, using Bayesian ridge, k-nearest neighbours, and a multi-layer perceptron regressor (MLPR). This last model is a neural network, chosen since it represents a different class of machine learning model. The other two were used within other trial in order to allow a sample standard deviation to be returned, as required by algorithms relying on the predict\_error method of the Model class. Reuslts are shown in Figure~\ref{fig:modelSensi}
+
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics{Models.pdf}
+        \caption[Sensitivity to Model Selection]{Comparison of different parametric algorithms with standard deviations represented as error bars over an extended number of iterations.}
+        \label{fig:modelSensi}
+    \end{center}
+\end{figure}
+
 
 \section{Refinement}
 There are several points for progression that are worth discussing. Firstly, the training system requires improvement. Despite the observations of parallelisation leading to a situation of $\mathcal{O}(c)$ given an infinite number of processing units, an infinite number of processing units unfortunately do not exist. In the event of three parameters, the current methodology requires $N_\mathrm{train}\prod(n_{\alpha_i})$ executions of the learning algorithm, where $n_{\alpha_i}$ is the number of different values tested for $\alpha_i$. Even with simply 3 different values tested for each parameter in the Holy Trinity algorithm, this equates to $\sim{}4500$ executions of the algorithm. Thus, as the maximum number of CPUs available was 380, the training process became $\mathcal{O}\left(N_\mathrm{train}\prod{n_{\alpha_i}}\right)$. A potential solution would be segmentation, where the datasets are split into smaller groups with which are tested on a sample of the parameter space, with results from these smaller groups amalgamated at the end. Additionally, active learning could be used in the determination of the minima. Here, the goal would be to find the minima using as few parameter values as possible.

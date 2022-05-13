@@ -347,7 +347,7 @@ def post_main(dataset, alpha=[], alg="dumb"):
         # "SGD": SGD(loss="huber", random_state=1),
         # "SVM": SVR(),
         # "ABR": ABR(random_state=1),
-        "NN": NN(warm_start=True),
+        "NN": NN(warm_start=True, random_state=1),
     }
 
     algorithms = {
