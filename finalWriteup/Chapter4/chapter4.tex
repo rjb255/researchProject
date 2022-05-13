@@ -22,18 +22,18 @@ Results are presented for the algorithms discussed in Chapter~\ref{ch:method}. W
 Non-parametric equations have the benefit of not requiring the minimisation function. Due to this, all testing of these algorithms were undertaken on a standard laptop. These also tend to be the easiest to implement, as uncovered in Chapter~\ref{ch:method}. Particularly important is the Monte Carlo method as this allows shows what should be a minimum baseline to achieve.
 
 \subsection{Monte Carlo}
-The first non- parametrised algorithm discussed in Chapter~\ref{ch:method} was the Monte Carlo method. Due to the non-parametric nature of this algorithm, execution was simply carried out on the test data set. Results are presented in Figure~\ref{fig:MCTestSet}, demonstrating a final score of ${0.184\pm{}0.018}$.
+The first non-parametrised algorithm discussed in Chapter~\ref{ch:method} was the Monte Carlo method. Due to the non-parametric nature of this algorithm, execution was simply carried out on the test data set. Results are presented in Figure~\ref{fig:MCTestSet}, demonstrating a final score of ${0.184\pm{}0.018}$.
 
 \begin{figure}[H]
     \begin{center}
         \includegraphics{dumb1.pdf}
-        \caption[Monte Carlo]{Results of Monte Carlo sampling on the test datasets. Dotted lines represent the individual scoring for the data sets and the solid line shows the mean results at each iteration in order to guide the eye.}
+        \caption[Monte Carlo]{Results of Monte Carlo sampling on the test datasets. Dotted lines represent the individual scoring for the datasets and the solid line shows the mean results at each iteration in order to guide the eye.}
         \label{fig:MCTestSet}
     \end{center}
 \end{figure}
 
 \subsection{Greed}
-Likewise, the Greedy algorithm was tested, with results presented in Figure~\ref{fig:GreedyTestSet}. Here, a final score of ${0.323\pm{}0.039}$ was found indicating a worse scoring than the base case.
+Likewise, the Greedy algorithm was tested, with results presented in Figure~\ref{fig:GreedyTestSet}. Here, a final score of ${0.323\pm{}0.039}$ was found indicating a worse performance than the base case.
 
 \begin{figure}[H]
     \begin{center}
@@ -49,13 +49,13 @@ The final non-parametric algorithm to be tested was RoD. A final score of ${0.21
 \begin{figure}[H]
     \begin{center}
         \includegraphics{rod1.pdf}
-        \caption[RoD]{Results of RoD sampling on the test datasets. Dotted lines represent the individual scoring for the data sets and the solid line shows the mean results at each iteration in order to guide the eye.}
+        \caption[RoD]{Results of RoD sampling on the test datasets. Dotted lines represent the individual scoring for the datasets and the solid line shows the mean results at each iteration in order to guide the eye.}
         \label{fig:RODTestSet}
     \end{center}
 \end{figure}
 
 \section{Parametric}
-Parametric algorithms require a minimisation procedure on the training set. This leads to a computationally challenging script, and for this the author is grateful for the services provided by the HPC \cite{HPC}.
+Parametric algorithms require a minimisation procedure on the training set. This is computationally challenging, and for this the author is grateful for the services provided by the HPC \cite{HPC}.
 
 \subsection{Clusters}
 The first set of algorithms tested were the clusters. Each of these outperformed all three of the other algorithms, with Cluster I, Cluster II, and Cluster III giving scores of ${0.155\pm{}0.020}$, ${0.145\pm{}0.009}$, and respectively ${0.143\pm{}0.016}$. Due to the results from Cluster III, this is the one that will be used within the Holy Trinity. A variety of optimal ${c}$ were found when comparing to Algorithm~\ref{alg:cluster1}. An additional cluster size of 45, 40, and 60 were found to be optimal for Cluster I, II, and III respectively.
@@ -95,7 +95,7 @@ By sampling multiple values for $\alpha$, a final set of $\alpha=[60, 0.47, 0.22
 \begin{figure}[H]
     \begin{center}
         \includegraphics{holyGrail.pdf}
-        \caption[RoDGer Test Results]{The results after fitting $\alpha{}$ to RoDGer, showing the learning process on the test set. The learning of each data set has been added with dotted lines for illustrative purposes, and solid lines guide the eye to overall trends.}
+        \caption[RoDGer Test Results]{The results after fitting $\alpha{}$ to RoDGer, showing the learning process on the test set. The learning of each dataset has been added with dotted lines for illustrative purposes, and solid lines guide the eye to overall trends.}
         \label{fig:holyTrinity}
     \end{center}
 \end{figure}

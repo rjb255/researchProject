@@ -44,7 +44,7 @@ In order to assist the understanding of the methodologies used by others within 
     \end{center}
 \end{figure}
 
-In order to assess the algorithms, the mean squared error (mse) has been used. Comparisons are made to the na\"ive approach of Monte Carlo, i.e. random sampling. Each algorithm will be given five random starting points, and attempted improvement will follow.
+In order to assess the algorithms, the mean squared error (mse) has been used. Comparisons are made to the na\"ive approach of Monte Carlo (random sampling). Each algorithm will be given five random starting points from which they will then attenuate to the data set.
 
 There are several schools of thought regarding active learning. These can be separated into two distinct categories: current data and future predictions. The former of these is computationally cheaper, more complex to implement, and less adaptable to model changes.
 
@@ -79,7 +79,7 @@ In order to adapt non-probabilistic models into probabilistic ones, composite mo
 \begin{figure}[H]
     \begin{center}
         \includegraphics{rodPhantom.pdf}
-        \caption[Uncertainty Sampling Demonstration]{The outcome of the investigating the areas of the highest uncertainty. An initial set of 5 random points (displayed as blue stars in A)) was provided, and 50 further iterations were then carried out of sample size 1. A) Demonstrates the final set of points tested by the algorithm and B) shows the mean squared error for the algorithm after each iteration.}
+        \caption[Uncertainty Sampling Demonstration]{The outcome of the investigating the areas of the highest uncertainty. An initial set of 5 random points (displayed as blue stars in A)) was provided, and 50 further iterations were then carried out of sample size 1. A) demonstrates the final set of points tested by the algorithm and B) shows the mean squared error for the algorithm after each iteration.}
         \label{fig:rodPhantom}
     \end{center}
 \end{figure}
@@ -133,7 +133,7 @@ As Figure~\ref{fig:ClusterResults} demonstrates, there are multiple different in
 \begin{figure}[H]
     \begin{center}
         \includegraphics{clusterPhantom.pdf}
-        \caption[Cluster Hotspot Sampling Illustration]{The outcome of the investigating the areas of using a cluster hotspot sampling methodology. An initial set of 5 random points (displayed as blue stars in A)) was provided, and 50 further iterations were then carried out of sample size 1. A) Demonstrates the final set of points tested by the algorithm and B) shows the mean squared error for the algorithm after each iteration.}
+        \caption[Cluster Hotspot Sampling Illustration]{The outcome of the investigating the areas of using a cluster hotspot sampling methodology. An initial set of 5 random points (displayed as blue stars in A)) was provided, and 50 further iterations were then carried out of sample size 1. A) demonstrates the final set of points tested by the algorithm and B) shows the mean squared error for the algorithm after each iteration.}
         \label{fig:clusterPhantom}
     \end{center}
 \end{figure}
@@ -179,7 +179,7 @@ Little literature exists with respect to batch active learning. Naïve implement
 \end{figure}
 
 
-It stands to reason that the area which has the highest uncertainty will see this for the data points nearest neighbours. Thus, this singular data point suffers the potential of being surrounded by $N-1$ other data points. The benefit this provides in fitting the model is thus extremely limited; perhaps even worse due to overfitting. A simple fix would be to simulate the model after 1 iteration, and select the next point from here. By doing this $N-1$ times, a better solution may be found, although this may prove to be computationally expensive.
+It is to be expected that regions of high uncertainty will exist. Within these regions, multiple points will have similar uncertainties. Thus, it is likely in batch querying areas of high uncertainty multiple points from the same area of feature space will be chosen, reducing the information gain by the model. Perhaps the consequences will be even worse due to overfitting. A simple fix would be to simulate the model after 1 iteration, and select the next point from there. By doing this $n-1$ times, a better solution may be found, although this may prove to be computationally expensive.
 
 \subsection{BatchBALD}
 \textcite{BatchBALD} propose an algorithm named BatchBALD (Batch Bayesian Active Learning by Disagreement). Demonstrating for sample size of 10 an improvement compared to random sampling in optical character recognition. In doing so, they use complex Bayesian Neural Networks and apply the problem to categorical data. They also note it does not work well in the event of noisy data: a common feature of laboratory based labelling.
