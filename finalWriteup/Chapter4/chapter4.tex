@@ -25,32 +25,32 @@ Non-parametric equations have the benefit of not requiring the minimisation func
 The first non- parametrised algorithm discussed in Chapter~\ref{ch:method} was the Monte Carlo method. Due to the non-parametric nature of this algorithm, execution was simply carried out on the test data set. Results are presented in Figure~\ref{fig:MCTestSet}, demonstrating a final score of ${0.184\pm{}0.018}$.
 
 \begin{figure}[H]
-  \begin{center}
-    \includegraphics{dumb1.pdf}
-    \caption[Monte Carlo]{Results of Monte Carlo sampling on the test datasets. Dotted lines represent the individual scoring for the data sets and the solid line shows the mean results at each iteration with error bars of $\frac{\sigma{}}{\sqrt{n-1}}$.}
-    \label{fig:MCTestSet}
-  \end{center}
+    \begin{center}
+        \includegraphics{dumb1.pdf}
+        \caption[Monte Carlo]{Results of Monte Carlo sampling on the test datasets. Dotted lines represent the individual scoring for the data sets and the solid line shows the mean results at each iteration with error bars of $\frac{\sigma{}}{\sqrt{n-1}}$.}
+        \label{fig:MCTestSet}
+    \end{center}
 \end{figure}
 
 \subsection{Greed}
 Likewise, the Greedy algorithm was tested, with results presented in Figure~\ref{fig:GreedyTestSet}. Here, a final score of ${0.323\pm{}0.039}$ was found indicating a worse scoring than the base case.
 \begin{figure}[H]
-  \begin{center}
-    \includegraphics{greedy1.pdf}
-    \caption[Greedy]{Results of greedy sampling on the test datasets. Dotted lines represent the individual scoring for the data sets and the solid line shows the mean results at each iteration.}
-    \label{fig:GreedyTestSet}
-  \end{center}
+    \begin{center}
+        \includegraphics{greedy1.pdf}
+        \caption[Greedy]{Results of greedy sampling on the test datasets. Dotted lines represent the individual scoring for the data sets and the solid line shows the mean results at each iteration.}
+        \label{fig:GreedyTestSet}
+    \end{center}
 \end{figure}
 
 \subsection[Region of Disagreement]{RoD}
 The final non-parametic algorithm to be tested was RoD. A final score of ${0.211\pm{}0.022}$, leading to a middling position between the other two parametric algorithms. The improvement in each iteration is shown in Figure~\ref{fig:RODTestSet}.
 
 \begin{figure}[H]
-  \begin{center}
-    \includegraphics{rod1.pdf}
-    \caption[RoD]{Results of RoD sampling on the test datasets. Dotted lines represent the individual scoring for the data sets and the solid line shows the mean results at each iteration.}
-    \label{fig:RODTestSet}
-  \end{center}
+    \begin{center}
+        \includegraphics{rod1.pdf}
+        \caption[RoD]{Results of RoD sampling on the test datasets. Dotted lines represent the individual scoring for the data sets and the solid line shows the mean results at each iteration.}
+        \label{fig:RODTestSet}
+    \end{center}
 \end{figure}
 
 \section{Parametric}
@@ -70,32 +70,32 @@ The first set of algorithms tested were the clusters. Each of these outperformed
 %   \end{center}
 % \end{figure}
 \begin{figure}[H]
-  \begin{center}
-    \includegraphics{clusterIII.pdf}
-    \caption[Cluster III]{The results of fitting $c$ to the Cluster III algorithm. A) shows the results from parameter fitting and B) shows the learning process on the test set.}
-    \label{fig:clusterTest}
-  \end{center}
+    \begin{center}
+        \includegraphics{clusterIII.pdf}
+        \caption[Cluster III]{The results of fitting $c$ to the Cluster III algorithm. A) shows the results from parameter fitting and B) shows the learning process on the test set.}
+        \label{fig:clusterTest}
+    \end{center}
 \end{figure}
 
 \subsection[Region of Disagreement with Greed]{RoDG}
-When testing the RoDG sampling algorithm, it was found that despite the weighting towards higher value targets in scoring, no significant improvement was seen over RoD. The minimisation procedure returned ${\alpha{}=0.06}$, with $\alpha$ defined in \ref{eq:rodAndGreed}. However, the tolerance at small $\alpha$, as shown in Figure~\ref{fig:rogreed}A. This method gave a final a score of ${0.206\pm{}0.011}$, a slight improvement over simply using RoD.
+When testing the RoDG sampling algorithm, it was found that despite the weighting towards higher value targets in scoring, no significant improvement was seen over RoD. The minimisation procedure returned ${\alpha{}=0.06}$, with $\alpha$ defined in (\ref{eq:rodAndGreed}). However, the tolerance at small $\alpha$, as shown in Figure~\ref{fig:rogreed}A. This method gave a final a score of ${0.206\pm{}0.011}$, a slight improvement over simply using RoD.
 
 \begin{figure}[H]
-  \begin{center}
-    \includegraphics{rodGreedParam.pdf}
-    \caption[RoD with Greed]{The results of fitting $\alpha{}$ to the RoDG algorithm. A) shows the results from parameter fitting and B) shows the learning process on the test set.}
-    \label{fig:rogreed}
-  \end{center}
+    \begin{center}
+        \includegraphics{rodGreedParam.pdf}
+        \caption[RoD with Greed]{The results of fitting $\alpha{}$ to the RoDG algorithm. A) shows the results from parameter fitting and B) shows the learning process on the test set.}
+        \label{fig:rogreed}
+    \end{center}
 \end{figure}
 
 \subsection[Region of Disagreement with Greed and Clusters]{RoDGer}
-By sampling multiple values for $\alpha$, a final set of $\alpha=[60, 0.47, 0.22]$ was reached where $[\alpha{}_0, \alpha{}_1, \alpha{}_2]$ correspond to the constants used in Algorithm~\ref{alg:cluster1}, \ref{eq:rodAndGreed}, and \ref{eq:holyTrinity} respectively. When validated against the testing datasets, a final score of $0.115\pm{}0.013$ was found; the best result.
+By sampling multiple values for $\alpha$, a final set of $\alpha=[60, 0.47, 0.22]$ was reached where $[\alpha{}_0, \alpha{}_1, \alpha{}_2]$ correspond to the constants used in Algorithm~\ref{alg:cluster1}, (\ref{eq:rodAndGreed}), and (\ref{eq:holyTrinity}) respectively. When validated against the testing datasets, a final score of $0.115\pm{}0.013$ was found; the best result.
 
 \begin{figure}[H]
-  \begin{center}
-    \includegraphics{holyGrail.pdf}
-    \caption[RoDGer Test Results]{The results after fitting $\alpha{}$ to RoDGer, showing the learning process on the test set. The learning of each data set has been added with dotted lines for illustrative purposes.}
-    \label{fig:holyTrinity}
-  \end{center}
+    \begin{center}
+        \includegraphics{holyGrail.pdf}
+        \caption[RoDGer Test Results]{The results after fitting $\alpha{}$ to RoDGer, showing the learning process on the test set. The learning of each data set has been added with dotted lines for illustrative purposes.}
+        \label{fig:holyTrinity}
+    \end{center}
 \end{figure}
 
