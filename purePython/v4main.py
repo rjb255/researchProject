@@ -377,7 +377,7 @@ def post_main(dataset, alpha=[], alg="dumb"):
         model,
         algorithm,
         iterations=6,
-        sample_size=50,
+        sample_size=150,
         score=score,
         alpha=alpha,
         lims=[ulim, llim],

@@ -191,7 +191,7 @@ def main(*, output=0, alpha=[]):
     # plt.ion()
     # plt.plot([1, 101, 201, 301, 401], np.transpose(scores))
     # plt.show(block=True)
-    rosette = f"data/5/{alg}50.csv"
+    rosette = f"data/5/{alg}150.csv"
     print(rosette)
     results.to_csv(rosette)
 
