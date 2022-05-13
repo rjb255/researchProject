@@ -27,17 +27,18 @@ The first non- parametrised algorithm discussed in Chapter~\ref{ch:method} was t
 \begin{figure}[H]
     \begin{center}
         \includegraphics{dumb1.pdf}
-        \caption[Monte Carlo]{Results of Monte Carlo sampling on the test datasets. Dotted lines represent the individual scoring for the data sets and the solid line shows the mean results at each iteration with error bars of $\frac{\sigma{}}{\sqrt{n-1}}$.}
+        \caption[Monte Carlo]{Results of Monte Carlo sampling on the test datasets. Dotted lines represent the individual scoring for the data sets and the solid line shows the mean results at each iteration in order to guide the eye.}
         \label{fig:MCTestSet}
     \end{center}
 \end{figure}
 
 \subsection{Greed}
 Likewise, the Greedy algorithm was tested, with results presented in Figure~\ref{fig:GreedyTestSet}. Here, a final score of ${0.323\pm{}0.039}$ was found indicating a worse scoring than the base case.
+
 \begin{figure}[H]
     \begin{center}
         \includegraphics{greedy1.pdf}
-        \caption[Greedy]{Results of greedy sampling on the test datasets. Dotted lines represent the individual scoring for the data sets and the solid line shows the mean results at each iteration.}
+        \caption[Greedy]{Results of greedy sampling on the test datasets. Dotted lines represent the individual scoring for the data sets and the solid line shows the mean results at each iteration in order to guide the eye.}
         \label{fig:GreedyTestSet}
     \end{center}
 \end{figure}
@@ -48,7 +49,7 @@ The final non-parametric algorithm to be tested was RoD. A final score of ${0.21
 \begin{figure}[H]
     \begin{center}
         \includegraphics{rod1.pdf}
-        \caption[RoD]{Results of RoD sampling on the test datasets. Dotted lines represent the individual scoring for the data sets and the solid line shows the mean results at each iteration.}
+        \caption[RoD]{Results of RoD sampling on the test datasets. Dotted lines represent the individual scoring for the data sets and the solid line shows the mean results at each iteration in order to guide the eye.}
         \label{fig:RODTestSet}
     \end{center}
 \end{figure}
@@ -72,7 +73,7 @@ The first set of algorithms tested were the clusters. Each of these outperformed
 \begin{figure}[H]
     \begin{center}
         \includegraphics{clusterIII.pdf}
-        \caption[Cluster III]{The results of fitting $c$ to the Cluster III algorithm. A) shows the results from parameter fitting and B) shows the learning process on the test set.}
+        \caption[Cluster III]{The results of fitting $c$ to the Cluster III algorithm. A) shows the results from parameter fitting and B) shows the learning process on the test set. Dotted lines show performance of individual datasets and solid lines guide the eye to the trend.}
         \label{fig:clusterTest}
     \end{center}
 \end{figure}
@@ -83,7 +84,7 @@ When testing the RoDG sampling algorithm, it was found that despite the weightin
 \begin{figure}[H]
     \begin{center}
         \includegraphics{rodGreedParam.pdf}
-        \caption[RoD with Greed]{The results of fitting $\alpha{}$ to the RoDG algorithm. A) shows the results from parameter fitting and B) shows the learning process on the test set.}
+        \caption[RoD with Greed]{The results of fitting $\alpha{}$ to the RoDG algorithm. A) shows the results from parameter fitting and B) shows the learning process on the test set. Dotted lines show performance of individual datasets and solid lines guide the eye to the trend.}
         \label{fig:rogreed}
     \end{center}
 \end{figure}
@@ -94,8 +95,7 @@ By sampling multiple values for $\alpha$, a final set of $\alpha=[60, 0.47, 0.22
 \begin{figure}[H]
     \begin{center}
         \includegraphics{holyGrail.pdf}
-        \caption[RoDGer Test Results]{The results after fitting $\alpha{}$ to RoDGer, showing the learning process on the test set. The learning of each data set has been added with dotted lines for illustrative purposes.}
+        \caption[RoDGer Test Results]{The results after fitting $\alpha{}$ to RoDGer, showing the learning process on the test set. The learning of each data set has been added with dotted lines for illustrative purposes, and solid lines guide the eye to overall trends.}
         \label{fig:holyTrinity}
     \end{center}
 \end{figure}
-
