@@ -12,11 +12,11 @@
 \section{Non-Parametric}
 The three non-parametric algorithms produced several noticeable results. Firstly, Monte Carlo sampling outperformed both Greedy and RoD sampling. This is demonstrated convincingly through Figure~\ref{fig:nPComp}, where results from the greedy results suggest the worst accuracy.
 
-Despite the greedy algorithm demonstrating the worst accuracy, interesting results were shown with RoD sampling. Poor selection is evidently present with the first sample set, although rapid improvement quickly follows. Indeed, after the first iteration, the learning rate is superior to the other two algorithms. An extra iteration may indeed have seen RoD surpassing Monte Carlo. This is expected as the RoD algorithm specifically targets regions of the model which cause the largest changes towards optimal fitting.
+Despite the greedy algorithm demonstrating the worst accuracy, interesting results were shown with RoD sampling. Poor selection is evidently present with the first sample set, although rapid improvement quickly follows. Indeed, after the first iteration, the learning rate is superior to the other two algorithms, boasting a $\dot{\mathrm{score}}=41$. An extra iteration may indeed have seen RoD surpassing Monte Carlo. This behaviour is expected as the RoD algorithm specifically attempts to target regions of the model which cause the largest changes towards optimal fitting.
 
 Both RoD and greedy sampling are suspected to suffer from clusterisation whereby data points similar to each other in the feature space are sampled within the same batch, thus reducing the total information conveyed per batch operation. This is believed to be particularly costly with the first iteration as the model will heavily overfit to the new cluster it has sampled. The random nature of Monte Carlo reduces this prospect, hence the apparent promising performance of a random sampling methodology. Evidence to this is shown in Figure~\ref{fig:MCTestSet}, Figure~\ref{fig:GreedyTestSet}, and Figure~\ref{fig:RODTestSet}.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \begin{center}
         \includegraphics{nonParamComp1.pdf}
         \caption[Non-Parametric Comparison]{Comparison of different non-parametric algorithms with interpolation lines to guide the eye.}
@@ -29,7 +29,7 @@ This demonstrates a danger with Batch Active Learning. It is very easy to produc
 \section{Parametric}
 The first of these is a first order composite algorithm, RoDG, which uses different active learning algorithms as a base. The second is a clustering algorithm with the number of clusters left as a parameter. The third is a second order composite active learning algorithm which combines the other two parametric functions, named RoDGer. An improvement is seen throughout these algorithms, with RoDGer performing the best.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \begin{center}
         \includegraphics{paramComp1.pdf}
         \caption[Parametric Comparison]{Comparison of different parametric algorithms with interpolation lines to guide the eye.}
@@ -37,7 +37,7 @@ The first of these is a first order composite algorithm, RoDG, which uses differ
     \end{center}
 \end{figure}
 
-Several points of interest are highlighted with these results. Firstly, despite improving upon RoD, RoDG is still beaten by Monte Carlo sampling. Again, the methodology suffers from clustering of points. This is shown with the ability of Cluster III outperforming Monte Carlo. The progression through the different cluster algorithms also sees improvement with progression, as anticipated.
+Several points of interest are highlighted with these results. Firstly, despite improving upon RoD, RoDG is still beaten by Monte Carlo sampling. Again, the methodology suffers from clustering of points.
 
 The sampling process of the Cluster III algorithm demonstrates its ability at outperforming the random sampling methodology of Monte Carlo even within the first iteration. The RoDGer algorithm demonstrates a long term strategy, falling within error of Cluster III in the first iteration before steadily improving beyond the capabilities of Cluster III.
 

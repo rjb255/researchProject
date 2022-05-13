@@ -22,7 +22,7 @@ Results are presented for the algorithms discussed in Chapter~\ref{ch:method}. W
 Non-parametric equations have the benefit of not requiring the minimisation function. Due to this, all testing of these algorithms were undertaken on a standard laptop. These also tend to be the easiest to implement, as uncovered in Chapter~\ref{ch:method}. Particularly important is the Monte Carlo method as this allows shows what should be a minimum baseline to achieve.
 
 \subsection{Monte Carlo}
-The first non-parametrised algorithm discussed in Chapter~\ref{ch:method} was the Monte Carlo method. Due to the non-parametric nature of this algorithm, execution was simply carried out on the test data set. Results are presented in Figure~\ref{fig:MCTestSet}, demonstrating a final score of ${0.184\pm{}0.018}$.
+The first non-parametrised algorithm discussed in Chapter~\ref{ch:method} was the Monte Carlo method. Due to the non-parametric nature of this algorithm, execution was simply carried out on the test data set. Results are presented in Figure~\ref{fig:MCTestSet}, demonstrating a final score of ${0.184\pm{}0.018}$ and an overall $\dot{\mathrm{score}}$ of $16.32\pm{}0.36$.
 
 \begin{figure}[H]
     \begin{center}
@@ -33,7 +33,7 @@ The first non-parametrised algorithm discussed in Chapter~\ref{ch:method} was th
 \end{figure}
 
 \subsection{Greed}
-Likewise, the Greedy algorithm was tested, with results presented in Figure~\ref{fig:GreedyTestSet}. Here, a final score of ${0.323\pm{}0.039}$ was found indicating a worse performance than the base case.
+Likewise, the Greedy algorithm was tested, with results presented in Figure~\ref{fig:GreedyTestSet}. Here, a final score of ${0.323\pm{}0.039}$ and an overall $\dot{\mathrm{score}}$ of $13.5\pm{}0.8$, indicating a worse performance than the base case.
 
 \begin{figure}[H]
     \begin{center}
@@ -44,7 +44,7 @@ Likewise, the Greedy algorithm was tested, with results presented in Figure~\ref
 \end{figure}
 
 \subsection[Region of Disagreement]{RoD}
-The final non-parametric algorithm to be tested was RoD. A final score of ${0.211\pm{}0.022}$, leading to a middling position between the other two parametric algorithms. The improvement in each iteration is shown in Figure~\ref{fig:RODTestSet}.
+The final non-parametric algorithm to be tested was RoD. A final score of ${0.211\pm{}0.022}$ and an overall $\dot{\mathrm{score}}$ of $15.78\pm{}0.44$, leading to a middling position between the other two parametric algorithms. The improvement in each iteration is shown in Figure~\ref{fig:RODTestSet}.
 
 \begin{figure}[H]
     \begin{center}
@@ -58,7 +58,7 @@ The final non-parametric algorithm to be tested was RoD. A final score of ${0.21
 Parametric algorithms require a minimisation procedure on the training set. This is computationally challenging, and for this the author is grateful for the services provided by the HPC \cite{HPC}.
 
 \subsection{Clusters}
-The first set of algorithms tested were the clusters. Each of these outperformed all three of the other algorithms, with Cluster I, Cluster II, and Cluster III giving scores of ${0.155\pm{}0.020}$, ${0.145\pm{}0.009}$, and respectively ${0.143\pm{}0.016}$. Due to the results from Cluster III, this is the one that will be used within the Holy Trinity. A variety of optimal ${c}$ were found when comparing to Algorithm~\ref{alg:cluster1}. An additional cluster size of 45, 40, and 60 were found to be optimal for Cluster I, II, and III respectively.
+The first set of algorithms tested were the clusters. Each of these outperformed all three of the other algorithms, with Cluster I, Cluster II, and Cluster III giving scores of ${0.155\pm{}0.020}$, ${0.145\pm{}0.009}$, and ${0.143\pm{}0.016}$ respectively. This corresponds to $\dot{\mathrm{score}}$ of ${16.90\pm{}0.40}$, ${17.10\pm{}0.18}$, and ${17.14\pm{}0.32}$. Due to the results from Cluster III, this is the one that will be used within the Holy Trinity. A variety of optimal ${c}$ were found when comparing to Algorithm~\ref{alg:cluster1}. An additional cluster size of 45, 40, and 60 were found to be optimal for Cluster I, II, and III respectively.
 
 % \begin{figure}[H]
 %   \begin{center}
@@ -79,7 +79,7 @@ The first set of algorithms tested were the clusters. Each of these outperformed
 \end{figure}
 
 \subsection[Region of Disagreement with Greed]{RoDG}
-When testing the RoDG sampling algorithm, it was found that despite the weighting towards higher value targets in scoring, no significant improvement was seen over RoD. The minimisation procedure returned ${\alpha{}=0.06}$, with $\alpha$ defined in (\ref{eq:rodAndGreed}). However, the tolerance at small $\alpha$, as shown in Figure~\ref{fig:rogreed}A. This method gave a final a score of ${0.206\pm{}0.011}$, a slight improvement over simply using RoD.
+When testing the RoDG sampling algorithm, it was found that despite the weighting towards higher value targets in scoring, no significant improvement was seen over RoD. The minimisation procedure returned ${\alpha{}=0.06}$, with $\alpha$ defined in (\ref{eq:rodAndGreed}). However, the tolerance at small $\alpha$, as shown in Figure~\ref{fig:rogreed}A. This method gave a final a score of ${0.206\pm{}0.011}$ and overall $\dot{\mathrm{score}}=15.88\pm{}0.22$, a slight improvement over simply using RoD.
 
 \begin{figure}[H]
     \begin{center}
@@ -89,8 +89,9 @@ When testing the RoDG sampling algorithm, it was found that despite the weightin
     \end{center}
 \end{figure}
 
+
 \subsection[Region of Disagreement with Greed and Clusters]{RoDGer}
-By sampling multiple values for $\alpha$, a final set of $\alpha=[60, 0.47, 0.22]$ was reached where $[\alpha{}_0, \alpha{}_1, \alpha{}_2]$ correspond to the constants used in Algorithm~\ref{alg:cluster1}, (\ref{eq:rodAndGreed}), and (\ref{eq:holyTrinity}) respectively. When validated against the testing datasets, a final score of $0.115\pm{}0.013$ was found; the best result.
+By sampling multiple values for $\alpha$, a final set of $\alpha=[60, 0.47, 0.22]$ was reached where $[\alpha{}_0, \alpha{}_1, \alpha{}_2]$ correspond to the constants used in Algorithm~\ref{alg:cluster1}, (\ref{eq:rodAndGreed}), and (\ref{eq:holyTrinity}) respectively. When validated against the testing datasets, a final score of $0.115\pm{}0.013$ was found with an overall $\dot{\mathrm{score}}=17.70\pm{}0.26$; the best result.
 
 \begin{figure}[H]
     \begin{center}
