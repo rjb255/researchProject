@@ -12,6 +12,7 @@
 \nomenclature[c-1-x]{$x$}{Data points where $x=\{x_0, x_1, ..., x_{N-1}\}$}
 \nomenclature[c-1-y]{$y$}{Labels for the dataset where $y=\{y_0, y_1, ..., y_{N-1}\}$}
 \nomenclature[c-1-N]{$N$}{Number of features (dimensions) of $x$}
+\nomenclature[c-1-n]{$N$}{Number of data points $x$}
 
 \nomenclature[c-1-s]{$s_g$}{Sample standard deviation of the predictions}
 
@@ -25,6 +26,8 @@
 
 
 %*****************************************************************************
+\section{Active Learning}
+\label{ch:Active Learning}
 
 In order to assist the understanding of the methodologies used by others within the field of active learning, a toy dataset has been created. It is based upon~(\ref{eq:phantom}) and has been shown in Figure~\ref{fig:phantom}. The $y$ values used within the algorithms have been combined with errors, $\epsilon{}\sim{}\mathcal{N}(0, 0.01)$.
 
@@ -36,57 +39,52 @@ In order to assist the understanding of the methodologies used by others within 
 \begin{figure}[h]
     \begin{center}
         \includegraphics{phantomOverview.pdf}
-        \caption[Example Dataset for Representation of Ideas]{Contour plot of the function used to demonstrate the algorithms presented in previous work. The crosses have been used to show the location of the 200 test data points used within this example.}
+        \caption[Toy Dataset]{Contour plot of the function used to demonstrate the algorithms presented in previous work. The crosses have been used to show the location of the 200 test data points used within this example.}
         \label{fig:phantom}
     \end{center}
 \end{figure}
 
-In order to assess the algorithms, the mean squared error (mse) has been used. Comparisons are made to the naive approach of random sampling, i.e. Monte Carlo sampling. Each algorithm will be given five random starting points, and attempted improvement will follow.
+In order to assess the algorithms, the mean squared error (mse) has been used. Comparisons are made to the na\"ive approach of Monte Carlo, i.e. random sampling. Each algorithm will be given five random starting points, and attempted improvement will follow.
 
-\section{Active Learning}
-\label{ch:Active Learning}
-
-There are several schools of thought regarding active learning. These can be separated into two distinct categories: current data and future predictions. The former of these is computationally cheaper, more complex t implement, and less adaptable to model changes, as will be apparent on description.
+There are several schools of thought regarding active learning. These can be separated into two distinct categories: current data and future predictions. The former of these is computationally cheaper, more complex to implement, and less adaptable to model changes.
 
 \subsection{Current Data}
 \subsubsection{Uncertainty Sampling and Regions of Disagreements}
 \label{sec:UncertaintySampling}
 
-The simplest is applicable to cases in which a certainty is provided with each prediction. \textcite{Set09} suggests selecting the data point with the largest uncertainty according to the current model. This has been shown with the toy dataset, as demonstrated in Figure~\ref{fig:rodPhantom}.
+When using probabilistic models, the data points with the highest uncertainty may be sampled first, as described by \textcite{Set09}. According to this strategy, (\ref{eq:info_uncertainty}) gives the next point to sample. This, in principle appears to be simple to implement, but upon closer inspection raises some concerns. Most noticeable is the limitation it places upon the model used.
+
+\begin{equation}
+    \label{eq:info_uncertainty}
+    {x_\mathrm{next}=\argmin_X{\left[P(y^{*}|x;\theta{})\right]}}
+\end{equation}
+
+\textcite{Set09} also notes the use of information theory for probabilistic models (\ref{eq:info_uncertainty}), where \mbox{${y^{*}=\argmax_y{}P(y|x;\theta{})}$} is the most likely $y$ for $x$. This derives from the principle that the greatest entropy requires the most information to encode, and thus the least certain. However, \textcite{Set09} fails to address non-probabilistic models in this instance, instead converting such models into probabilistic ones.
+
+\textcite{Set09} suggests another interpretation for uncertainty. By taking another approach from information theory, (\ref{eq:infoUncert}) is reached. This directly gives the point of the highest entropy, suggesting by knowing the point provides the largest information gain. Again however, this is difficult to implement with most models, as a probability distribution is required. This could be made simpler by approximating to a normal distribution.
+
+\begin{equation}
+    \label{eq:infoUncert}
+    x_\mathrm{next}=\argmax_x{\left[-\sum_i{P(y_i|x;\theta)\log{P(y_i|x;\theta)}}\right]}
+\end{equation}
 
 
-\begin{figure}
-    \begin{center}
-        \includegraphics{rodPhantom.pdf}
-        \caption[Uncertainty Sampling Demonstration]{The outcome of the investigating the areas of the highest uncertainty. An initial set of 5 random points was provided, and 50 further iterations were then carried out of sample size 1. A) Demonstrates the final set of points tested by the algorithm and B) shows the change in the mean squared error for the algorithm after each iteration.}
-        \label{fig:rodPhantom}
-    \end{center}
-\end{figure}
-
-Interestingly, Figure \ref{fig:rodPhantom}B shows how the mean squared error for the random sampling method performed to worse within the iterations tested. This is likely due to a bias in the use of linear models in fitting leading to large uncertainties surrounding areas with high curvature. Evidence to this is provided in Figure~\ref{fig:rodPhantom}A with a large proportion of the sampled points at areas of high curvature.
+In order to adapt non-probabilistic models into probabilistic ones, composite models may be used. These are an amalgamation of other models where the standard deviation of the individual models can be taken as the degree of certainty for a given point. This is commonly referred to minimising the region of disagreement, referring to the areas of discord within the hypothesis space. By minimising the region of disagreement between various models, a more coherent hypothesis space is sought leading to a more accurate model. This is the method used in Figure \ref{fig:rodPhantom}. This is shown in (\ref{eq:x_next1}).
 
 \begin{equation}
     \label{eq:x_next1}
     x_\mathrm{next}=\argmax_X{\left[s_{g(X)}\right]}
 \end{equation}
 
-As addressed by \textcite{Set09}, this can be extended to any probabilistic model through (\ref{eq:x_next1}). \textcite{Set09} also notes the use of information theory for probabilistic models(\ref{eq:info_uncertainty}), where $y^{*}=\argmax_y{}P(y|x;\theta{})$ is the most likely $y$ for $x$. This derives from the principle that the greatest entropy requires the most information to encode, and thus the least certain. However, \textcite{Set09} fails to address non-probabilistic models in this instance, instead converting such models into probabilistic ones.
+\begin{figure}[H]
+    \begin{center}
+        \includegraphics{rodPhantom.pdf}
+        \caption[Uncertainty Sampling Demonstration]{The outcome of the investigating the areas of the highest uncertainty. An initial set of 5 random points (displayed as blue stars in A)) was provided, and 50 further iterations were then carried out of sample size 1. A) Demonstrates the final set of points tested by the algorithm and B) shows the mean squared error for the algorithm after each iteration.}
+        \label{fig:rodPhantom}
+    \end{center}
+\end{figure}
 
-
-\begin{equation}
-    \label{eq:info_uncertainty}
-    {x_\mathrm{next}=\argmax_X{\left[P(y^{*}|x;\theta{})\right]}}
-\end{equation}
-
-In order to adapt non-probabilistic models into probabilistic ones, composite models may be used. These are an amalgamation of other models where the standard deviation of the individual models can be taken as the degree of certainty for a given point. This is commonly referred to minimising the region of disagreement, referring the spaces of discord within the hypothesis space. By minimising the region of disagreement between various models, a more coherent hypothesis space is sought leading to a more accurate model. Indeed, this was the method used in Figure \ref{fig:rodPhantom}. Mathematically, a set of $n$ models ${M = \{m_0,\ldots{}, m_{n-1}\}}$, with each model offering a prediction of $\hat{m_i}$, ${\hat{M}=\frac{1}{n}\sum{\hat{m_i}}}$, and the sample standard deviation of $\hat{m}$ giving the uncertainty.
-
-
-\textcite{Set09} suggests  third way of interpreting uncertinty. By taking the approach from information theory, (\ref{eq:infoUncert}) is settled upon. This directly states gives the point of the highest entropy, suggesting by knowing the point provides the largest information gain. Notably however, this is difficult to implement with most models, as a probability distribution is required. This could be made simpler by approximating to a normal distribution.
-
-\begin{equation}
-    \label{eq:infoUncert}
-    x_\mathrm{next}=\argmax_x{\left[\phi_A(x)\times{\left(\frac{1}{U}\sum{\simm{(x, x_i)}}\right)}^\beta\right]}
-\end{equation}
+Interestingly, Figure~\ref{fig:rodPhantom}B shows how the mean squared error for the random sampling method performed to worse within the iterations tested. This is likely due to a bias in the use of linear models in fitting leading to large uncertainties surrounding areas with high curvature. Evidence to this is provided in Figure~\ref{fig:rodPhantom}A with a large proportion of the sampled points at areas of high curvature.
 
 
 % \subsubsection{Broad Knowledge Base}
@@ -113,11 +111,11 @@ In order to adapt non-probabilistic models into probabilistic ones, composite mo
 
 \subsubsection{Density Hotspots}
 \label{sec:litRevDH}
-Conversely, a density weighted model has been suggested, as it escapes the introduction of error from outliers (i.e.\ data points far away from alternative data points). \textcite{Set08} suggest (\ref{eq:Settles_density}) which can be broken down into two parts: a function for selection, $\phi_A$, and a function for similarity, $\simm$. The former arises from  another method described in this section. The latter requires a function to describe the similarity between data points.
+Conversely, a density weighted model has been suggested, as it escapes the introduction of error from outliers (i.e.\ data points far away from alternative data points) and artificially reduces the available number of data points. \textcite{Set08} suggest (\ref{eq:Settles_density}) which can be broken down into two parts: a function for selection, $\phi_A$, and a function for similarity, $\simm$. The former represent another function for determining which point to sample next. The latter requires a function to describe the similarity between data points. $\beta$ is simply a parameter within this algorithm.
 
 \begin{equation}
     \label{eq:Settles_density}
-    x_\mathrm{next}=\argmax_x{\left[\phi_A(x)\times{\left(\frac{1}{U}\sum{\simm{(x, x_i)}}\right)}^\beta\right]}
+    x_\mathrm{next}=\argmax_x{\left[\phi_A(x)\times{\left(\frac{1}{n}\sum{\simm{(x, x_i)}}\right)}^\beta\right]}
 \end{equation}
 
 \textcite{Set08} admit that $\simm$ is open for interpretation. It must also be recognised that this lays the foundation of a clusterisation algorithm. There exist many forms of these algorithms, with the results of several of these algorithms on toy data sets presented in Figure~\ref{fig:ClusterResults} \cite{SciClus}.
@@ -125,7 +123,7 @@ Conversely, a density weighted model has been suggested, as it escapes the intro
 \begin{figure}[H]
     \begin{center}
         \includegraphics[width=\textwidth]{clusters.png}
-        \caption[]{Clusterisation algorithms used on sample two-dimensional data sets to demonstrate resultant clusters.}
+        \caption[Comparison of Clusterisation Algorithms]{Clusterisation algorithms used on sample two-dimensional data sets to demonstrate resultant clusters.}
         \label{fig:ClusterResults}
     \end{center}
 \end{figure}
@@ -135,7 +133,7 @@ As Figure~\ref{fig:ClusterResults} demonstrates, there are multiple different in
 \begin{figure}[H]
     \begin{center}
         \includegraphics{clusterPhantom.pdf}
-        \caption[Cluster Hotspot Sampling Illustration]{The outcome of the investigating the areas of using a cluster hotspot sampling methodology. An initial set of 5 random points was provided, and 50 further iterations were then carried out of sample size 1. A) Demonstrates the final set of points tested by the algorithm and B) shows the change in the mean squared error for the algorithm after each iteration.}
+        \caption[Cluster Hotspot Sampling Illustration]{The outcome of the investigating the areas of using a cluster hotspot sampling methodology. An initial set of 5 random points (displayed as blue stars in A)) was provided, and 50 further iterations were then carried out of sample size 1. A) Demonstrates the final set of points tested by the algorithm and B) shows the mean squared error for the algorithm after each iteration.}
         \label{fig:clusterPhantom}
     \end{center}
 \end{figure}
@@ -155,12 +153,13 @@ As the name implies, this method chooses points which are likely to have the lar
 
 
 \section{Batch Active Learning}
-Little literature exists with respect to batch active learning. Naive implementation exist whereby the methods explored earlier present a stack of data points to be chosen, and the top $N$ are used. However, this method does not take into account the equivalence of the data points. This can be seen by the formation of clusters within the broad and uncertainty sampling methods, although it is not present within the clusterisation algorithm.
+Little literature exists with respect to batch active learning. Naïve implementation exist whereby the methods explored earlier present a stack of data points to be chosen, and the top $N$ are used. However, this method does not take into account the equivalence of the data points. This can be seen by the formation of clusters within the uncertainty sampling method in Figure~\ref{fig:broadrod}, although it is not present within the clusterisation algorithm shown in Figure~\ref{fig:batchCluster}.
 
 \begin{figure}[H]
     \begin{center}
-        \includegraphics{broadrodPhantom.pdf}
-        \caption[Batch Uncertainty Sampling]{The outcome of the investigating the areas of using uncertainty sampling. An initial set of 5 random points was provided, and 5 further iterations were then carried out of sample size 10. A) Demonstrates the final set of points tested by the algorithm and B) shows the change in the mean squared error for the algorithm after each iteration.}
+        \includegraphics{batchrodPhantom.pdf}
+        \caption[Batch Uncertainty Sampling]{The outcome of the investigating the areas of using uncertainty sampling. An initial set of 5 random points (displayed as blue stars in A)) was provided, and 5 further iterations were then carried out of sample size 10. A) Demonstrates the final set of points tested by the algorithm and B) shows the mean squared error for the algorithm after each iteration.}
+        \label{fig:broadrod}
     \end{center}
 \end{figure}
 
@@ -174,15 +173,16 @@ Little literature exists with respect to batch active learning. Naive implementa
 \begin{figure}[H]
     \begin{center}
         \includegraphics{broadClusterPhantom.pdf}
-        \caption[Batch Cluster Sampling]{The outcome of the investigating the areas of using cluster sampling. An initial set of 5 random points was provided, and 5 further iterations were then carried out of sample size 10. A) Demonstrates the final set of points tested by the algorithm and B) shows the change in the mean squared error for the algorithm after each iteration.}
+        \caption[Batch Cluster Sampling]{The outcome of the investigating the areas of using cluster sampling. An initial set of 5 random points (displayed as blue stars in A)) was provided, and 5 further iterations were then carried out of sample size 10. A) Demonstrates the final set of points tested by the algorithm and B) shows the mean squared error for the algorithm after each iteration.}
+        \label{fig:batchCluster}
     \end{center}
 \end{figure}
 
 
-It stands to reason that the area which has the highest uncertainty will see this for the data points nearest neighbours. Thus, this singular data point suffers the potential of being surrounded by $N-1$ other data points. The benefit this provides in fitting the model is thus extremely limited, and only slightly greater than if one data point had been chosen. A simple fix would be to simulate the model after 1 iteration, and select the next point from here. By doing this $N-1$ times, a better solution may be found, although this may prove to be computationally expensive.
+It stands to reason that the area which has the highest uncertainty will see this for the data points nearest neighbours. Thus, this singular data point suffers the potential of being surrounded by $N-1$ other data points. The benefit this provides in fitting the model is thus extremely limited; perhaps even worse due to overfitting. A simple fix would be to simulate the model after 1 iteration, and select the next point from here. By doing this $N-1$ times, a better solution may be found, although this may prove to be computationally expensive.
 
 \subsection{BatchBALD}
-\textcite{BatchBALD} propose an algorithm named BatchBALD (Batch Bayesian Active Learning by Disagreement). Demonstrating for sample size of 10 an improvement compared to random sampling in optical character recognition. In doing so, they use complex Bayesian Neural Networks and apply the problem to categorical data.
+\textcite{BatchBALD} propose an algorithm named BatchBALD (Batch Bayesian Active Learning by Disagreement). Demonstrating for sample size of 10 an improvement compared to random sampling in optical character recognition. In doing so, they use complex Bayesian Neural Networks and apply the problem to categorical data. They also note it does not work well in the event of noisy data: a common feature of laboratory based labelling.
 
 \section{Drug Data for Machine Learning}
 There are numerous data categories that can be used to represent a chemical in a suitable form for machine learning. Indeed, the field of chemoinformatics is dedicated to the pursuit of describing chemicals for computational models. Each of these methods have various strengths and weaknesses. Some are directly based upon the chemical structure whereas others are based upon physical properties. These can be combined to produce models with high predictive capabilities.
@@ -192,7 +192,7 @@ A selection of physical properties from chemicals are known, from melting points
 
 Several of these data can be predicted through theoretical models, although the difficulty increases for larger molecules. For example, models exist for density predictions, but predicting the $\mathrm{LD_{50}}$ of a drug is  far more challenging task. Indeed, even with animal testing, this property is deemed difficult to truly assess.
 
-Within drug discovery, physical and biological properties are usually the sought after labels. An example of this is supplied by \textcite{CHEMBL} with a custom property named pChEMBL, as defined by (\ref{eq:pChEMBL}) where "|" is synonymous with "or". Values are expected to be between 2 and 12, although these are not limited. Indeed, values even be negative, although this is rare and unlikely.
+Within drug discovery, physical and biological properties are usually the sought after labels. An example of this is supplied by \textcite{CHEMBL} with a custom property named pChEMBL, as defined by (\ref{eq:pChEMBL}) where "|" is synonymous with "or". This provides a measure for a drug against a specific molecular structure, such as proteins. Values are expected to be between 2 and 12, although these are not limited. Indeed, values even be negative, although this is rare and unlikely. The larger the value, the greater the chemical interaction.
 
 \begin{equation}
     \label{eq:pChEMBL}
