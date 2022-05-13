@@ -342,10 +342,10 @@ def post_main(dataset, alpha=[], alg="dumb"):
     models = {
         "BayesianRidge": BR(),
         "KNN": KNN(),
-        "RandomForrest": RFR(random_state=1),
+        # "RandomForrest": RFR(random_state=1),
         "SGD": SGD(loss="huber", random_state=1),
-        "SVM": SVR(),
-        "ABR": ABR(random_state=1),
+        # "SVM": SVR(),
+        # "ABR": ABR(random_state=1),
     }
 
     algorithms = {
@@ -377,7 +377,7 @@ def post_main(dataset, alpha=[], alg="dumb"):
         model,
         algorithm,
         iterations=6,
-        sample_size=150,
+        sample_size=100,
         score=score,
         alpha=alpha,
         lims=[ulim, llim],
