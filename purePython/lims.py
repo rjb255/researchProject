@@ -38,7 +38,7 @@ def main(dataset):
     #     "ABR": ABR(random_state=1),
     # }
 
-        models = {
+    models = {
         "BayesianRidge": BR(),
         "KNN": KNN(),
         # "RandomForrest": RFR(random_state=1),
@@ -47,7 +47,7 @@ def main(dataset):
         # "ABR": ABR(random_state=1),
         "NN": NN(warm_start=True, random_state=1),
     }
-    
+
     m = Models(list(models.values()))
     data: pd.DataFrame = data.sample(frac=1, random_state=1)
     X_known, Y_known, X_unknown, Y_unknown, X_test, Y_test = split(data, 5, frac=1)
