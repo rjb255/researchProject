@@ -17,7 +17,7 @@ Z = f(X, Y)
 
 plt.contour(X, Y, Z)
 
-rand = np.random.choice(sx * sy, size=200, replace=False)
+rand = np.random.choice(sx * sy, size=200, replace=False, random_state=1)
 _y_p = (rand % sx).astype(int)
 _x_p = ((rand - _y_p) / sx).astype(int)
 

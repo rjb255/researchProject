@@ -42,7 +42,7 @@ Likewise, the Greedy algorithm was tested, with results presented in Figure~\ref
   \end{center}
 \end{figure}
 
-\subsection{Region of Disagreement}
+\subsection[Region of Disagreement]{RoD}
 The final non-parametic algorithm to be tested was RoD. A final score of ${0.211\pm{}0.022}$, leading to a middling position between the other two parametric algorithms. The improvement in each iteration is shown in Figure~\ref{fig:RODTestSet}.
 
 \begin{figure}[H]
@@ -59,16 +59,16 @@ Parametric algorithms require a minimisation procedure on the training set. This
 \subsection{Clusters}
 The first set of algorithms tested were the clusters. Each of these outperformed all three of the other algorithms, with Cluster I, Cluster II, and Cluster III giving scores of ${0.155\pm{}0.020}$, ${0.145\pm{}0.009}$, and respectively ${0.143\pm{}0.016}$. Due to the results from Cluster III, this is the one that will be used within the Holy Trinity. A variety of optimal ${c}$ were found when comparing to Algorithm~\ref{alg:cluster1}. An additional cluster size of 45, 40, and 60 were found to be optimal for Cluster I, II, and III respectively.
 
-\begin{figure}[H]
-  \begin{center}
-    \includegraphics{cluster.pdf}
-  \end{center}
-\end{figure}
-\begin{figure}[H]
-  \begin{center}
-    \includegraphics{clusterII.pdf}
-  \end{center}
-\end{figure}
+% \begin{figure}[H]
+%   \begin{center}
+%     \includegraphics{cluster.pdf}
+%   \end{center}
+% \end{figure}
+% \begin{figure}[H]
+%   \begin{center}
+%     \includegraphics{clusterII.pdf}
+%   \end{center}
+% \end{figure}
 \begin{figure}[H]
   \begin{center}
     \includegraphics{clusterIII.pdf}
@@ -77,7 +77,7 @@ The first set of algorithms tested were the clusters. Each of these outperformed
   \end{center}
 \end{figure}
 
-\subsection{Region of Disagreement with Greed}
+\subsection[Region of Disagreement with Greed]{RoDG}
 When testing the RoDG sampling algorithm, it was found that despite the weighting towards higher value targets in scoring, no significant improvement was seen over RoD. The minimisation procedure returned ${\alpha{}=0.06}$, with $\alpha$ defined in \ref{eq:rodAndGreed}. However, the tolerance at small $\alpha$, as shown in Figure~\ref{fig:rogreed}A. This method gave a final a score of ${0.206\pm{}0.011}$, a slight improvement over simply using RoD.
 
 \begin{figure}[H]
@@ -88,7 +88,7 @@ When testing the RoDG sampling algorithm, it was found that despite the weightin
   \end{center}
 \end{figure}
 
-\subsection{RoDGer}
+\subsection[Region of Disagreement with Greed and Clusters]{RoDGer}
 By sampling multiple values for $\alpha$, a final set of $\alpha=[60, 0.47, 0.22]$ was reached where $[\alpha{}_0, \alpha{}_1, \alpha{}_2]$ correspond to the constants used in Algorithm~\ref{alg:cluster1}, \ref{eq:rodAndGreed}, and \ref{eq:holyTrinity} respectively. When validated against the testing datasets, a final score of $0.115\pm{}0.013$ was found; the best result.
 
 \begin{figure}[H]

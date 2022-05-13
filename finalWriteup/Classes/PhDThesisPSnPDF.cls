@@ -140,8 +140,8 @@
 \DeclareOption{PageStyleII}{\PHD@pageStyleIItrue}
 
 % ***************************** Custom Margins  ********************************
-\newif\ifsetCustomMargin\setCustomMarginfalse % Set Custom Margin
-\newif\ifsetMargin\setMarginfalse % Set Custom Margin
+\newif\ifsetCustomMargin\setCustomMargintrue % Set Custom Margin
+\newif\ifsetMargin\setMargintrue % Set Custom Margin
 \DeclareOption{custommargin}{\setCustomMargintrue}
 
 % **************************** Separate Abstract  ******************************
@@ -200,7 +200,7 @@ footnotes.}
 \DeclareOption{twoside}{\PassOptionsToClass{\CurrentOption}{book}}%
 
 % ****************************** Draft Option **********************************
-\newif\ifsetDraft\setDrafttrue
+\newif\ifsetDraft\setDraftfalse
 \newif\ifsetDraftClassic\setDraftClassicfalse
 % Draft Mode
 \DeclareOption{draftclassic}{\PassOptionsToClass{draft}{book}
@@ -1051,8 +1051,8 @@ wish to left align your text}
 % Add nomenclature to contents and print out nomenclature
 \newcommand{\printnomencl}[1][]{
 \ifthenelse{\equal {#1}{}}
-{\printnomenclature}
-{\printnomenclature[#1]}
+% {\printnomenclature}
+% {\printnomenclature[#1]}
 %\addcontentsline{toc}{chapter}{\nomname}
 }
 

@@ -11,7 +11,7 @@
 % **************************** Nomenclature **********************************
 \nomenclature[c-1-x]{$x$}{Data points where $x=\{x_0, x_1, ..., x_{N-1}\}$}
 \nomenclature[c-1-y]{$y$}{Labels for the dataset where $y=\{y_0, y_1, ..., y_{N-1}\}$}
-\nomenclature[c-1-N]{$N$}{Number of features/dimensions of $x$}
+\nomenclature[c-1-N]{$N$}{Number of features (dimensions) of $x$}
 
 \nomenclature[c-1-s]{$s_g$}{Sample standard deviation of the predictions}
 
@@ -26,7 +26,7 @@
 
 %*****************************************************************************
 
-In order to assist the understanding of the methodologies used by others within the field of active learning, a toy dataset has been created. It is based upon~\ref{eq:phantom} and has been shown in Figure~\ref{eq:phantom}. The $y$ values used within the algorithms have been combined with errors, $\epsilon{}\sim{}\mathcal{N}(0, 0.01)$.
+In order to assist the understanding of the methodologies used by others within the field of active learning, a toy dataset has been created. It is based upon~(\ref{eq:phantom}) and has been shown in Figure~\ref{fig:phantom}. The $y$ values used within the algorithms have been combined with errors, $\epsilon{}\sim{}\mathcal{N}(0, 0.01)$.
 
 \begin{equation}
   y = \sin{(x_0)}^{10} + \cos{(10 + x_0 x_1)}\cos{(x_0)}
@@ -70,7 +70,7 @@ Interestingly, Figure \ref{fig:rodPhantom}B shows how the mean squared error for
   x_\mathrm{next}=\argmax_X{\left[s_{g(X)}\right]}
 \end{equation}
 
-As addressed by \textcite{Set09}, this can be extended to any probabilistic model through \ref{eq:x_next1}. \textcite{Set09} also notes the use of information theory for probabilistic models(\ref{eq:info_uncertainty}), where $y^{*}=\argmax_y{}P(y|x;\theta{})$ is the most likely $y$ for $x$. This derives from the principle that the greatest entropy requires the most information to encode, and thus the least certain. However, \textcite{Set09} fails to address non-probabilistic models in this instance, instead converting such models into probabilistic ones.
+As addressed by \textcite{Set09}, this can be extended to any probabilistic model through (\ref{eq:x_next1}). \textcite{Set09} also notes the use of information theory for probabilistic models(\ref{eq:info_uncertainty}), where $y^{*}=\argmax_y{}P(y|x;\theta{})$ is the most likely $y$ for $x$. This derives from the principle that the greatest entropy requires the most information to encode, and thus the least certain. However, \textcite{Set09} fails to address non-probabilistic models in this instance, instead converting such models into probabilistic ones.
 
 
 \begin{equation}
@@ -81,7 +81,7 @@ As addressed by \textcite{Set09}, this can be extended to any probabilistic mode
 In order to adapt non-probabilistic models into probabilistic ones, composite models may be used. These are an amalgamation of other models where the standard deviation of the individual models can be taken as the degree of certainty for a given point. This is commonly referred to minimising the region of disagreement, referring the spaces of discord within the hypothesis space. By minimising the region of disagreement between various models, a more coherent hypothesis space is sought leading to a more accurate model. Indeed, this was the method used in Figure \ref{fig:rodPhantom}. Mathematically, a set of $n$ models ${M = \{m_0,\ldots{}, m_{n-1}\}}$, with each model offering a prediction of $\hat{m_i}$, ${\hat{M}=\frac{1}{n}\sum{\hat{m_i}}}$, and the sample standard deviation of $\hat{m}$ giving the uncertainty.
 
 
-\textcite{Set09} suggests  third way of interpreting uncertinty. By taking the approach from information theory, \ref{eq:infoUncert} is settled upon. This directly states gives the point of the highest entropy, suggesting by knowing the point provides the largest information gain. Notably however, this is difficult to implement with most models, as a probability distribution is required. This could be made simpler by approximating to a normal distribution.
+\textcite{Set09} suggests  third way of interpreting uncertinty. By taking the approach from information theory, (\ref{eq:infoUncert}) is settled upon. This directly states gives the point of the highest entropy, suggesting by knowing the point provides the largest information gain. Notably however, this is difficult to implement with most models, as a probability distribution is required. This could be made simpler by approximating to a normal distribution.
 
 \begin{equation}
   \label{eq:infoUncert}
@@ -146,7 +146,7 @@ These methods attempt to minimise a future attribute of the model. This works by
 \subsubsection{Expected Model Change}
 As the name implies, this method chooses points which are likely to have the largest impact on the final model. By instigating each potential point, the impact on the eventual model can be found. However, this requires a method for quantifying the model change.
 
-\textcite{Set08,Set09} investigate models which can be trained "online": i.e. models which can use the previous iteration to reduce the time taken for convergence. They present a method called "Expected Gradient Length" (EGL) which has a couple of prerequisites: \textbf{1)} A probabilistic model is used \textbf{2)} Linear gradient based optimisation is used \textbf{3)} The model can be improved from previous iterations. Given these prerequisites, the problem becomes less computationally inexpensive given a small dataset or extensive parallelisation, and scales as $\mathcal{O}(n)$. However, it does have the distinct drawback of requiring close control of the data models used. Here, the length of the training gradient (the gradient used in re-fitting the parameters with gradient based optimisation) can be used as a measure of model change. In the case of a small model change, as is expected, the length of the training gradient can be written as ${\left\|\nabla{}l(\langle{}x, y_i\rangle{};\theta{})\right\|}$. Combining this with the probability distribution of $y$, the next sample to undergo labelling is given by \ref{eq:EGL}.
+\textcite{Set08,Set09} investigate models which can be trained "online": i.e. models which can use the previous iteration to reduce the time taken for convergence. They present a method called "Expected Gradient Length" (EGL) which has a couple of prerequisites: \textbf{1)} A probabilistic model is used \textbf{2)} Linear gradient based optimisation is used \textbf{3)} The model can be improved from previous iterations. Given these prerequisites, the problem becomes less computationally inexpensive given a small dataset or extensive parallelisation, and scales as $\mathcal{O}(n)$. However, it does have the distinct drawback of requiring close control of the data models used. Here, the length of the training gradient (the gradient used in re-fitting the parameters with gradient based optimisation) can be used as a measure of model change. In the case of a small model change, as is expected, the length of the training gradient can be written as ${\left\|\nabla{}l(\langle{}x, y_i\rangle{};\theta{})\right\|}$. Combining this with the probability distribution of $y$, the next sample to undergo labelling is given by (\ref{eq:EGL}).
 
 \begin{equation}
   \label{eq:EGL}
@@ -159,17 +159,17 @@ Little literature exists with respect to batch active learning. Naive implementa
 
 \begin{figure}[H]
   \begin{center}
-    \includegraphics{batchrodPhantom.pdf}
+    \includegraphics{broadrodPhantom.pdf}
     \caption[Batch Uncertainty Sampling]{The outcome of the investigating the areas of using uncertainty sampling. An initial set of 5 random points was provided, and 5 further iterations were then carried out of sample size 10. A) Demonstrates the final set of points tested by the algorithm and B) shows the change in the mean squared error for the algorithm after each iteration.}
   \end{center}
 \end{figure}
 
-\begin{figure}[H]
-  \begin{center}
-    \includegraphics{batchbroadPhantom.pdf}
-    \caption[Batch Broad-Base Sampling]{The outcome of the investigating the areas of using broad-base sampling. An initial set of 5 random points was provided, and 5 further iterations were then carried out of sample size 10. A) Demonstrates the final set of points tested by the algorithm and B) shows the change in the mean squared error for the algorithm after each iteration.}
-  \end{center}
-\end{figure}
+% \begin{figure}[H]
+%   \begin{center}
+%     \includegraphics{batchbroadPhantom.pdf}
+%     \caption[Batch Broad-Base Sampling]{The outcome of the investigating the areas of using broad-base sampling. An initial set of 5 random points was provided, and 5 further iterations were then carried out of sample size 10. A) Demonstrates the final set of points tested by the algorithm and B) shows the change in the mean squared error for the algorithm after each iteration.}
+%   \end{center}
+% \end{figure}
 
 \begin{figure}[H]
   \begin{center}
@@ -192,7 +192,7 @@ A selection of physical properties from chemicals are known, from melting points
 
 Several of these data can be predicted through theoretical models, although the difficulty increases for larger molecules. For example, models exist for density predictions, but predicting the $\mathrm{LD_{50}}$ of a drug is  far more challenging task. Indeed, even with animal testing, this property is deemed difficult to truly assess.
 
-Within drug discovery, physical and biological properties are usually the sought after labels. An example of this is supplied by \textcite{CHEMBL} with a custom property named pChEMBL, as defined by \ref{eq:pChEMBL} where  "|" is synonymous with "or". Values are expected to be between 2 and 12, although these are not limited. Indeed, values even be negative, although this is rare and unlikely.
+Within drug discovery, physical and biological properties are usually the sought after labels. An example of this is supplied by \textcite{CHEMBL} with a custom property named pChEMBL, as defined by (\ref{eq:pChEMBL}) where  "|" is synonymous with "or". Values are expected to be between 2 and 12, although these are not limited. Indeed, values even be negative, although this is rare and unlikely.
 
 \begin{equation}
   \label{eq:pChEMBL}
