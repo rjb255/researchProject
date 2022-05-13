@@ -19,7 +19,7 @@ Both RoD and greedy sampling are suspected to suffer from clusterisation whereby
 \begin{figure}[h]
     \begin{center}
         \includegraphics{nonParamComp1.pdf}
-        \caption[Non-parametric comparison]{Comparison of different non-parametric algorithms with standard deviations represented as error bars.}
+        \caption[Non-Parametric Comparison]{Comparison of different non-parametric algorithms with interpolation lines to guide the eye.}
         \label{fig:nPComp}
     \end{center}
 \end{figure}
@@ -32,7 +32,7 @@ Different classes of parametric algorithms were tested. The first of these is a 
 \begin{figure}[h]
     \begin{center}
         \includegraphics{paramComp1.pdf}
-        \caption[Non-parametric comparison]{Comparison of different parametric algorithms with standard deviations represented as error bars.}
+        \caption[Parametric Comparison]{Comparison of different parametric algorithms with interpolation lines to guide the eye.}
         \label{fig:pComp}
     \end{center}
 \end{figure}
@@ -50,7 +50,7 @@ Most surprising are the parameters found for the RoDGer, shown in Figure~\ref{fi
 \begin{figure}[H]
     \begin{center}
         \includegraphics{hgParams.pdf}
-        \caption[Non-parametric comparison]{Comparison of different parametric algorithms with standard deviations represented as error bars.}
+        \caption[Non-parametric comparison]{Training results for determining parameters for the RoDGer algorithm. A) shows the deviation of $\alpha_0$, B) shows the deviation of $\alpha_1$, and C) shows the deviation of $\alpha_2$. Curves have been added to demonstrate the trends observed.}
         \label{fig:paramHg}
     \end{center}
 \end{figure}
@@ -65,17 +65,17 @@ Monte Carlo is tested compared to RoDGer and RoD, using the already fitted param
 \begin{figure}[H]
     \begin{center}
         \includegraphics{Sensi1.pdf}
-        \caption[Results of prolonged sampling]{Comparison of different parametric algorithms with standard deviations represented as error bars over an extended number of iterations.}
+        \caption[Results of Prolonged Sampling]{Comparison of Monte Carlo, RoD, and RoDGer over 8 iterations.}
         \label{fig:sensi1}
     \end{center}
 \end{figure}
 
-Using sample sizes of 50 and 150 on Monte Carlo and RoDGer supports the power of RoDGer over simply using Monte  Carlo.
+Using sample sizes of 50 and 150 on Monte Carlo and RoDGer supports the power of RoDGer over simply using Monte Carlo.
 
 \begin{figure}[H]
     \begin{center}
         \includegraphics{Sensi2.pdf}
-        \caption[Results of prolonged sampling]{Comparison of different parametric algorithms with standard deviations represented as error bars over an extended number of iterations.}
+        \caption[Results of Different Sample Sizes]{Comparison of Monte Carlo and RoDGer with different sample size. A) shows batches of 50 and B) shows results for batches of 150.}
         \label{fig:sensi2}
     \end{center}
 \end{figure}
@@ -85,7 +85,7 @@ Finally, an investigation into using a reduced set of models is undertaken, usin
 \begin{figure}[H]
     \begin{center}
         \includegraphics{Models.pdf}
-        \caption[Sensitivity to Model Selection]{Comparison of different parametric algorithms with standard deviations represented as error bars over an extended number of iterations.}
+        \caption[Sensitivity to Model Selection]{Comparison of Monte Carlo and RoDGer using different machine learning models.}
         \label{fig:modelSensi}
     \end{center}
 \end{figure}
