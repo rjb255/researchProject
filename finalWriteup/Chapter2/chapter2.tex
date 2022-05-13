@@ -26,7 +26,7 @@
 
 %*****************************************************************************
 
-In order to assit the understanding of the methodologies used by others within the field of active learning, a toy dataset has been created. It is based upon~\ref{eq:phantom} and has been shown in Figure~\ref{eq:phantom}. The $y$ values used within the algorithms have been combined with errors, $\epsilon{}\sim{}\mathcal{N}(0, 0.01)$.
+In order to assist the understanding of the methodologies used by others within the field of active learning, a toy dataset has been created. It is based upon~\ref{eq:phantom} and has been shown in Figure~\ref{eq:phantom}. The $y$ values used within the algorithms have been combined with errors, $\epsilon{}\sim{}\mathcal{N}(0, 0.01)$.
 
 \begin{equation}
   y = \sin{(x_0)}^{10} + \cos{(10 + x_0 x_1)}\cos{(x_0)}
@@ -78,10 +78,10 @@ As addressed by \textcite{Set09}, this can be extended to any probabilistic mode
   {x_\mathrm{next}=\argmax_X{\left[P(y^{*}|x;\theta{})\right]}}
 \end{equation}
 
-In order to adapt non-probabilistic models into probabilistic ones, composite models may be used. These are an amalgamation of other models where the standard deviation of the individual models can be taken as the degree of certainty for a given point. This is commonly referred to minimising the region of disagreement, referring the spaces of discord within the hypothesis space. By minimising the region of disagreement between various models, a more coherent hypothesis space is sought leading to a more accurate model. Indeed, this was the method used in Figure \ref{fig:rodPhantom}. Mathematically, a set of $n$ models ${M = \{m_0,\ldots{}, m_{n-1}\}}$, with each model offering a precition of $\hat{m_i}$, ${\hat{M}=\frac{1}{n}\sum{\hat{m_i}}}$, and the sample standard deviation of $\hat{m}$ giving the uncertainty.
+In order to adapt non-probabilistic models into probabilistic ones, composite models may be used. These are an amalgamation of other models where the standard deviation of the individual models can be taken as the degree of certainty for a given point. This is commonly referred to minimising the region of disagreement, referring the spaces of discord within the hypothesis space. By minimising the region of disagreement between various models, a more coherent hypothesis space is sought leading to a more accurate model. Indeed, this was the method used in Figure \ref{fig:rodPhantom}. Mathematically, a set of $n$ models ${M = \{m_0,\ldots{}, m_{n-1}\}}$, with each model offering a prediction of $\hat{m_i}$, ${\hat{M}=\frac{1}{n}\sum{\hat{m_i}}}$, and the sample standard deviation of $\hat{m}$ giving the uncertainty.
 
 
-\textcite{Set09} suggests  third way of interpreting uncertinty. By taking the approach from information theory, \ref{eq:infoUncert} is settled upon. This directly states gives the point of highest entropy, suggesting by knowing the point provides the largest information gain. Notably however, this is difficult to implement with most models, as a probability distribution is required. This could be made simpler by approximating to a normal distribution.
+\textcite{Set09} suggests  third way of interpreting uncertinty. By taking the approach from information theory, \ref{eq:infoUncert} is settled upon. This directly states gives the point of the highest entropy, suggesting by knowing the point provides the largest information gain. Notably however, this is difficult to implement with most models, as a probability distribution is required. This could be made simpler by approximating to a normal distribution.
 
 \begin{equation}
   \label{eq:infoUncert}
@@ -130,7 +130,7 @@ Conversely, a density weighted model has been suggested, as it escapes the intro
   \end{center}
 \end{figure}
 
-As Figure~\ref{fig:ClusterResults} demonstrates, there are multiple different interpretations of the solution to the problem of clustering. The makers of the Sci-kit learn package also discuss the scalability of each algorithm \cite{SciClus}. In order to prepare a high number of features (beyond the two used within this section for demonstration) and large number of data points, it is required that the algorithm scales accordingly. Further, for an adaptive process, it is more suitable for an algorithm to be adaptive to differing distribution. This limits the suitable algorithms to K-Means, Ward and Birch - columns one, five, and nine of Figure~\ref{fig:ClusterResults} respectively. Results for Birch can be seen in Figure~\ref{fig:clusterPhantom}. This appears do well, although it must be noted that this is likely due to the similarity between Monte Carlo (random) sampling, and clusterisation. I.e. areas distant from previously gathered points face a high chance of sampling.
+As Figure~\ref{fig:ClusterResults} demonstrates, there are multiple different interpretations of the solution to the problem of clustering. The makers of the Scikit learn package also discuss the scalability of each algorithm \cite{SciClus}. In order to prepare a high number of features (beyond the two used within this section for demonstration) and large number of data points, it is required that the algorithm scales accordingly. Further, for an adaptive process, it is more suitable for an algorithm to be adaptive to differing distribution. This limits the suitable algorithms to K-Means, Ward and Birch - columns one, five, and nine of Figure~\ref{fig:ClusterResults} respectively. Results for Birch can be seen in Figure~\ref{fig:clusterPhantom}. This appears do well, although it must be noted that this is likely due to the similarity between Monte Carlo (random) sampling, and clusterisation. I.e. areas distant from previously gathered points face a high chance of sampling.
 
 \begin{figure}[H]
   \begin{center}
@@ -146,7 +146,7 @@ These methods attempt to minimise a future attribute of the model. This works by
 \subsubsection{Expected Model Change}
 As the name implies, this method chooses points which are likely to have the largest impact on the final model. By instigating each potential point, the impact on the eventual model can be found. However, this requires a method for quantifying the model change.
 
-\textcite{Set08,Set09} investigate models which can be trained "online": i.e. models which can use the previous iteration to reduce the time taken for convergence. They present a method called "Expected Gradient Length" (EGL) which has a couple of prerequisites: \textbf{1)} A probabilistic model is used \textbf{2)} Linear gradient based optimisation is used \textbf{3)} The model can be improved from previous iterations. Given these prerequisites, the problem becomes less computationally inexpensive given a small dataset or extensive parallelisation, and scales as $\mathcal{O}(n)$. However, it does have the distinct drawback of requiring close control of the data models used. Here, the length of the training gradient (the gradient used in re-fitting the parameters with gradient based optimisation) can be used as a measure of model change. In the case of a small model change, as is expected, the lenth of the training gradient can be written as ${\left\|\nabla{}l(\langle{}x, y_i\rangle{};\theta{})\right\|}$. Combining this with the probability distribution of $y$, the next sample to undergo labelling is given by \ref{eq:EGL}.
+\textcite{Set08,Set09} investigate models which can be trained "online": i.e. models which can use the previous iteration to reduce the time taken for convergence. They present a method called "Expected Gradient Length" (EGL) which has a couple of prerequisites: \textbf{1)} A probabilistic model is used \textbf{2)} Linear gradient based optimisation is used \textbf{3)} The model can be improved from previous iterations. Given these prerequisites, the problem becomes less computationally inexpensive given a small dataset or extensive parallelisation, and scales as $\mathcal{O}(n)$. However, it does have the distinct drawback of requiring close control of the data models used. Here, the length of the training gradient (the gradient used in re-fitting the parameters with gradient based optimisation) can be used as a measure of model change. In the case of a small model change, as is expected, the length of the training gradient can be written as ${\left\|\nabla{}l(\langle{}x, y_i\rangle{};\theta{})\right\|}$. Combining this with the probability distribution of $y$, the next sample to undergo labelling is given by \ref{eq:EGL}.
 
 \begin{equation}
   \label{eq:EGL}
@@ -155,7 +155,7 @@ As the name implies, this method chooses points which are likely to have the lar
 
 
 \section{Batch Active Learning}
-Little literature exists with respect to batch active learning. Naive implimentation exist whereby the methods explored earlier present a stack of data points to be chosen, and the top $N$ are used. However, this method does not take into account the equivalence of the data points. This can be seen by the formation of clusters within the broad and uncertainty sampling methods, although it is not present within the clusterisation algorithm.
+Little literature exists with respect to batch active learning. Naive implementation exist whereby the methods explored earlier present a stack of data points to be chosen, and the top $N$ are used. However, this method does not take into account the equivalence of the data points. This can be seen by the formation of clusters within the broad and uncertainty sampling methods, although it is not present within the clusterisation algorithm.
 
 \begin{figure}[H]
   \begin{center}
@@ -179,10 +179,10 @@ Little literature exists with respect to batch active learning. Naive implimenta
 \end{figure}
 
 
-It stands to reason that the area which has the highest uncertainty will see this for the data points nearest neighbours. Thus, this singular data point suffers the potential of being surrounded by $N-1$ other data points. The benefit this provides in fitting the model is thus extremely limited, and only slightly greater than if one data point had been chosen. A simple fix would be to simulate the model after 1 iteration, and select the next point from here. By doing this $N-1$ times, a better solution may be found, although this may prove to be computationally very expensive.
+It stands to reason that the area which has the highest uncertainty will see this for the data points nearest neighbours. Thus, this singular data point suffers the potential of being surrounded by $N-1$ other data points. The benefit this provides in fitting the model is thus extremely limited, and only slightly greater than if one data point had been chosen. A simple fix would be to simulate the model after 1 iteration, and select the next point from here. By doing this $N-1$ times, a better solution may be found, although this may prove to be computationally expensive.
 
 \subsection{BatchBALD}
-\textcite{BatchBALD}
+\textcite{BatchBALD} propose an algorithm named BatchBALD (Batch Bayesian Active Learning by Disagreement). Demonstrating for sample size of 10 an improvement compared to random sampling in optical character recognition. In doing so, they use complex Bayesian Neural Networks and apply the problem to categorical data.
 
 \section{Drug Data for Machine Learning}
 There are numerous data categories that can be used to represent a chemical in a suitable form for machine learning. Indeed, the field of chemoinformatics is dedicated to the pursuit of describing chemicals for computational models. Each of these methods have various strengths and weaknesses. Some are directly based upon the chemical structure whereas others are based upon physical properties. These can be combined to produce models with high predictive capabilities.

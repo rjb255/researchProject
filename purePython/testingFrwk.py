@@ -106,7 +106,7 @@ def main(*, output=0, alpha=[]):
         # "clusterIII"  # ?: clusteriseIII,
         "holyGrail"  # ?: holy grail,
     )
-    minimise = 1
+    minimise = 0
     ppprint = partial(custom_print, output)
     ppprint(output)
     data_location = os.path.join(proj_path, "data", "big", "qsar_with_lims")
@@ -134,7 +134,8 @@ def main(*, output=0, alpha=[]):
     # todo - Minimise alpha
     # a0: list = [0.85, 0, 0]
     # a_boundary = [(0.5, 1), (-4, 4), (-4, 4)]
-    a0: list = [0]
+    a0: list = [60, 0.47, 0.22]
+    alpha = list(a0)
     a_boundary = [(0, 150)]
     if a0:
         if minimise == 1:
@@ -190,7 +191,7 @@ def main(*, output=0, alpha=[]):
     # plt.ion()
     # plt.plot([1, 101, 201, 301, 401], np.transpose(scores))
     # plt.show(block=True)
-    rosette = f"data/4/{alg}1.csv"
+    rosette = f"data/5/{alg}5.csv"
     print(rosette)
     results.to_csv(rosette)
 

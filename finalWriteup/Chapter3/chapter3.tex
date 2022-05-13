@@ -28,31 +28,31 @@ Morgan fingerprints were chosen due to the ease in which it is to calculate the 
 \section{Computational Methodology}
 The methodology presents a novel means of assessing different parametrised batch active learning methods on existing data sets, allowing for a robust answer into the use of active learning in drug rediscovery. Results can thus be given with a given belief. This approach has taken principles commonly used in machine learning and applied it to more traditional algorithmic methods. Python was used as the scripting language, with the codebase provided at \url{https://github.com/rjb255/researchProject/tree/master/purePython}.
 
-Firstly, a collection of pre-existing data sets, $X$, are used. $X$ is then split into two sub sets: $X_{\mathrm{train}}$ and $X_\mathrm{test}$. Similarly to classical machine learning methods, the former of these subsets is used in fitting the parameters of the equation, and the latter is used to provide a result without the risk of data leakage into the training set. Parallelisation is used to efficiently train the algorithms, allowing the time for training to be $\sim{}\mathcal{O}(c)$ provided a large number of processors. Datasets used have at least 1000 entries resulting in 164 datasets used for training, and a further 42 used for testing.
+Firstly, a collection of pre-existing data sets, $X$, are used. $X$ is then split into two sub sets: $X_{\mathrm{train}}$ and $X_\mathrm{test}$. Similarly to classical machine learning methods, the former of these subsets is used in fitting the parameters of the equation, and the latter is used to provide a result without the risk of data leakage into the training set. Parallelisation is used to efficiently train the algorithms, allowing the time for training to be $\sim{}\mathcal{O}(c)$ provided an unrestricted number of processors. Datasets used have at least 1000 entries resulting in 164 datasets used for training, and a further 42 used for testing.
 
 Examining the smaller details, each algorithm is provided with the sets $x_\mathrm{known}$, $y_\mathrm{known}$, and $x_\mathrm{unknown}$. Various algorithms are given these sets and allowed to generate a subset of $x_\mathrm{unknown}$ to be added into $x_\mathrm{known}$ alongside corresponding $y_\mathrm{known}$. This can then repeat until a predefined stopping point is reached. Scores are reported using a weighted mean squared error [] based upon $y_\mathrm{predict}$ for all $x$. This is similar to a standard machine learning methodology with a couple of differences. Firstly, no distinction is made between the training and testing set within a dataset contrary to standard practice. This is due to two reasons. Firstly, the datasets are not large enough for an accurate representation of the data within the testing set, and secondly, the scoring to each dataset is not used within the machine learning algorithms to fit parameters as is usually the case. All algorithms used rely upon a simple custom composite model to allow for flexibility and consistency.
 
 
 \subsection{Model}
-The machine learning model is the only custom class used. Here, a similar structure is used when compared with sci-kit's machine learning \cite{scikit}, as is demonstrated in Table~\ref{tab:Model}. To manage this, it has four methods:\lstinline{__init__},\lstinline{fit},\lstinline{predict}, and\lstinline{predict_error}. The last of these is not seen in all sci-kit's machine learning models and is usually reserved for those which can report a certainty of prediction. Here, this was achieved by taking a standard deviation of the models.
+The machine learning model is the only custom class used. Here, a similar structure is used when compared with Scikit's machine learning \cite{scikit}, as is demonstrated in Table~\ref{tab:Model}. To manage this, it has four methods:\lstinline{__init__},\lstinline{fit},\lstinline{predict}, and\lstinline{predict_error}. The last of these is not seen in all Scikit's machine learning models and is usually reserved for those which can report a certainty of prediction. Here, this was achieved by taking a standard deviation of the models.
 
 \begin{table}[H]
-    \centering
-    \begin{tabular}{@{}ccc@{}}
-        \toprule
-                                               & Name                         & Description                                                                                      \\ \midrule
-        Attributes                             & Models: List                 & List of models to be used in composite                                                           \\ \midrule
-        \multirow{3}{*}{Methods}               & fit(X: int[][], Y: double[]) & Fits the models in Models                                                                        \\
-                                               &
-        predict(X: int[][]): double[]          &
-        \begin{tabular}[c]{@{}c@{}}Takes a set of labels and returns mean\\ predicted label from all the models.\end{tabular}                                                    \\
-                                               &
-        predict\_error(X: int[][]): double[][] &
-        \begin{tabular}[c]{@{}c@{}}Takes a set of labels and returns the mean\\ predicted label from all the models and\\ standard deviations of model predictions.\end{tabular} \\
-        \bottomrule
-    \end{tabular}
-    \caption{Schema for the Model Class.}
-    \label{tab:Model}
+  \centering
+  \begin{tabular}{@{}ccc@{}}
+    \toprule
+                                           & Name                         & Description                                                                                      \\ \midrule
+    Attributes                             & Models: List                 & List of models to be used in composite                                                           \\ \midrule
+    \multirow{3}{*}{Methods}               & fit(X: int[][], Y: double[]) & Fits the models in Models                                                                        \\
+                                           &
+    predict(X: int[][]): double[]          &
+    \begin{tabular}[c]{@{}c@{}}Takes a set of labels and returns mean\\ predicted label from all the models.\end{tabular}                                                    \\
+                                           &
+    predict\_error(X: int[][]): double[][] &
+    \begin{tabular}[c]{@{}c@{}}Takes a set of labels and returns the mean\\ predicted label from all the models and\\ standard deviations of model predictions.\end{tabular} \\
+    \bottomrule
+  \end{tabular}
+  \caption{Schema for the Model Class.}
+  \label{tab:Model}
 \end{table}
 
 The models used for the composite model were Bayesian-ridge, k-nearest neighbours, random forest regressor, stochastic gradient descent regressor with Huber-loss, epsilon-support vector regression, and AdaBoost regressor \cite{scikit}. This was kept consistent during testing, allowing for direct comparison of the algorithms without influence from model selection.
@@ -61,8 +61,8 @@ The models used for the composite model were Bayesian-ridge, k-nearest neighbour
 This method implements a weighted mean squared error ($\mathrm{wmse}$) given in \ref{eq:wmse} where $w$ is a normalization of the true label such that $\sum{w_i}=1$ and ${0\leq{}w_i\leq{}1}$. Further modification to this ensures the base case with five data points provides a $\mathrm{score}=1$ and the score if the entire dataset is modelled provides a $\mathrm{score}=0$.
 
 \begin{equation}
-    \mathrm{wmse}=\frac{1}{n}\sum_{i=0}^{n-1}{w_i(y_i-\bar{y})^2}
-    \label{eq:wmse}
+  \mathrm{wmse}=\frac{1}{n}\sum_{i=0}^{n-1}{w_i(y_i-\bar{y})^2}
+  \label{eq:wmse}
 \end{equation}
 
 This achieves several goals. Firstly, it targets the higher values of pChEMBL, as these are the most beneficial for drug development. Secondly, it reduces the natural spread in results for datasets, preventing those poorly capable of being predicted the model from displacing results from the algorithm. Finally, it allows the results to be given as a fractional improvement instead. It allows a target of "85\%" prediction to be given for stopping criteria if desired.
@@ -74,93 +74,93 @@ The algorithms tested are all provided with $x_\mathrm{known}$, $x_\mathrm{known
 The Monte Carlo algorithm employs random sampling. This represents the least computationally expensive approach, and is thus used as a baseline in comparing other algorithms. Since the datasets are shuffled prior to being used, the algorithm is extremely simple, as demonstrated in Algorithm~\ref{alg:MC}.
 
 \begin{algorithm}[H]
-    \KwData{$X_\mathrm{unknown}$}
-    \KwResult{An array of priority-scores for sampling}
-    \Return{$\mathrm{ones\_like}(X_\mathrm{unknown})$}
-    \caption{Monte Carlo Sampling}
-    \label{alg:MC}\SetAlgoLined
+  \KwData{$X_\mathrm{unknown}$}
+  \KwResult{An array of priority-scores for sampling}
+  \Return{$\mathrm{ones\_like}(X_\mathrm{unknown})$}
+  \caption{Monte Carlo Sampling}
+  \label{alg:MC}\SetAlgoLined
 \end{algorithm}
 
-\subsubsection{Greedy}
+\subsubsection{Greed}
 Since the largest activity is sought, a methodology proposed is to simply seek the predicted highest label. Here, the predict() method (see Table~\ref{tab:Model}) was used to return a prediction and a standard deviation. The indices of $x_\mathrm{unknown}$ were then returned, ordered descending with respect to the afore mentioned standard deviations. The algorithm used is given in Algorithm~\ref{alg:greedy}.
 
 \begin{algorithm}[H]
-    \KwData{$X_\mathrm{known}$, $Y_\mathrm{known}$, $X_\mathrm{unknown}$, Model}
-    \KwResult{An array of priority-scores for sampling}
-    Model.fit($X_\mathrm{known}$, $Y_\mathrm{known}$)\;
-    prediction = Model.predict\_error($X_\mathrm{unknown}$)\;
-    \Return{$-\mathrm{prediction}$}
-    \caption{Greedy Sampling Selection}
-    \label{alg:greedy}\SetAlgoLined
+  \KwData{$X_\mathrm{known}$, $Y_\mathrm{known}$, $X_\mathrm{unknown}$, Model}
+  \KwResult{An array of priority-scores for sampling}
+  Model.fit($X_\mathrm{known}$, $Y_\mathrm{known}$)\;
+  prediction = Model.predict\_error($X_\mathrm{unknown}$)\;
+  \Return{$-\mathrm{prediction}$}
+  \caption{Greed Sampling Selection}
+  \label{alg:greedy}\SetAlgoLined
 \end{algorithm}
 
-\subsubsection{Region of Disagreement (RoD)}
-Similarly to the greedy algorithm, this is a very simple algorithm. Here, the predict\_error() method (see Table~\ref{tab:Model}) is used to return a prediction and a standard deviation. The prediction is ignored, and instead the standard deviation is returned, multiplied by $-1$ to ensure the largest uncertainty has the lowest "score". This is shown with Algorithm~\ref{alg:rod}.
+\subsubsection{Region of Disagreement}
+Similarly to the Greed algorithm, \textbf{R}egion of \textbf{D}isagreement (ROD) is a very simple algorithm. Here, the predict\_error() method (see Table~\ref{tab:Model}) is used to return a prediction and a standard deviation. The prediction is ignored, and instead the standard deviation is returned, multiplied by $-1$ to ensure the largest uncertainty has the lowest "score". This is shown with Algorithm~\ref{alg:rod}.
 
 \begin{algorithm}[H]
-    \KwData{$X_\mathrm{known}$, $Y_\mathrm{known}$, $X_\mathrm{unknown}$, Model}
-    \KwResult{$X$ ordered according to priority for sampling}
-    Model.fit($X_\mathrm{known}$, $Y_\mathrm{known}$)\;
-    \_, error = Model.predict\_error($X_\mathrm{unknown}$)\;
-    \Return{$-\mathrm{error}$}
-    \caption{RoD Sampling Selection}
-    \label{alg:rod}\SetAlgoLined
+  \KwData{$X_\mathrm{known}$, $Y_\mathrm{known}$, $X_\mathrm{unknown}$, Model}
+  \KwResult{$X$ ordered according to priority for sampling}
+  Model.fit($X_\mathrm{known}$, $Y_\mathrm{known}$)\;
+  \_, error = Model.predict\_error($X_\mathrm{unknown}$)\;
+  \Return{$-\mathrm{error}$}
+  \caption{RoD Sampling Selection}
+  \label{alg:rod}\SetAlgoLined
 \end{algorithm}
 
 \subsubsection{Hotspot Clusters}
-Three clustering algorithms were trialed, all based upon the ideology presented in Section~\ref{sec:litRevDH}. The function shared by all three algorithms is shown in Algorithm~\ref{alg:cluster1}. Here, $c$ is the number of clusters sought, and is a parameter that requires fitting. Bounds can be placed upon this. The lower limit can be set as the number of known data points, and the upper as the total number of data points in the data set, although it is hypothesised that beyond the sum of the known points and the samples sought would make little, to no difference. To test this hypothesis, the upper limit will be set at $\mathrm{len}(X_\mathrm{unknown})+1.5n$. The combined limits have been shown in \ref{eq:limsClust1}.
+Three clustering algorithms were trialled, all based upon the ideology presented in Section~\ref{sec:litRevDH}. The function shared by all three algorithms is shown in Algorithm~\ref{alg:cluster1}. Here, $c$ is the number of clusters sought, and is a parameter that requires fitting. Bounds can be placed upon this. The lower limit can be set as the number of known data points, and the upper as the total number of data points in the data set, although it is hypothesised that beyond the sum of the known points and the samples sought would make little, to no difference. To test this hypothesis, the upper limit will be set at $\mathrm{len}(X_\mathrm{unknown})+1.5n$. The combined limits have been shown in \ref{eq:limsClust1}.
 
 \begin{equation}
-    \label{eq:limsClust1}
-    {\mathrm{len}(X_\mathrm{known})<c<\mathrm{len}(X_\mathrm{unknown})+1.5n}
+  \label{eq:limsClust1}
+  {\mathrm{len}(X_\mathrm{known})<c<\mathrm{len}(X_\mathrm{unknown})+1.5n}
 \end{equation}
 
 \begin{algorithm}[H]
-    \KwData{$z_\mathrm{known}$, $z_\mathrm{unknown}$, $c$}
-    \KwResult{Score of datapoints}
-    combined\_z = concat($z_\mathrm{known}$, $z_\mathrm{unknown}$)\;
-    clusters = cluster(number\_of\_clusters=$c$)\;
-    clusters.fit(combined\_z)\;
-    predicted\_custers = clusters.predict($z_\mathrm{unknown}$)\;
-    distances = clusters.distance\_to\_nearest\_centroid($z_\mathrm{unknown}$)\;
-    indicies = $z_\mathrm{known}$.index\;
-    sorted\_indicies = sort(indicies -> By cluster size followed by distance to centroid) \;
-    high\_priority, low\_priority = split(sorted\_indicies, if cluster contains $z_\mathrm{known}$)\;
-    high\_priority.riffle()\;
-    low\_priority.riffle()\;
-    order = join(high\_priority, low\_priority)\;
+  \KwData{$z_\mathrm{known}$, $z_\mathrm{unknown}$, $c$}
+  \KwResult{Score of datapoints}
+  combined\_z = concat($z_\mathrm{known}$, $z_\mathrm{unknown}$)\;
+  clusters = cluster(number\_of\_clusters=$c$)\;
+  clusters.fit(combined\_z)\;
+  predicted\_custers = clusters.predict($z_\mathrm{unknown}$)\;
+  distances = clusters.distance\_to\_nearest\_centroid($z_\mathrm{unknown}$)\;
+  indicies = $z_\mathrm{known}$.index\;
+  sorted\_indicies = sort(indicies -> By cluster size followed by distance to centroid) \;
+  high\_priority, low\_priority = split(sorted\_indicies, if cluster contains $z_\mathrm{known}$)\;
+  high\_priority.riffle()\;
+  low\_priority.riffle()\;
+  order = join(high\_priority, low\_priority)\;
 
-    \Return{$-\mathrm{error}$}
-    \caption{Uncertainty Sampling Selection}
-    \label{alg:cluster1}\SetAlgoLined
+  \Return{$-\mathrm{error}$}
+  \caption{Uncertainty Sampling Selection}
+  \label{alg:cluster1}\SetAlgoLined
 \end{algorithm}
 
 Several key steps are involved within the algorithms to fit to the ideology. Firstly, clusters containing samples from $x_\mathrm{known}$ are given lower priority. These are perceived as known clusters so ideally would not undergo further testing. Secondly, the sorting needs to be addressed. Here, the sample is sorted into the relevant cluster groups. These groups are then ordered by size, with larger cluster favoured. Samples within the cluster are sorted by distance to the equivalent centroid. The clusters are then split into those containing sampled points and those that do not. With each of these groups, a riffling procedure is used. Named after the common card shuffling technique, this ensures the priority is given to different clusters, with the highest priority going to the point from the most populated cluster, and closest to the centroid. The two groups of clusters are then concatenated.
 
 The three versions of clusterisation differ by the $z$ provided. In Cluster I, $z\equiv{}x$, whereas in Cluster II, $y_\mathrm{known}$ and $y_\mathrm{unknown}$ is joined to $x_\mathrm{known}$ and $x_\mathrm{unknown}$ respectively. Cluster III takes this a step further by combining ${s_g}_\mathrm{unknown}$ into $z_\mathrm{unknown}$ with 0 being the equivalent value used for $z_\mathrm{known}$.
 
-\subsubsection{RoD with Greed (RoDG)}
-This is the first composite function, combining both the greedy sampling, and the uncertainty sampling algorithms. This metric is shown in \ref{eq:rodAndGreed}.
+\subsubsection{Region of Disagreement with Greed}
+The first composite algorithm explored is \textbf{R}egion \textbf{o}f \textbf{D}isagreement with \textbf{G}reed (RoDG), combining both the greedy sampling, and the uncertainty sampling algorithms. This metric is shown in \ref{eq:rodAndGreed}.
 
 \begin{equation}
-    \label{eq:rodAndGreed}
-    {\mathrm{score}_\mathrm{greedy\&uncertainty}=\mathrm{score}_\mathrm{greedy}^{\alpha}\mathrm{score}_\mathrm{uncertainty}^{1-\alpha}}
+  \label{eq:rodAndGreed}
+  {\mathrm{score}_\mathrm{greedy\&uncertainty}=\mathrm{score}_\mathrm{greedy}^{\alpha}\mathrm{score}_\mathrm{uncertainty}^{1-\alpha}}
 \end{equation}
 
-Here, $\alpha$ is a parameter which needs to be found, bounded as $0<\alpha{}<1$. Note here that at the limits, the algorithm reduces to ROD and greedy algorithms.
+Here, $\alpha$ is a parameter which needs to be found, bounded as $0<\alpha{}<1$. Note here that at the limits, the algorithm reduces to the RoD and Greed algorithms.
 
-\subsubsection{Holy Trinity}
-This is a second order composite function, involving RoD with greed and Cluster III, as shown in \ref{eq:holyTrinity}.
+\subsubsection{Region of Disagreement with Greed and Clustering}
+\textbf{R}egion \textbf{o}f \textbf{D}isagreement with \textbf{G}reed and Clust\textbf{er}ing (RoDGer) is a second order composite function, involving RoD with Greed and Cluster III, as shown in \ref{eq:holyTrinity}.
 
 \begin{equation}
-    \label{eq:holyTrinity}
-    {\mathrm{score}_\mathrm{Holy Trinity}=\mathrm{score}_\mathrm{Cluster III}^{\alpha}\mathrm{score}_\mathrm{RoDG}^{1-\alpha}}
+  \label{eq:holyTrinity}
+  {\mathrm{score}_\mathrm{RoDGer}=\mathrm{score}_\mathrm{Cluster III}^{\alpha}\mathrm{score}_\mathrm{RoDG}^{1-\alpha}}
 \end{equation}
 
-Both of the constituant algorithms are paramatised, implying a total of three parameters. Bounds on initial estimates will be provided by the results of these algorithms taken individually.
+Both of the constituent algorithms are parameterised, implying a total of three parameters. Bounds on initial estimates will be provided by the results of these algorithms taken individually.
 
 \subsection{Parallelisation}
 The large number of datasets used presents a problem: time. Indeed, each iteration sees a new fitting of a machine learning model. Within the training stage, this would correspond to a minimum of 1000 models trained: a considerable number. Thus, by exploiting parallelisation, the time can be reduced in execution to the case, where given an infinite number of processes, the training and testing framework would scale as $\mathcal{O}(c)$. This requires circumventing pythons global interpreter lock, accomplished using Pathos due to several shortcomings found with the default multiprocessing package \cite{pathos1,pathos2}.
 
 \subsection{Minimisation}
-Due to the available parallelisation, only one iteration was performed in minimisation. This approach consisted of generating a uniform distribution of test parameters, testing upon the datasets in one parallised step, and selecting the best performing parameter combination.
+Due to the available parallelisation, only one iteration was performed in minimisation. This approach consisted of generating a uniform distribution of test parameters, testing upon the datasets in one parallelised step, and selecting the best performing parameter combination.
