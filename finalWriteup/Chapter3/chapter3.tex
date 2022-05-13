@@ -67,6 +67,13 @@ This method implements a weighted mean squared error ($\mathrm{wmse}$) given in 
 
 This achieves several goals. Firstly, it targets the higher values of pChEMBL, as these are the most beneficial for drug development. Secondly, it reduces the natural spread in results for datasets, preventing those poorly capable of being predicted the model from displacing results from the algorithm. Finally, it allows the results to be given as a fractional improvement instead. It allows a target of "85\%" prediction to be given for stopping criteria if desired.
 
+It is also useful having a learning rate metric, as defined in (\ref{eq:rate}), where $N$ is the total number of samples sampled. This provides a measure of the rate of learning.
+
+\begin{equation}
+    \dot{\mathrm{score}}=-\frac{\Delta\mathrm{score}}{\Delta{}N}
+    \label{eq:rate}
+\end{equation}
+
 \subsection{Active Learning Algorithms}
 The algorithms tested are all provided with $x_\mathrm{known}$, $x_\mathrm{unknown}$, $y_\mathrm{known}$, a model fitted to $x_\mathrm{known}$ and $y_\mathrm{known}$, and a memory object to allow for information to be kept through iterations if required. This is useful for clustering, where online training is possible. It is within the memory object where parameters may also be provided. As a result, it is impossible for the suppressed $y_\mathrm{Y_known}$ to influence an algorithms scoring process. The algorithms then return a list in the same order as $y_\mathrm{unknown}$, with the lowest scores designating higher priority in sampling. This allows uniformity across algorithms and the amalgamation of different algorithms without the duplication of code.
 
