@@ -1,5 +1,5 @@
-# %% Entire
 # region Libraries
+import logging
 import os
 import sys
 from pprint import pprint
@@ -15,11 +15,13 @@ import scipy.optimize as opt
 
 import v4main as algs
 
-proj_path = os.path.join(
+project_path = os.path.join(
     "/", "home", "rjb255", "University", "ChemEng", "ResearchProject"
 )
 
-# sys.path.insert(1, proj_path)
+
+
+# sys.path.insert(1, project_path)
 # from purePython.modules.shared.custom import split, getPI, Models
 
 # endregion
@@ -29,19 +31,6 @@ proj_path = os.path.join(
 # //
 # todo
 
-# region Subtle functions - functions similar to those in Python but improved in some way
-def custom_print(output: int, *args, **kwargs):
-    if output == 0:
-        pass
-    elif output == 1:
-        pprint(*args, **kwargs)
-    elif output == 2:
-        with open("logs/log.txt", "a+") as f:
-            f.write(*args, **kwargs)
-
-
-# endregion
-
 
 def to_minimise(data_set, alpha, alg, ongoing=[]):
     print(f"alpha: {alpha}")
@@ -50,23 +39,9 @@ def to_minimise(data_set, alpha, alg, ongoing=[]):
         scores = p.map(temp, data_set, chunksize=1)
     scores = np.array(scores)
     ongoing.append(([alpha] + [score[-1] for score in scores]))
-    # print(len(scores[:, -1]))
     print(f"alpha score: {np.mean(scores[:,-1])}")
     return np.mean(scores[:, -1])
 
-
-# region Subtle functions - functions similar to those in Python but improved in some way
-def custom_print(output: int, *args, **kwargs):
-    if output == 0:
-        pass
-    elif output == 1:
-        pprint(*args, **kwargs)
-    elif output == 2:
-        with open("logs/log.txt", "a+") as f:
-            f.write(*args, **kwargs)
-
-
-# endregion
 
 
 def to_minimise2(data_set, alphas, alg, ongoing=[]):
@@ -93,8 +68,9 @@ def callback_minimise(*args):
     return False
 
 
-def main(*, output=0, alpha=[]):
-    alg = (
+def main(*, alpha=[]):
+    
+    algorithm_to_test = (
         # "dumb"  # ?: base,
         # "rod"  # ?: region_of_disagreement,
         # "broad" #?: broad_base,
@@ -106,13 +82,17 @@ def main(*, output=0, alpha=[]):
         # "clusterIII"  # ?: clusteriseIII,
         "holyGrail"  # ?: holy grail,
     )
-    minimise = 0
-    ppprint = partial(custom_print, output)
-    ppprint(output)
-    data_location = os.path.join(proj_path, "data", "big", "qsar_with_lims_2")
 
+    logging.basicConfig(filename='logging/testing_frwk.log', encoding='utf-8', level=logging.DEBUG)
+
+    minimise = 0
+    
+    data_location = os.path.join(project_path, "data", "big", "qsar_with_lims_2")
     data_names = os.listdir(data_location)
-    random.seed(1)
+
+    #* Uncomment for reproducibility
+    # random.seed(1)
+    
     random.shuffle(data_names)
     datasets = np.array([os.path.join(data_location, data) for data in data_names])
 
@@ -128,7 +108,7 @@ def main(*, output=0, alpha=[]):
     data_valid = datasets[split[0] : split[1]]
     data_test = datasets[split[1] :]
 
-    ppprint(f"{len(data_train)}, {len(data_valid)}, {len(data_test)}")
+    logging.info(f"{len(data_train)}, {len(data_valid)}, {len(data_test)}")
     alpha = []
     # a0 = []
     # todo - Minimise alpha
@@ -159,20 +139,20 @@ def main(*, output=0, alpha=[]):
                 grid = arrays[0]
 
             keeping_track = []
-            score = to_minimise2(data_train, grid, alg, keeping_track)
+            score = to_minimise2(data_train, grid, algorithm_to_test, keeping_track)
 
             alpha = grid[np.argsort(score)[0]]
             keeping_track_pd = pd.DataFrame(data=keeping_track)
-            rosette = f"data/param/{alg}1.3.csv"
-            ppprint(f"SCOREEEEEEEEEEEE: {score}")
-            ppprint(f"ALPHAAAAAAAAAAAA: {alpha}")
+            rosette = f"data/param/{algorithm_to_test}1.3.csv"
+            logging.info(f"SCOREEEEEEEEEEEE: {score}")
+            logging.info(f"ALPHAAAAAAAAAAAA: {alpha}")
             print(rosette)
             # os.makedirs(rosette, exist_ok=True)
             keeping_track_pd.to_csv(rosette, index=False)
 
         elif minimise == 2:
             alef = opt.minimize(
-                lambda a: to_minimise(data_train, a, alg),
+                lambda a: to_minimise(data_train, a, algorithm_to_test),
                 a0,
                 bounds=a_boundary,
                 # options={"maxiter": 8},
@@ -182,19 +162,19 @@ def main(*, output=0, alpha=[]):
             alpha = alef["x"]
             print(alpha)
 
-    with_alpha = partial(algs.post_main, alpha=alpha, alg=alg)
+    with_alpha = partial(algs.post_main, alpha=alpha, alg=algorithm_to_test)
     with Pool() as p:
         scores = p.map(with_alpha, data_test, chunksize=1)
 
     results = pd.DataFrame(data=scores, index=data_test)
-    # ppprint(results)
+    # logging.info(results)
     # plt.ion()
     # plt.plot([1, 101, 201, 301, 401], np.transpose(scores))
     # plt.show(block=True)
-    rosette = f"data/5/{alg}M.csv"
+    rosette = f"data/5/{algorithm_to_test}M.csv"
     print(rosette)
     results.to_csv(rosette)
 
 
 if __name__ == "__main__":
-    main(output=1)
+    main()
