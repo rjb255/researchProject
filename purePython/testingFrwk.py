@@ -21,8 +21,6 @@ project_path = os.path.join(
 
 
 
-# sys.path.insert(1, project_path)
-# from purePython.modules.shared.custom import split, getPI, Models
 
 # endregion
 # *
