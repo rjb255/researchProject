@@ -996,7 +996,7 @@ wish to left align your text}
 \newenvironment{declaration}{
 % \cleardoublepage
 \setsinglecolumn
-\chapter*{\centering \Large Declaration}
+\chapter*{\centering \Large Preface}
 \thispagestyle{empty}
 }{
 \flushright

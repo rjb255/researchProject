@@ -84,7 +84,7 @@ In order to adapt non-probabilistic models into probabilistic ones, composite mo
     \end{center}
 \end{figure}
 
-Interestingly, Figure~\ref{fig:rodPhantom}B shows how the mean squared error for the random sampling method performed to worse within the iterations tested. This is likely due to a bias in the use of linear models in fitting leading to large uncertainties surrounding areas with high curvature. Evidence to this is provided in Figure~\ref{fig:rodPhantom}A with a large proportion of the sampled points at areas of high curvature.
+Interestingly, Figure~\ref{fig:rodPhantom}B shows how the mean squared error for the random sampling method performed to worse than randomly sampling. This is likely due to a bias in the use of linear models in fitting leading to large uncertainties surrounding areas with high curvature. Evidence to this is provided in Figure~\ref{fig:rodPhantom}A with a large proportion of the sampled points at areas of high curvature.
 
 
 % \subsubsection{Broad Knowledge Base}
@@ -128,7 +128,9 @@ Conversely, a density weighted model has been suggested, as it escapes the intro
     \end{center}
 \end{figure}
 
-As Figure~\ref{fig:ClusterResults} demonstrates, there are multiple different interpretations of the solution to the problem of clustering. The makers of the Scikit learn package also discuss the scalability of each algorithm \cite{SciClus}. In order to prepare a high number of features (beyond the two used within this section for demonstration) and large number of data points, it is required that the algorithm scales accordingly. Further, for an adaptive process, it is more suitable for an algorithm to be adaptive to differing distribution. This limits the suitable algorithms to K-Means, Ward and Birch - columns one, five, and nine of Figure~\ref{fig:ClusterResults} respectively. Results for Birch can be seen in Figure~\ref{fig:clusterPhantom}. This appears do well, although it must be noted that this is likely due to the similarity between Monte Carlo (random) sampling, and clusterisation. I.e. areas distant from previously gathered points face a high chance of sampling.
+As Figure~\ref{fig:ClusterResults} demonstrates, there are multiple different interpretations of the solution to the problem of clustering. The makers of the Scikit learn package also discuss the scalability of each algorithm \cite{SciClus}. In order to prepare a high number of features (beyond the two used within this section for demonstration) and large number of data points, it is required that the algorithm scales accordingly. Further, for an adaptive process, it is more suitable for an algorithm to be adaptive to differing distributions. This limits the suitable algorithms to K-Means, Ward and Birch - columns one, five, and nine of Figure~\ref{fig:ClusterResults} respectively.
+
+Results for Birch can be seen in Figure~\ref{fig:clusterPhantom}. Birch appears to do well, although it must be noted that this is likely due to the similarity between Monte Carlo (random) sampling, and clusterisation. I.e. areas distant from previously gathered points face a high chance of sampling.
 
 \begin{figure}[H]
     \begin{center}
@@ -139,12 +141,12 @@ As Figure~\ref{fig:ClusterResults} demonstrates, there are multiple different in
 \end{figure}
 
 \subsection{Estimated Future}
-These methods attempt to minimise a future attribute of the model. This works by predicting changes given with the inclusion of more data with a higher degree f theoretical underpinning that the sampling methods discussed thus far.
+These methods attempt to minimise a future attribute of the model. This works by predicting changes given an inclusion of more data. A higher degree of theoretical underpinning is thus required here than with the sampling methods discussed thus far.
 
 \subsubsection{Expected Model Change}
 As the name implies, this method chooses points which are likely to have the largest impact on the final model. By instigating each potential point, the impact on the eventual model can be found. However, this requires a method for quantifying the model change.
 
-\textcite{Set08,Set09} investigate models which can be trained "online": i.e. models which can use the previous iteration to reduce the time taken for convergence. They present a method called "Expected Gradient Length" (EGL) which has a couple of prerequisites: \textbf{1)} A probabilistic model is used \textbf{2)} Linear gradient based optimisation is used \textbf{3)} The model can be improved from previous iterations. Given these prerequisites, the problem becomes less computationally inexpensive given a small dataset or extensive parallelisation, and scales as $\mathcal{O}(n)$. However, it does have the distinct drawback of requiring close control of the data models used. Here, the length of the training gradient (the gradient used in re-fitting the parameters with gradient based optimisation) can be used as a measure of model change. In the case of a small model change, as is expected, the length of the training gradient can be written as ${\left\|\nabla{}l(\langle{}x, y_i\rangle{};\theta{})\right\|}$. Combining this with the probability distribution of $y$, the next sample to undergo labelling is given by (\ref{eq:EGL}).
+\textcite{Set08,Set09} investigate models which can be trained "online": i.e. models which can use the previous iteration to reduce the time taken for convergence. They present a method called "Expected Gradient Length" (EGL) which has a couple of prerequisites: \textbf{1)} A probabilistic model is used \textbf{2)} Linear gradient based optimisation is used \textbf{3)} The model can be improved from previous iterations. Given these prerequisites, the problem becomes less computationally expensive given a small dataset or extensive parallelisation, and scales as $\mathcal{O}(n)$. However, it does have the distinct drawback of requiring close control of the data models used. Here, the length of the training gradient (the gradient used in re-fitting the parameters with gradient-based optimisation) can be used as a measure of model change. In the case of a small model change, as is expected, the length of the training gradient can be written as ${\left\|\nabla{}l(\langle{}x, y_i\rangle{};\theta{})\right\|}$. Combining this with the probability distribution of $y$, the next sample to undergo labelling is given by (\ref{eq:EGL}).
 
 \begin{equation}
     \label{eq:EGL}
@@ -153,7 +155,7 @@ As the name implies, this method chooses points which are likely to have the lar
 
 
 \section{Batch Active Learning}
-Little literature exists with respect to batch active learning. Naïve implementation exist whereby the methods explored earlier present a stack of data points to be chosen, and the top $N$ are used. However, this method does not take into account the equivalence of the data points. This can be seen by the formation of clusters within the uncertainty sampling method in Figure~\ref{fig:broadrod}, although it is not present within the clusterisation algorithm shown in Figure~\ref{fig:batchCluster}.
+Little literature exists with respect to batch-active learning. Naïve implementations exist whereby the methods explored earlier present a stack of data points to be chosen, and the top $N$ are used. However, this method does not take into account the equivalence of the data points. This can be seen by the formation of clusters within the uncertainty sampling method in Figure~\ref{fig:broadrod}, although it is not present within the clusterisation algorithm shown in Figure~\ref{fig:batchCluster}.
 
 \begin{figure}[H]
     \begin{center}
@@ -179,10 +181,10 @@ Little literature exists with respect to batch active learning. Naïve implement
 \end{figure}
 
 
-It is to be expected that regions of high uncertainty will exist. Within these regions, multiple points will have similar uncertainties. Thus, it is likely in batch querying areas of high uncertainty multiple points from the same area of feature space will be chosen, reducing the information gain by the model. Perhaps the consequences will be even worse due to overfitting. A simple fix would be to simulate the model after 1 iteration, and select the next point from there. By doing this $n-1$ times, a better solution may be found, although this may prove to be computationally expensive.
+It is to be expected that regions of high uncertainty will exist. Within these regions, multiple points will have similar uncertainties. Thus, it is likely in batch querying areas of high uncertainty multiple points from the same area of feature space will be chosen, reducing the information gain by the model. Perhaps the consequences will be even worse due to overfitting? A simple fix would be to simulate the model after 1 iteration, and select the next point from there. By doing this $n-1$ times, a better solution may be found, although this may prove to be computationally expensive.
 
 \subsection{BatchBALD}
-\textcite{BatchBALD} propose an algorithm named BatchBALD (Batch Bayesian Active Learning by Disagreement). Demonstrating for sample size of 10 an improvement compared to random sampling in optical character recognition. In doing so, they use complex Bayesian Neural Networks and apply the problem to categorical data. They also note it does not work well in the event of noisy data: a common feature of laboratory based labelling.
+\textcite{BatchBALD} propose an algorithm named BatchBALD (Batch Bayesian Active Learning by Disagreement). Demonstrating for sample size of 10 an improvement compared to random sampling in optical character recognition. In doing so, they use complex Bayesian Neural Networks and apply the problem to categorical data. They also note it does not work well in the event of noisy data: a common feature of laboratory-based labelling.
 
 \section{Drug Data for Machine Learning}
 There are numerous data categories that can be used to represent a chemical in a suitable form for machine learning. Indeed, the field of chemoinformatics is dedicated to the pursuit of describing chemicals for computational models. Each of these methods have various strengths and weaknesses. Some are directly based upon the chemical structure whereas others are based upon physical properties. These can be combined to produce models with high predictive capabilities.
@@ -200,7 +202,7 @@ Within drug discovery, physical and biological properties are usually the sought
 \end{equation}
 
 \subsection{Fingerprints}
-Another methodology is to develop a fingerprint: a unique code based on the chemical structure, either of the atomic arrangement, or by the electron cloud distribution. The latter of these is more fundamental to the activity of molecules but far harder to calculate. Indeed, for accurate representation of the latter, both atomic structure is needed \textit{and} solutions for the Schrödinger equations corresponding to molecule in question.
+Another methodology is to develop a fingerprint: a unique code based on the chemical structure, either of the atomic arrangement, or by the electron cloud distribution. The latter of these is more fundamental to the activity of molecules but far harder to calculate. Indeed, for accurate representation of the latter, both atomic structure \textit{and} solutions for the Schrödinger equations corresponding to molecule in question are needed.
 
 According to \textcite{Cap20}, the most popular fingerprint in use are Morgan Fingerprints, a form of Extended Chemical Fingerprint (ECFP). ECFPs use a simple algorithm in order to generate a unique identifier, as described by \textcite{Mor2020}:
 
