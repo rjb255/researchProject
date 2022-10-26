@@ -28,13 +28,15 @@ from sklearn.svm import SVR
 from sklearn.linear_model import SGDRegressor as SGD
 from sklearn.neural_network import MLPRegressor as NN
 
+from modules.shared.custom import split, getPI, Models
+
 
 proj_path = os.path.join(
     "/", "home", "rjb255", "University", "ChemEng", "ResearchProject"
 )
 sys.path.insert(1, proj_path)
 
-from purePython.modules.shared.custom import split, getPI, Models
+
 
 # endregion
 
