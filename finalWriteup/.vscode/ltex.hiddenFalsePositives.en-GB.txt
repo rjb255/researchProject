@@ -1,0 +1,2 @@
+{"rule":"THIS_NNS","sentence":"^\\QWhat if these change?\\E$"}
+{"rule":"COMMA_PARENTHESIS_WHITESPACE","sentence":"^\\QAn example of this is supplied by \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q with a custom property named pChEMBL, as defined by \\E(?:Dummy|Ina|Jimmy-)[0-9]+\\Q where \" is synonymous with \"or\".\\E$"}
